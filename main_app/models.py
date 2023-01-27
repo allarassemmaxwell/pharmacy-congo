@@ -468,3 +468,7 @@ class AppointmentPrescription(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+# I removed the template because It's to heavy to merge
