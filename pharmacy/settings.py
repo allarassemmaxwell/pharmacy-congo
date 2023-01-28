@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # APPS INSTALLATION
     'landing_app.apps.LandingAppConfig',
     'dashboard_app.apps.DashboardAppConfig',
@@ -44,8 +46,6 @@ INSTALLED_APPS = [
     'crispy_forms', #pip install django-crispy-forms
     'rest_framework', # pip install django-preventconcurrentlogins
     'preventconcurrentlogins', # pip install django-preventconcurrentlogins
-
-
 ]
 
 MIDDLEWARE = [
@@ -127,7 +127,6 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
@@ -154,7 +153,6 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000
 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
 
 
 
