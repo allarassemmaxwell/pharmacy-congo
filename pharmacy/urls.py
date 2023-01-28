@@ -14,8 +14,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+# from dashboard.views import PasswordChangeView
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('accounts/password/change/', PasswordChangeView.as_view(), name="account_change_password"),
+    path('accounts/', include('allauth.urls')),
+    path('', include('landing_app.urls')),
+    path('dashboard/', include('dashboard_app.urls')),
+    # path('search/', include('search.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+#Modify Site Header
+admin.site.site_header = 'Pharmacie Administration'
+#Modify Site Title
+admin.site.site_title = 'Pharmacie'
+#Modify Site Index Title
+admin.site.index_title = 'Pharmacie Administration'
+#Modify Site URL

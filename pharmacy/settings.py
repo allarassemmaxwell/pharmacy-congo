@@ -26,6 +26,11 @@ SECRET_KEY = 'django-insecure-&^lu3=3pgkt2!+*6n$akbqj06r24*6*m-^+cye$=pr-+x=1ag+
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'dashboard_app.User'
+
+LOGIN_REDIRECT_URL = '/dashboard/'
+# ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_ON_GET= True
 
 
 # Application definition
@@ -41,9 +46,13 @@ INSTALLED_APPS = [
     'landing_app.apps.LandingAppConfig',
     'dashboard_app.apps.DashboardAppConfig',
 
-    'crispy_forms', #pip install django-crispy-forms
-    'rest_framework', # pip install django-preventconcurrentlogins
+    'crispy_forms', # pip install django-crispy-forms
+    'rest_framework', # pip install djangorestframework
     'preventconcurrentlogins', # pip install django-preventconcurrentlogins
+    'django.contrib.sites',
+    'allauth', #pip install django-allauth
+    'allauth.account',
+    'allauth.socialaccount',   
 
 
 ]
@@ -120,6 +129,42 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+
+SITE_ID = 1
+
+
+ACCOUNT_FORMS = {
+    'signup': 'dashboard.forms.CustomSignupForm',
+}
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=7
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900
+
+
+
+
+
 
 
 # Static files (CSS, JavaScript, Images)
