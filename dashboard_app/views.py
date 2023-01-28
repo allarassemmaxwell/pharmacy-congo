@@ -55,8 +55,7 @@ from functools import wraps
 # ==================================================
 # DASHBOARD VIEW 
 @login_required
-# @user_access_only()
-def dashboard_view(request, *args, **kwargs):
+def dashboard_view(request):
     context = {
     }
     template = "dashboard/index.html"
