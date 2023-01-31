@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pharmacist Add Blog{% endblock %}
+
+
+{% block content %}
+<body>
+    <div class="main-wrapper">
+      
+      <div class="breadcrumb-bar">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+              <nav aria-label="breadcrumb" class="page-breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">Add Blog</li>
+                </ol>
+              </nav>
+              <h2 class="breadcrumb-title">Add Blog</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+              <div class="profile-sidebar">
+                <div class="widget-profile pro-widget-content">
+                  <div class="profile-info-widget">
+                    <a href="doctor-add-blog.html#" class="booking-doc-img">
+                      <img src="{% static 'assets/img/doctors/doctor-thumb-02.jpg' %}" alt="User Image">
+                    </a>
+                    <div class="profile-det-info">
+                      <h3>Dr. Darren Elder</h3>
+                      <div class="patient-details">
+                        <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dashboard-widget">
+                  <nav class="dashboard-menu">
+                    <ul>
+                      <li>
+                        <a href="doctor-dashboard.html">
+                          <i class="fas fa-columns"></i>
+                          <span>Dashboard</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="appointments.html">
+                          <i class="fas fa-calendar-check"></i>
+                          <span>Appointments</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="my-patients.html">
+                          <i class="fas fa-user-injured"></i>
+                          <span>My Patients</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="schedule-timings.html">
+                          <i class="fas fa-hourglass-start"></i>
+                          <span>Schedule Timings</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="invoices.html">
+                          <i class="fas fa-file-invoice"></i>
+                          <span>Invoices</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="reviews.html">
+                          <i class="fas fa-star"></i>
+                          <span>Reviews</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="chat-doctor.html">
+                          <i class="fas fa-comments"></i>
+                          <span>Message</span>
+                          <small class="unread-msg">23</small>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="doctor-profile-settings.html">
+                          <i class="fas fa-user-cog"></i>
+                          <span>Profile Settings</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="social-media.html">
+                          <i class="fas fa-share-alt"></i>
+                          <span>Social Media</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="doctor-change-password.html">
+                          <i class="fas fa-lock"></i>
+                          <span>Change Password</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="index.html">
+                          <i class="fas fa-sign-out-alt"></i>
+                          <span>Logout</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7 col-lg-8 col-xl-9">
+              <div class="doc-review review-listing custom-edit-service">
+                <div class="row mb-5">
+                  <div class="col">
+                    <ul class="nav nav-tabs nav-tabs-solid">
+                      <li class="nav-item">
+                        <a class="nav-link" href="doctor-blog.html">Acitive Blog</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="doctor-pending-blog.html">Pending Blog</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-auto">
+                    <a class="btn btn-primary btn-sm" href="doctor-add-blog.html">
+                      <i class="fas fa-plus me-1"></i> Add Blog </a>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <h3 class="pb-3">Add Blog</h3>
+                    <form method="post" enctype="multipart/form-data" autocomplete="off" id="update_service" action="doctor-blog.html">
+                      <input type="hidden" name="csrf_token_name" value="0146f123a4c7ae94253b39bca6bd5a5e">
+                      <div class="service-fields mb-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <label>Blog Title <span class="text-danger">*</span>
+                              </label>
+                              <input type="hidden" name="service_id" id="service_id" value="18">
+                              <input class="form-control" type="text" name="service_title" id="service_title" value="Doccure – Making your clinic painless visit?" required="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="service-fields mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label>Category <span class="text-danger">*</span>
+                              </label>
+                              <select class="form-select form-control" name="category" required="">
+                                <option value="1">Automobile</option>
+                                <option value="2" selected="selected">Construction</option>
+                                <option value="3">Interior</option>
+                                <option value="4">Cleaning</option>
+                                <option value="5">Electrical</option>
+                                <option value="6">Carpentry</option>
+                                <option value="7">Computer</option>
+                                <option value="8">Painting</option>
+                                <option value="9">Car Wash</option>
+                                <option value="10">Category Test</option>
+                                <option value="11">dfdf</option>
+                                <option value="12">Equipment</option>
+                                <option value="13">Test category1</option>
+                                <option value="14">Farming</option>
+                                <option value="15">Test Category02</option>
+                                <option value="16">Laundry</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="form-group">
+                              <label>Sub Category <span class="text-danger">*</span>
+                              </label>
+                              <select class="form-select form-control" name="subcategory">
+                                <option value="5">Others</option>
+                                <option value="6">Others</option>
+                                <option value="7">Others</option>
+                                <option value="8">House cleaning</option>
+                                <option value="9">Others</option>
+                                <option value="10">Others</option>
+                                <option value="11">Others</option>
+                                <option value="12">Others</option>
+                                <option value="13">Full Car Wash</option>
+                                <option value="14" selected="selected">Testing category</option>
+                                <option value="15">Test Sub category</option>
+                                <option value="16">Harvesting pine</option>
+                                <option value="17">Test Sub category name</option>
+                                <option value="18">Test Sub category name</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="service-fields mb-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <label>Descriptions <span class="text-danger">*</span>
+                              </label>
+                              <textarea id="about" class="form-control service-desc" name="about">note.</textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="service-fields mb-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="service-upload">
+                              <i class="fas fa-cloud-upload-alt"></i>
+                              <span>Upload Blog Images *</span>
+                              <input type="file" name="images[]" id="images" multiple="" accept="image/jpeg, image/png, image/gif,">
+                            </div>
+                            <div id="uploadPreview">
+                              <ul class="upload-wrap">
+                                <li>
+                                  <div class=" upload-images">
+                                    <img alt="Blog Image" src="{% static 'assets/img/img-01.jpg' %}">
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class=" upload-images">
+                                    <img alt="Blog Image" src="{% static 'assets/img/img-02.jpg' %}">
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class=" upload-images">
+                                    <img alt="Blog Image" src="{% static 'assets/img/img-03.jpg' %}">
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="service-fields mb-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <label>Video id <span class="text-danger">*</span>
+                              </label>
+                              <input type="hidden" name="video_id" id="video_id" value="18">
+                              <input class="form-control" type="text" name="video_id" id="video_id" value="Rf34rhkWW1" required="">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" name="form_submit" value="submit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
