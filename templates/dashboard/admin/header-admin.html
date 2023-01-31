@@ -1,0 +1,145 @@
+{% load static %}
+
+<!--====== Header Start ======-->
+
+<div class="header">
+    <div class="header-left">
+      <a href="index.html" class="logo">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+      </a>
+      <a href="index.html" class="logo logo-small">
+        <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+      </a>
+      <a href="javascript:void(0);" id="toggle_btn">
+        <i class="feather-chevrons-left"></i>
+      </a>
+    </div>
+    <div class="top-nav-search">
+      <div class="main">
+        <form class="search" method="post" action="index.html">
+          <button class="btn" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+          <input type="text" class="form-control" placeholder="Search here...">
+        </form>
+      </div>
+    </div>
+    <a class="mobile_btn" id="mobile_btn">
+      <i class="fas fa-bars"></i>
+    </a>
+    <ul class="nav nav-tabs user-menu">
+      <li class="nav-item">
+        <a href="index.html#" id="dark-mode-toggle" class="dark-mode-toggle">
+          <i class="feather-sun light-mode"></i>
+          <i class="feather-moon dark-mode"></i>
+        </a>
+      </li>
+      <li class="nav-item dropdown noti-nav">
+        <a href="index.html#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+          <i class="feather-bell"></i>
+          <span class="badge"></span>
+        </a>
+        <div class="dropdown-menu notifications">
+          <div class="topnav-dropdown-header">
+            <span class="notification-title">Notifications</span>
+            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+          </div>
+          <div class="noti-content">
+            <ul class="notification-list">
+              <li class="notification-message">
+                <a href="index.html#">
+                  <div class="media d-flex">
+                    <span class="avatar">
+                      <img class="avatar-img" alt="" src="{% static 'assets/img/profiles/avatar-02.jpg' %}">
+                    </span>
+                    <div class="media-body">
+                      <h6>Travis Tremble <span class="notification-time">18.30 PM</span>
+                      </h6>
+                      <p class="noti-details">Sent a amount of $210 for his Appointment <span class="noti-title">Dr.Ruby perin </span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="notification-message">
+                <a href="index.html#">
+                  <div class="media d-flex">
+                    <span class="avatar">
+                      <img class="avatar-img" alt="" src="{% static 'assets/img/profiles/avatar-05.jpg' %}">
+                    </span>
+                    <div class="media-body">
+                      <h6>Travis Tremble <span class="notification-time">12 Min Ago</span>
+                      </h6>
+                      <p class="noti-details"> has booked her appointment to <span class="noti-title">Dr. Hendry Watt</span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="notification-message">
+                <a href="index.html#">
+                  <div class="media d-flex">
+                    <div class="avatar">
+                      <img class="avatar-img" alt="" src="{% static 'assets/img/profiles/avatar-03.jpg' %}">
+                    </div>
+                    <div class="media-body">
+                      <h6>Travis Tremble <span class="notification-time">6 Min Ago</span>
+                      </h6>
+                      <p class="noti-details"> Sent a amount $210 for his Appointment <span class="noti-title">Dr.Maria Dyen</span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="notification-message">
+                <a href="index.html#">
+                  <div class="media d-flex">
+                    <div class="avatar avatar-sm">
+                      <img class="avatar-img" alt="" src="{% static 'assets/img/profiles/avatar-06.jpg' %}">
+                    </div>
+                    <div class="media-body">
+                      <h6>Travis Tremble <span class="notification-time">8.30 AM</span>
+                      </h6>
+                      <p class="noti-details"> Send a message to his doctor</p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="topnav-dropdown-footer">
+            <a href="index.html#">View all Notifications</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item dropdown main-drop">
+        <a href="index.html#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+          <span class="user-img">
+            <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="">
+            <span class="status online"></span>
+          </span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="user-header">
+            <div class="avatar avatar-sm">
+              <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+            </div>
+            <div class="user-text">
+              <h6>Robert Haddin</h6>
+              <p class="text-muted mb-0">Administrator</p>
+            </div>
+          </div>
+          <a class="dropdown-item" href="profile.html">
+            <i class="feather-user me-1"></i> My Profile </a>
+          <a class="dropdown-item" href="settings.html">
+            <i class="feather-sliders me-1"></i>Settings </a>
+          <hr class="my-0 ms-2 me-2">
+          <a class="dropdown-item" href="index.html">
+            <i class="feather-log-out me-1"></i> Logout </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+
+<!--====== Header End ======-->
