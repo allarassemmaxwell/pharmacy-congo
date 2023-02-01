@@ -93,7 +93,7 @@ ROLE = (
 
 class User(AbstractBaseUser, PermissionsMixin):
     id        = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    first_name = models.CharField(_("Nome"), max_length=255,)
+    first_name = models.CharField(_("Nom"), max_length=255,)
     last_name  = models.CharField(_("Prenom"), max_length=255,)
     email      = models.EmailField(_("Email"), max_length=200, unique=True, validators = [validators.EmailValidator()])
     is_staff   = models.BooleanField(default=False)
@@ -204,6 +204,8 @@ class Stock(models.Model):
 
 
 
+
+
 # PRODUCT IMAGE MODEL
 class ProductImage(models.Model):
     file       = models.FileField(_("Fichier(pdf,image)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
@@ -279,6 +281,76 @@ class Product(models.Model):
 
 
 
+# PATIENT MODEL
+class Patients(models.Model):
+    STATUS_CHOICES=(
+        ('Masculin','Masculin'),
+        ('Feminin','Feminin'),
+    )
+    admin          = models.OneToOneField(User,null=True, on_delete = models.CASCADE)
+    reg_no         = models.CharField(_("Numero de Registration"),max_length=30,null=True,blank=True,unique=True)
+    gender         = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    first_name     = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
+    last_name      = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    date_of_birth  = models.DateField(_("Date de Naissance"), blank=True, null=True)
+    phone          = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    email          = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    photo          = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    age            = models.IntegerField(_("Age"),default='0', blank=True, null=True)
+    address        = models.CharField(_("Address Patient"), max_length=255,null=True,blank=True)
+    date_admitted  = models.DateTimeField(_("Date Admission"), auto_now_add=True, auto_now=False)
+    last_updated   = models.DateTimeField(_("Derniere Mise a jour"), auto_now_add=False, auto_now=True)
+    active         = models.BooleanField(_("Est actif"), default=True)
+    timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    def __str__(self):
+        return str(self.admin)
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+
+# PHARMACIST MODEL
+class Pharmacist(models.Model):
+    STATUS_CHOICES=(
+        ('Masculin','Masculin'),
+        ('Feminin','Feminin'),
+    )
+    admin       = models.OneToOneField(User,null=True, on_delete = models.CASCADE)
+    emp_no      =models.CharField(_("Numero de Service(Travail)"),max_length=30,null=True,blank=True,unique=True)
+    age         = models.IntegerField(_("Age"),default='0', blank=True, null=True)
+    gender      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    phone       = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    address     = models.CharField(_("Address Patient"), max_length=255,null=True,blank=True)
+    photo       = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    # objects = models.Manager()
+    def __str__(self):
+        return str(self.admin)
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
 
 
 # SALE MODEL
@@ -345,14 +417,13 @@ class Appointment(models.Model):
     phone        = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
     subject      = models.CharField(_("Sujet"), max_length=255, null=False, blank=False, unique=True)
     gender       = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=False, blank=False)
-    # 👉 try to see the field age 🔥
-    age          = models.IntegerField(_("Age"),  null=False, blank=False)
+    age          = models.IntegerField(_("Age"),default='0', blank=True, null=True)
     hour         = models.DateTimeField(_("Horaire Rv"), auto_now_add=True, auto_now=False)
     date         = models.DateField(_("Date de RV"), blank=False, null=False)
     description  = models.TextField(_("Description"), null=False, blank=False)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    active       = models.BooleanField(_("Est actif"), default=True)
+    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     
     def __str__(self):

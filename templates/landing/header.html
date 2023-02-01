@@ -12,13 +12,13 @@
                     <span></span>
                 </span>
             </a>
-            <a href="index.html" class="navbar-brand logo">
+            <a href="/" class="navbar-brand logo">
                 <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
             </a>
         </div>
         <div class="main-menu-wrapper">
             <div class="menu-header">
-                <a href="index.html" class="menu-logo">
+                <a href="/" class="menu-logo">
                     <img src="{% static 'assets/img/logo.png' %}" class="img-fluid" alt="Logo">
                 </a>
                 <a id="menu_close" class="menu-close" href="javascript:void(0);">
@@ -27,19 +27,19 @@
             </div>
             <ul class="main-nav">
                 <li class="has-submenu">
-                    <a href="/">Accueil</a>
+                    <a href="{% url 'landing:home' %}">Accueil</a>
                 </li>
                 <li class="has-submenu">
-                    <a href="/">Apros de <i class="fas fa-chevron-down"></i></a>
+                    <a href="{% url 'landing:about' %}">Apros de <i class="fas fa-chevron-down"></i></a>
                 </li>
                 <li class="has-submenu">
-                    <a href="/">Rendez-vous</a>
+                    <a href="{% url 'landing:phcist_appointment' %}">Rendez-vous</a>
                 </li>
                 <li class="has-submenu">
-                    <a href="/">Services</a>
+                    <a href="{% url 'landing:pharmacy_search' %}">Services</a>
                 </li>
                 <li class="has-submenu">
-                    <a href="/">Produits</a>
+                    <a href="{% url 'landing:product' %}">Produits</a>
                 </li>
                 <li class="has-submenu">
                     <a href="{% url 'landing:blog' %}">Article</a>
