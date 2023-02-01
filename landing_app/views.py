@@ -36,7 +36,7 @@ from django.core.paginator import Paginator
 def home_view(request):
 	context  = {
 	}
-	template = "landing/base.html"
+	template = "landing/index.html"
 	return render(request, template, context)
 
 
@@ -96,25 +96,26 @@ def contact_view(request):
 
 # BLOG VIEW 
 def blog_view(request):
-    # category = ''
-    # blogs    = Blog.objects.filter(active=True)
-    # blog_categories = BlogCategory.objects.filter(active=True)
-    # category_slug = request.GET.get('category')
+    category = ''
+    blogs    = Blog.objects.filter(active=True)
+    blog_categories = BlogCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
 
-    # if category_slug:
-    #     blogs = Blog.objects.filter(category__slug=category_slug, active=True)
+    if category_slug:
+        blogs = Blog.objects.filter(category__slug=category_slug, active=True)
 
-    # # PAGINATION 
-    # paginator = Paginator(blogs, 9)
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
+    # PAGINATION 
+    paginator = Paginator(blogs, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    # context = {
-    #     'blogs': page_obj,
-    #     'blog_categories': blog_categories,
-    # }
+    context = {
+        'blogs': page_obj,
+        'blog_categories': blog_categories,
+        'category': category,
+    }
     template = "landing/blog/blog.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 
@@ -122,29 +123,29 @@ def blog_view(request):
 
 # BLOG DETAIL VIEW 
 def blog_detail_view(request, slug=None):
-    # blog = get_object_or_404(Blog, slug=slug, active=True)
-    # blog_categories = BlogCategory.objects.filter(active=True)
-    # recent_blogs    = Blog.objects.filter(active=True).exclude(slug=blog.slug)[:10]
-    # related_blogs   = Blog.objects.filter(active=True, category=blog.category).exclude(slug=blog.slug)[:10]
-    # if request.method == 'POST':
-    #     form = BlogCommentForm(request.POST)
-    #     if form.is_valid():
-    #         obj = form.save(commit=False)
-    #         obj.blog = blog
-    #         form.save()
-    #         messages.success(request, _("Comment posted successfully"))
-    #         return redirect(request.META['HTTP_REFERER'])
-    # else:
-    #     form = BlogCommentForm()
-    # context  = {
-    #     'blog': blog,
-    #     'form': form,
-    #     'blog_categories': blog_categories,
-    #     'recent_blogs': recent_blogs,
-    #     'related_blogs': related_blogs,
-    # }
+    blog = get_object_or_404(Blog, slug=slug, active=True)
+    blog_categories = BlogCategory.objects.filter(active=True)
+    recent_blogs    = Blog.objects.filter(active=True).exclude(slug=blog.slug)[:10]
+    related_blogs   = Blog.objects.filter(active=True, category=blog.category).exclude(slug=blog.slug)[:10]
+    if request.method == 'POST':
+        form = BlogCommentForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.blog = blog
+            form.save()
+            messages.success(request, _("Comment posted successfully"))
+            return redirect(request.META['HTTP_REFERER'])
+    else:
+        form = BlogCommentForm()
+    context  = {
+        'blog': blog,
+        'form': form,
+        'blog_categories': blog_categories,
+        'recent_blogs': recent_blogs,
+        'related_blogs': related_blogs,
+    }
     template ="landing/blog/blog-detail.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 
