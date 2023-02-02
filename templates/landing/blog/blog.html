@@ -36,8 +36,8 @@
 
                                     <div class="blog grid-blog">
                                         <div class="blog-image">
-                                            <a href="{{ blog.get_absolute_url }}"><img class="img-fluid"
-                                                    src="{{ blog.photo.url }}" style="width: 100%; height: 180px; "  alt="{{ blog.name|title }}"></a>
+                                            <a href="{{ blog.blog_detail }}"><img class="img-fluid"
+                                                src="{{ blog.photo.url }}" style="width: 100%; height: 180px; "  alt="{{ blog.name|title }}"></a>
                                         </div>
                                         <div class="blog-content">
                                             <ul class="entry-meta meta-item">
@@ -52,7 +52,7 @@
                                                     
                                             </ul>
                                             <br>
-                                            <h3 class="blog-title"><a href="blog_detail">{{ blog.name|title }}</a></h3>
+                                            <h3 class="blog-title"><a href="{{ blog.get_detail_absolute_url }}">{{ blog.name|title }}</a></h3>
                                             <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
                                             <br>
                                         </div>
@@ -114,7 +114,7 @@
                                     <li>
                                         <div class="post-thumb">
                                             <a href="blog-details.html">
-                                                <img class="img-fluid" src="{{ blog.photo.url }}" style="width: 60%; height: 60px; border-radius: 50%" alt="">
+                                                <img class="img-fluid" src="{{ blog.photo.url }}" style="width: 50%; height: 50px; border-radius: 50%" alt="">
                                             </a>
                                         </div>
                                         <div class="post-info">

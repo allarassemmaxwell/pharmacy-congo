@@ -1,5 +1,6 @@
 {% extends "landing/base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block title %}About{% endblock %}
 
 
@@ -59,11 +60,7 @@
             <div class="infor-details text-center">
               <label>Email</label>
               <p>
-                <a
-                  href="https://doccure.dreamguystech.com/cdn-cgi/l/email-protection"
-                  class="__cf_email__"
-                  data-cfemail="bad9d5d4cedbd9cefadfc2dbd7cad6df94d9d5d7"
-                  >[email&#160;protected]</a
+                <a> Test@gmail.com</a
                 >
               </p>
             </div>
@@ -78,7 +75,7 @@
             </div>
             <div class="infor-details text-center">
               <label>Location</label>
-              <p>C/54 Northwest Freeway, Suite 558, Houston, USA 485</p>
+              <p>Congo Brazza</p>
             </div>
           </div>
         </div>
@@ -93,7 +90,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <form action="contact-us.html">
+          <form method="POST" action="contact-us.html">{% csrf_token %}
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
