@@ -41,21 +41,20 @@
                                         </div>
                                         <div class="blog-content">
                                             <ul class="entry-meta meta-item">
-                                                <li>
+                                                <!-- <li>
                                                     <div class="post-author">
                                                         <a href="doctor-profile.html"><img
                                                                 src="{% static 'assets/img/doctors/doctor-thumb-02.jpg' %}"
-                                                                alt="Post Author"> <span>{{ blog.user}}</span></a>            
+                                                                alt="Post Author"> <span>{{ blog.user.get_first_name}}</span></a>            
                                                     </div>                                                
-                                                </li>
+                                                </li> -->
                                                 <li><i class="far fa-clock"></i> {{ blog.timestamp|date:"M d, Y" }}</li>
                                                     
                                             </ul>
                                             <br>
                                             <h3 class="blog-title"><a href="blog_detail">{{ blog.name|title }}</a></h3>
-                                            <p class="mb-0">{{ blog.description }}</p>
+                                            <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
                                             <br>
-                                            <h3 class="blog-title"><a href="blog-details.html">{{ blog.category }}</a></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -86,6 +85,24 @@
                     </div>
 
 
+
+                    <div class="card category-widget">
+                        <div class="card-header">
+                            <h4 class="card-title">Blog Categories</h4>
+                        </div>
+                        <div class="card-body">
+                            {% if blogs %}
+                                <ul class="categories">
+                                    {% for cat in blog_categories %}
+                                        <li><a href="blog-grid.html#">{{ cat.name|title }} <span>({{ cat.blog_category.count }})</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+
                     <div class="card post-widget">
                         <div class="card-header">
                             <h4 class="card-title">Latest Posts</h4>
@@ -102,7 +119,7 @@
                                         </div>
                                         <div class="post-info">
                                             <h4>
-                                                <a href="blog-details.html">{{ blog.description }}</a>
+                                                <a href="blog-details.html">{{ blog.name|title }}</a>
                                             </h4>
                                             <p>{{ blog.timestamp|date:"M d, Y" }}</p>
                                         </div>
@@ -114,23 +131,7 @@
                     </div>
 
 
-                    <div class="card category-widget">
-                        <div class="card-header">
-                            <h4 class="card-title">Blog Categories</h4>
-                        </div>
-                        <div class="card-body">
-                            {% if blogs %}
-                                <ul class="categories">
-                                    {% for blog in blogs %}
-                                        <li><a href="blog-grid.html#">{{ blog.category }} <span>(62)</span></a></li>
-                                    {% endfor %}
-                                    <!--👉 you can check this to correct me -->
-                                    <li><a href="blog-grid.html#">Health Care <span>(27)</span></a></li>
-                                    
-                                </ul>
-                            {% endif %}
-                        </div>
-                    </div>
+               
 
                 </div>
                 
