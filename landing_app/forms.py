@@ -45,3 +45,27 @@ class ContactForm(forms.ModelForm):
             'phone':   forms.TextInput(attrs={'class': 'form-control'}),
             'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'cols':30}),
         }
+
+
+
+
+
+#  BLOG FORM
+
+class BlogCommentForm(forms.ModelForm):
+    class  Meta:
+        model = BlogComment
+        fields = [
+            "blog",
+            "name",
+            "email",
+            "website",
+            "comment",
+        ]
+        widgets = {
+            'blog':forms.TextInput(attrs={'class': 'form-control'}),
+            'name':forms.TextInput(attrs={'class': 'form-control'}),
+            'email':forms.EmailInput(attrs={'class': 'form-control'}),
+            'website':forms.URLInput(attrs={'class': 'form-control'}),
+            'comment':forms.Textarea(attrs={'class': 'form-control', 'rows':5}),   
+        }

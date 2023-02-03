@@ -136,3 +136,111 @@ admin.site.register(Testimony, TestimonyAdmin)
 
 
 
+
+
+
+
+# PRODUCT IMAGE  ADMIN
+
+class StockAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['description', 'active', 'timestamp', 'updated']
+    list_display_links  = ['description',]
+    list_filter         = ['description']
+    search_fields       = ['name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Stock
+admin.site.register(Stock, StockAdmin)
+
+
+
+
+
+
+# PRODUCT IMAGE  ADMIN
+
+class ProductImageAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['file','name', 'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Product
+admin.site.register(ProductImage, ProductImageAdmin)
+
+
+
+
+
+
+
+# PRODUCT SUPPLIER  ADMIN
+
+class SupplierAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'email',  'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Supplier
+admin.site.register(Supplier, SupplierAdmin)
+
+
+
+
+
+
+# PRODUCT CATEGORY  ADMIN
+
+class ProductCategoryAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Product
+admin.site.register(ProductCategory, ProductCategoryAdmin)
+
+
+
+
+
+
+
+
+
+# PRODUCT  ADMIN
+
+class ProductAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'category', 'brand_name', 'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'category', 'brand_name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Product
+admin.site.register(Product, ProductAdmin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

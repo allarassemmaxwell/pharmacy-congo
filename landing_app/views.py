@@ -185,13 +185,41 @@ def newsletter_view(request):
 
 #  PRODUCT FUNCTION
 def product_view(request):
+    category = ''
+    products    = Product.objects.filter(active=True)
+    names   = Product.objects.filter(active=True)
+    product_categories = ProductCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        products = Product.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator = Paginator(products, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+		'products': page_obj,
+		'names': names,
+		'product_categories': product_categories,
+		'category': category,
+	}
+    
+    template = "landing/pharmacy/product.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+#  PRODUCT FUNCTION
+def product_list_view(request):
 	context  = {
 	}
-	template = "landing/pharmacy/product.html"
+	template = "landing/pharmacy/product-list.html"
 	return render(request, template, context)
-
-
-
 
 
 
