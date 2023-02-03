@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', contact_view, name="contact"),
     path('pharmacy/', pharmacy_view, name="pharmacy"),
     path('product/', product_view, name="product"),
+    path('product-list/', product_list_view, name="product_list"),
     path('product-detail/', product_detail_view, name="product_detail"),
     path('pharmacy-register/', pharmacy_register_view, name="pharmacy_register"),
     path('pharmacy-login/', pharmacy_login_view, name="pharmacy_login"),

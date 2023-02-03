@@ -4,15 +4,19 @@ from datetime import date, timedelta
 
 from django.conf import settings
 
+import uuid
 from django.db import models
 from django.db.models.fields import DateField
+from django_countries.fields import CountryField
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-
+from django.core import validators
 
 from django.urls import reverse
 
@@ -301,6 +305,136 @@ class Pharmacist(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+
+
+# SUPPLIER MODEL
+
+class Supplier(models.Model):
+    name            = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    email           = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    phone           = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    country        = CountryField(_("Pays"), max_length=255, null=True, blank=True)
+    city            = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
+    address         = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
+    website         = models.URLField(_("Site Web"), max_length=255, null=True, blank=True)
+    facebook_link   = models.URLField(_("Lien Facebook"), max_length=255, null=True, blank=True)
+    twitter_link    = models.URLField(_("Lien Twitter"), max_length=255, null=True, blank=True)
+    instagram_link  = models.URLField(_("Lien  Instagram"), max_length=255, null=True, blank=True)
+    active          = models.BooleanField(_("Est actif"), default=True)
+    timestamp       = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated         = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    # created_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="provider_created_by")
+    
+    def __str__(self):
+        return self.name
+
+
+
+
+
+
+# STOCK MODEL
+class Stock(models.Model):
+    supplier    = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name="supplier")
+    quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    total       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    description = models.TextField(_("Description"), null=False, blank=False)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    
+    def __str__(self):
+        return self.supplier.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+# PRODUCT IMAGE MODEL
+class ProductImage(models.Model):
+    file       = models.FileField(_("Fichier(pdf,image)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
+    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active     = models.BooleanField(_("Est actif"), default=True)
+    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+# PRODUCT CATEGORY MODEL
+
+class ProductCategory(models.Model):
+    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active     = models.BooleanField(_("Est actif"), default=True)
+    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+# PRODUCT MODEL
+
+class Product(models.Model):
+    category      = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_Image")
+    stock         = models.ForeignKey(Stock, on_delete=models.SET_NULL, blank=True, null=True, related_name="stock")
+    name          = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    unity_price   = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    quantity      = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    discount      = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=False, blank=False)
+    product_image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
+    photo         = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    brand_name    = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
+    genetic_name  = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
+    description   = models.TextField(_("Description"), null=False, blank=False)
+    # producer            = models.CharField(_("Nom du Fabrican"), max_length=255, null=False, blank=False, unique=True)
+    active        = models.BooleanField(_("Est actif"), default=True)
+    timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated       = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug          = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+        
+
+
+
+
+
 
 
 
