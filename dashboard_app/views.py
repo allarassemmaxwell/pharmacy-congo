@@ -54,7 +54,7 @@ from functools import wraps
 #                     DASHBOARD VIEWS
 # ==================================================
 # DASHBOARD VIEW 
-@login_required
+# @login_required
 def dashboard_view(request):
     context = {
     }

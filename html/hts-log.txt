@@ -1,0 +1,39 @@
+HTTrack3.49-2 launched on Fri, 03 Feb 2023 09:14:07 at https://doccure.dreamguystech.com/html/template/index-four.html
+(httrack https://doccure.dreamguystech.com/html/template/index-four.html )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+09:27:07	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/assets/plugins/fontawesome/webfonts/fa-brands-400.woff2
+09:27:07	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/assets/plugins/fontawesome/webfonts/fa-regular-400.woff2
+09:27:07	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/assets/plugins/fontawesome/webfonts/fa-solid-900.woff2
+09:27:07	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/assets/fonts/MaterialIcons-Regular.woff2
+09:27:07	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/img/flag/india.png (from https://doccure.dreamguystech.com/html/template/assets/css/style.css)
+09:27:07	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/img/flag/ng.png (from https://doccure.dreamguystech.com/html/template/assets/css/style.css)
+09:27:07	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/img/flag/gb.png (from https://doccure.dreamguystech.com/html/template/assets/css/style.css)
+09:27:07	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/img/flag/usa.png (from https://doccure.dreamguystech.com/html/template/assets/css/style.css)
+09:28:02	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/img/doctor-banner.png (from https://doccure.dreamguystech.com/html/template/index-seven.html)
+09:28:12	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/index-1.html (from https://doccure.dreamguystech.com/html/template/pharmacy-details.html)
+09:28:12	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/index-2.html (from https://doccure.dreamguystech.com/html/template/pharmacy-details.html)
+09:28:12	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/index-3.html (from https://doccure.dreamguystech.com/html/template/pharmacy-details.html)
+09:28:12	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/index-5.html (from https://doccure.dreamguystech.com/html/template/pharmacy-details.html)
+09:30:58	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/assets/css/owl.video.play.png (from https://doccure.dreamguystech.com/html/template/assets/css/owl.carousel.min.css)
+09:31:12	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/admin/assets/plugins/fontawesome/webfonts/fa-brands-400.woff2
+09:31:12	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/admin/assets/plugins/fontawesome/webfonts/fa-regular-400.woff2
+09:31:12	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/admin/assets/plugins/fontawesome/webfonts/fa-solid-900.woff2
+09:31:12	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/admin/assets/plugins/owl-carousel/owl.video.play.png (from https://doccure.dreamguystech.com/html/template/admin/assets/plugins/owl-carousel/owl.carousel.min.css)
+09:31:12	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/admin/assets/fonts/MaterialIcons-Regular.woff2
+09:31:17	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/pharmacy/assets/plugins/fontawesome/webfonts/fa-brands-400.woff2
+09:31:17	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/pharmacy/assets/plugins/fontawesome/webfonts/fa-regular-400.woff2
+09:31:17	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/pharmacy/assets/plugins/fontawesome/webfonts/fa-solid-900.woff2
+09:31:17	Warning: 	File not parsed, looks like binary: https://doccure.dreamguystech.com/html/template/pharmacy/assets/fonts/MaterialIcons-Regular.woff2
+09:31:21	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/pharmacy/product-category.html (from https://doccure.dreamguystech.com/html/template/pharmacy/products.html)
+09:31:21	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/pharmacy/assets/css/font-awesome.min.css (from https://doccure.dreamguystech.com/html/template/pharmacy/supplier.html)
+09:31:21	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/pharmacy/assets/css/feathericon.min.css (from https://doccure.dreamguystech.com/html/template/pharmacy/supplier.html)
+09:31:27	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/admin/assets/img/github.svg (from https://doccure.dreamguystech.com/html/template/admin/assets/css/ckeditor.css)
+09:31:27	Error: 	"Not Found" (404) at link https://doccure.dreamguystech.com/html/template/pharmacy/assets/img/github.svg (from https://doccure.dreamguystech.com/html/template/pharmacy/assets/css/ckeditor.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 17 minutes 20 seconds : 910 links scanned, 893 files written (52867498 bytes overall) [38588739 bytes received at 37104 bytes/sec], 22467070 bytes transferred using HTTP compression in 414 files, ratio 33%, 37.9 requests per connection
+(16 errors, 12 warnings, 0 messages)
