@@ -60,27 +60,17 @@ def pharmacy_view(request):
 
 # CONTACT VIEW 
 def contact_view(request):
-    # if request.method == 'POST':
-    #     form = ContactForm(request.POST)
-    #     if form.is_valid():
-    #         subject = "Website Inquiry" 
-    #         body = {
-    #             'first_name': form.cleaned_data['first_name'], 
-    #             'last_name':  form.cleaned_data['last_name'], 
-    #             'email':      form.cleaned_data['email'], 
-    #             'message':    form.cleaned_data['message'], 
-    #         }
-    #         # message = "\n".join(body.values())
-    #         # try:
-    #         #     send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
-    #         # except BadHeaderError:
-    #         #     messages.error(request, _("Error. Message not sent."))
-    #         form.save()
-    #         messages.success(request, _("Your message has been sent successfully, we will get back to you as soon as possible."))
-    #         return redirect(request.META['HTTP_REFERER'])
-    # else:
-    #     form = ContactForm()
-    # context  = {'form': form}
+    if request.method =='POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Votre message a été envoyé avec succés")
+            return redirect(request.META['HTTP_REFERER'])
+    else:
+        form = ContactForm()
+    context  = {
+        'form':form
+    }
     template ="contact.html"
     return render(request, template)
 
@@ -123,29 +113,31 @@ def blog_view(request):
 
 # BLOG DETAIL VIEW 
 def blog_detail_view(request, slug=None):
-    blog = get_object_or_404(Blog, slug=slug, active=True)
-    blog_categories = BlogCategory.objects.filter(active=True)
-    recent_blogs    = Blog.objects.filter(active=True).exclude(slug=blog.slug)[:10]
-    related_blogs   = Blog.objects.filter(active=True, category=blog.category).exclude(slug=blog.slug)[:10]
-    if request.method == 'POST':
-        form = BlogCommentForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.blog = blog
-            form.save()
-            messages.success(request, _("Comment posted successfully"))
-            return redirect(request.META['HTTP_REFERER'])
-    else:
-        form = BlogCommentForm()
-    context  = {
-        'blog': blog,
-        'form': form,
-        'blog_categories': blog_categories,
-        'recent_blogs': recent_blogs,
-        'related_blogs': related_blogs,
-    }
-    template ="landing/blog/blog-detail.html"
-    return render(request, template, context)
+	blog = get_object_or_404(Blog, slug=slug, active=True)
+	blog_categories = BlogCategory.objects.filter(active=True)
+	comments = BlogComment.objects.filter(active=True, blog=blog)
+	recent_blogs    = Blog.objects.filter(active=True).exclude(slug=blog.slug)[:10]
+	related_blogs   = Blog.objects.filter(active=True, category=blog.category).exclude(slug=blog.slug)[:10]
+	if request.method == 'POST':
+		form = BlogCommentForm(request.POST)
+		if form.is_valid():
+			obj = form.save(commit=False)
+			obj.blog = blog
+			form.save()
+			messages.success(request, _("Comment posted successfully"))
+		return redirect(request.META['HTTP_REFERER'])
+	else:
+		form = BlogCommentForm()
+	context  = {
+		'blog': blog,
+		'form': form,
+		'blog_categories': blog_categories,
+		'recent_blogs': recent_blogs,
+		'related_blogs': related_blogs,
+		'comments': comments
+	}
+	template ="landing/blog/blog-detail.html"
+	return render(request, template, context)
 
 
 

@@ -87,7 +87,7 @@ class UserManager(BaseUserManager):
 
 
 ROLE = (
-    ("User", _("User")),
+    ("Patient", _("Patient")),
     # ("Agent", _("Agent")),
 )
 

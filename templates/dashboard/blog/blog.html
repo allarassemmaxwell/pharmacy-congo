@@ -1,0 +1,83 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}About{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <div class="row">
+            <div class="col-md-9">
+                <ul class="list-links mb-4">
+                    <li class="active"><a href="/">Accueil</a></li>
+                    <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 text-md-end">
+                <a href="{% url 'blog_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Blog</a>
+            </div>
+        </div>
+        <div class="row">
+            {% include 'message.html' %}
+            {% for blog in blogs %}
+            <div class="col-md-6 col-xl-4 col-sm-12 d-flex">
+                <div class="blog grid-blog flex-fill">
+                    <div class="blog-image">
+                        <a href=""><img class="img-fluid" src="{{ blog.photo.url }}" style="width: 100%; height: 200px;"
+                                alt="Post Image"></a>
+                        <div class="fav-btn">
+                            <img src="{% static 'admin/img/icon/eye-icon.png' %}" alt="{{ blog.name|title }}"> 225
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <ul class="entry-meta meta-item">
+                            <li>
+                                <div class="post-author">
+                                    <a href="profile.html">
+                                        <img src="{% static 'admin/img/profiles/avatar-02.jpg' %}" alt="Post Author">
+                                        <span>
+                                            <span class="post-title">Dr. Ruby Perrin</span>
+                                            <span class="post-date"><i class="far fa-clock"></i> {{ blog.timestamp|date:"D M Y" }}</span>
+                                        </span>
+                                    </a>
+                                </div>
+                                
+                            </li>
+                        </ul>
+                        <h3 class="blog-title">
+                            <a href="">{{ blog.name|title }}</a>
+                            <div class="dropdown card-widgets float-end">
+                                <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="mdi mdi-dots-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="" class="dropdown-item">
+                                        <i class="mdi mdi-eye me-1"></i>Voir
+                                    </a>
+                                    <a href="" class="dropdown-item">
+                                        <i class="mdi mdi-pen me-1"></i>Modifier
+                                    </a>
+                                    <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                                        data-bs-target=".delete-business-{{ forloop.counter }}">
+                                        <i class="mdi mdi-delete me-1"></i>Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </h3>
+                        
+                        <p>{{ blog.description|capfirst|safe|truncatechars:125 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endblock %}

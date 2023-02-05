@@ -1,0 +1,91 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Doccure - Login</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'admin/img/favicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <div class="header d-none">
+
+            <ul class="nav nav-tabs user-menu">
+
+                <li class="nav-item">
+                    <a href="#" id="dark-mode-toggle" class="dark-mode-toggle">
+                        <i class="feather-sun light-mode"></i><i class="feather-moon dark-mode"></i>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-6 login-bg">
+                <div class="login-banner"></div>
+            </div>
+
+            <div class="col-md-6 login-wrap-bg">
+
+                <div class="login-wrapper">
+                    <div class="loginbox">
+                        <div class="img-logo">
+                            <img src="{% static 'admin/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </div>
+                        <h3>Confirmez votre email</h3>
+                        <div class="alert alert-success text-center mb-2 mt-4 pt-3" role="alert">
+                            Confirmez votre email pour continuer avec Ets Amical.
+                        </div>
+                        <div class="p-3">
+                            <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Confirmez votre adresse email
+                            </h4>
+                            <form class="text-center mt-4" method="post"
+                                action="{% url 'account_confirm_email' confirmation.key %}">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" type="submit">Confirmer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static 'admin/js/jquery-3.6.0.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/script.js' %}"></script>
+
+    <style type="text/css">
+        input[type=email] {
+            width: 100%;
+            padding: 10px 15px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+
+</body>
+
+</html>

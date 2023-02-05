@@ -1,0 +1,70 @@
+{% load static %}
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li class="menu-title"><span>Main</span></li>
+                <li class="">
+                    <a href="{% url 'product' %}"><i class="feather-grid"></i> <span>Produit</span></a>
+                </li>
+                <li class="">
+                    <a href="{% url 'user' %}"><i class="feather-grid"></i> <span>Utilisateur</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Fournisseur</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Stock</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Catégorie de produit</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Patient</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Symptôme de rendez-vous</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Rendez-vous</span></a>
+                </li>
+                <li class="">
+                    <a href=""><i class="feather-grid"></i> <span>Ordonnance de rendez-vous</span></a>
+                </li>
+                
+                <li class="submenu">
+                    <a href="#"><i class="feather-file-text"></i> <span> Vente</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="appointment-report.html">Appointment Report</a></li>
+                        <li><a href="income-report.html">Income Report</a></li>
+                        <li><a href="invoice-report.html">Invoice Report</a></li>
+                        <li><a href="user-reports.html">Users Report</a></li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="{% url 'blog' %}"><i class="feather-grid"></i> <span>Blog</span></a>
+                </li>
+                <li class="">
+                    <a href="{% url 'blog_category' %}"><i class="feather-grid"></i> <span>Catégorie de Blog</span></a>
+                </li>
+
+                <li class="">
+                    <a href="{% url 'contact' %}"><i class="feather-grid"></i> <span>Contact</span></a>
+                </li>
+                <li class="">
+                    <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
+                </li>
+
+                <li class="">
+                    <a href="{% url 'testimony' %}"><i class="feather-grid"></i> <span>Témoignage</span></a>
+                </li>
+                <li class="">
+                    <a href="{% url 'partner' %}"><i class="feather-grid"></i> <span>Partenaire</span></a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>

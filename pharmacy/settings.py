@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth', #pip install django-allauth
     'allauth.account',
     'allauth.socialaccount',   
+    'django_summernote', # pip install django-summernote
 
 
 ]
@@ -134,7 +135,11 @@ USE_I18N = True
 USE_TZ = True
 
 
+SITE_ID = 1
 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -145,13 +150,10 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-SITE_ID = 1
-
 
 ACCOUNT_FORMS = {
     'signup': 'dashboard_app.forms.CustomSignupForm',
 }
-
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -164,6 +166,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900
 
+USE_THOUSAND_SEPARATOR = True
 
 
 
@@ -201,6 +204,13 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000
 
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+
+
+
+
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 

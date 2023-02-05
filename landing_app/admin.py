@@ -7,7 +7,7 @@ from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
-
+from django_summernote.admin import SummernoteModelAdmin
 
 admin.site.site_header = "Nubatar"
 
@@ -79,7 +79,8 @@ admin.site.register(BlogCategory, BlogCategoryAdmin)
 
 
 # BLOG ADMIN
-class BlogAdmin(admin.ModelAdmin):
+class BlogAdmin(SummernoteModelAdmin):
+    summernote_fields  = ('description',)
     date_hierarchy      = 'timestamp'
     list_display        = ['category','name', 'active', 'timestamp', 'updated']
     list_display_links  = ['category',]
@@ -132,104 +133,6 @@ class TestimonyAdmin(admin.ModelAdmin):
     class Meta:
         model = Testimony
 admin.site.register(Testimony, TestimonyAdmin)
-
-
-
-
-
-
-
-
-# PRODUCT IMAGE  ADMIN
-
-class StockAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['description', 'active', 'timestamp', 'updated']
-    list_display_links  = ['description',]
-    list_filter         = ['description']
-    search_fields       = ['name', 'active', ]
-    list_per_page       = 25
-    class Meta:
-        model = Stock
-admin.site.register(Stock, StockAdmin)
-
-
-
-
-
-
-# PRODUCT IMAGE  ADMIN
-
-class ProductImageAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['file','name', 'active', 'timestamp', 'updated']
-    list_display_links  = ['name',]
-    list_filter         = ['name']
-    search_fields       = ['name', 'active', ]
-    list_per_page       = 25
-    class Meta:
-        model = Product
-admin.site.register(ProductImage, ProductImageAdmin)
-
-
-
-
-
-
-
-# PRODUCT SUPPLIER  ADMIN
-
-class SupplierAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['name', 'email',  'active', 'timestamp', 'updated']
-    list_display_links  = ['name',]
-    list_filter         = ['name']
-    search_fields       = ['name', 'active', ]
-    list_per_page       = 25
-    class Meta:
-        model = Supplier
-admin.site.register(Supplier, SupplierAdmin)
-
-
-
-
-
-
-# PRODUCT CATEGORY  ADMIN
-
-class ProductCategoryAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['name', 'active', 'timestamp', 'updated']
-    list_display_links  = ['name',]
-    list_filter         = ['name']
-    search_fields       = ['name', 'active', ]
-    list_per_page       = 25
-    class Meta:
-        model = Product
-admin.site.register(ProductCategory, ProductCategoryAdmin)
-
-
-
-
-
-
-
-
-
-# PRODUCT  ADMIN
-
-class ProductAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['name', 'category', 'brand_name', 'active', 'timestamp', 'updated']
-    list_display_links  = ['name',]
-    list_filter         = ['name']
-    search_fields       = ['name', 'category', 'brand_name', 'active', ]
-    list_per_page       = 25
-    class Meta:
-        model = Product
-admin.site.register(Product, ProductAdmin)
-
-
 
 
 
