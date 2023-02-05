@@ -1,0 +1,80 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Doccure - Login</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'admin/img/favicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+        <div class="header d-none">
+
+            <ul class="nav nav-tabs user-menu">
+
+                <li class="nav-item">
+                    <a href="#" id="dark-mode-toggle" class="dark-mode-toggle">
+                        <i class="feather-sun light-mode"></i><i class="feather-moon dark-mode"></i>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-6 login-bg">
+                <div class="login-banner"></div>
+            </div>
+
+            <div class="col-md-6 login-wrap-bg">
+
+                <div class="login-wrapper">
+                    <div class="loginbox">
+                        <div class="img-logo">
+                            <img src="{% static 'admin/img/logo.png' %}" class="img-fluid" alt="Logo">
+                        </div>
+                        <h3>Vérifiez votre adresse e-mail</h3>
+                        <div class="alert alert-success text-center mb-4 mt-4 pt-2" role="alert">
+                            Nous vous avons envoyé un e-mail pour vérification. Suivez le lien fourni pour finaliser le processus d'inscription, le lien est actif pendant 24 heures. Veuillez nous contacter si vous ne le recevez pas dans quelques minutes.
+                        </div>
+                        <div class="row mb-0 pt-3">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">
+                                    <a href="{% url 'account_login' %}" style="color: white;">Connectez-vous maintenant</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static 'admin/js/jquery-3.6.0.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/script.js' %}"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Doccure - Bootstrap Admin HTML Template</title>
+
+    <link rel="shortcut icon" href="{% static 'admin/img/favicon.png' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/plugins/fontawesome/css/all.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/plugins/owl-carousel/owl.carousel.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+    {% block extra_css %} {% endblock %}
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        {% include 'dashboard/header.html' %}
+
+        {% include 'dashboard/left-bar.html' %}
+
+        {% block content %}{% endblock %}
+
+
+        
+
+    </div>
+
+
+    <script src="{% static 'admin/js/jquery-3.6.0.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/feather.min.js' %}"></script>
+
+    <script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+    <script src="{% static 'admin/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+    <script src="{% static 'admin/plugins/owl-carousel/owl.carousel.min.js' %}"></script>
+
+    <script src="{% static 'admin/plugins/apexchart/apexcharts.min.js' %}"></script>
+    <script src="{% static 'admin/plugins/apexchart/chart-data.js' %}"></script>
+
+    <script src="{% static 'admin/js/moment.min.js' %}"></script>
+    <script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+    <script src="{% static 'admin/js/script.js' %}"></script>
+
+    {% block extra_javascript %}{% endblock %}
+</body>
+
+
+</html>

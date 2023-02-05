@@ -25,117 +25,124 @@
 
 <div class="content">
     <div class="container">
-        {%if blogs %}
-            <div class="row">
+        {% include 'message.html' %}
+        <div class="row">
+            {% if blogs %}
                 <div class="col-lg-8 col-md-12">
-                    
+
                     <div class="row blog-grid-row">
                         {% for blog in blogs %}
-                            <div class="col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
 
-                                <div class="blog grid-blog">
-                                    <div class="blog-image">
-                                        <a href="{{ blog.get_detail_url }}"><img class="img-fluid"
-                                            src="{{ blog.photo.url }}" style="width: 100%; height: 200px; object-fit: cover;"  alt="{{ blog.name|title }}"></a>
-                                    </div>
-                                    <div class="blog-content">
-                                        <ul class="entry-meta meta-item">
-                                            <!-- <li>
-                                                <div class="post-author">
-                                                    <a href="doctor-profile.html"><img
-                                                            src="{% static 'assets/img/doctors/doctor-thumb-02.jpg' %}"
-                                                            alt="Post Author"> <span>{{ blog.user.get_first_name}}</span></a>            
-                                                </div>                                                
-                                            </li> -->
-                                            <li><i class="far fa-clock"></i> {{ blog.timestamp|date:"M d, Y" }}</li>
-                                                
-                                        </ul>
-                                        <br>
-                                        <h3 class="blog-title"><a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a></h3>
-                                        <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
-                                        <br>
-                                    </div>
+                            <div class="blog grid-blog">
+                                <div class="blog-image">
+                                    <a href="{{ blog.get_detail_url }}"><img class="img-fluid" src="{{ blog.photo.url }}"
+                                            style="width: 100%; height: 200px; object-fit: cover;"
+                                            alt="{{ blog.name|title }}"></a>
+                                </div>
+                                <div class="blog-content">
+                                    <ul class="entry-meta meta-item">
+                                        <!-- <li>
+                                            <div class="post-author">
+                                                <a href="doctor-profile.html"><img
+                                                        src="{% static 'assets/img/doctors/doctor-thumb-02.jpg' %}"
+                                                        alt="Post Author"> <span>{{ blog.user.get_first_name}}</span></a>            
+                                            </div>                                                
+                                        </li> -->
+                                        <li><i class="far fa-clock"></i> {{ blog.timestamp|date:"M d, Y" }}</li>
+                                    </ul>
+                                    <br>
+                                    <h3 class="blog-title"><a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
+                                    </h3>
+                                    <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
+                                    <br>
                                 </div>
                             </div>
+                        </div>
                         {% endfor %}
-                        
+
                     </div>
-                    
+
                     <!--Pagination-->
-                    {% if blogs %}
-                        {% include 'landing/blog/blog-pagination.html' %}
-                    {% endif %}
+                    
+                    {% include 'landing/blog/blog-pagination.html' %}
+                    
 
                 </div>
-                
-                <!--Right Side-->
-                <div class="col-lg-4 col-md-12 sidebar-right theiaStickySidebar">
+            {% endif %}
 
-                    <div class="card search-widget">
-                        <div class="card-body">
-                            <form class="search-form">
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search..." class="form-control">
-                                    <button type="submit" class="btn btn-primary"><i
-                                            class="fa fa-search"></i></button>
-                                </div>
-                            </form>
-                        </div>
+            <!--Right Side-->
+            <div class="col-lg-4 col-md-12 sidebar-right theiaStickySidebar">
+
+                <div class="card search-widget">
+                    <div class="card-body">
+                        <form class="search-form">
+                            <div class="input-group">
+                                <input type="text" placeholder="Recherche..." class="form-control">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </form>
                     </div>
+                </div>
 
 
-
+                
                     <div class="card category-widget">
                         <div class="card-header">
-                            <h4 class="card-title">Blog Categories</h4>
+                            <h4 class="card-title">Blog Catégories</h4>
                         </div>
                         <div class="card-body">
-                            {% if blogs %}
-                                <ul class="categories">
-                                    {% for cat in blog_categories %}
-                                        <li><a href="{{ blog.get_detail_url }}">{{ cat.name|title }} <span>({{ cat.blog_category.count }})</span></a></li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                    </div>
-
-
-
-                    <div class="card post-widget">
-                        <div class="card-header">
-                            <h4 class="card-title">Latest Posts</h4>
-                        </div>
-                        <div class="card-body">
-                            {% if blogs %}
-                            <ul class="latest-posts">
-                                {% for blog in blogs %}
+                            <ul class="categories">
+                                {% for cat in blog_categories %}
                                     <li>
-                                        <div class="post-thumb">
-                                            <a href="{{ blog.get_detail_url }}">
-                                                <img class="img-fluid" src="{{ blog.photo.url }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-info">
-                                            <h4>
-                                                <a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
-                                            </h4>
-                                            <p>{{ blog.timestamp|date:"M d, Y" }}</p>
-                                        </div>
+                                        <a href="{% url 'landing:blog' %}?category={{ cat.slug }}">
+                                            {{ cat.name|title }} <span>({{ cat.blog_category.count }})</span>
+                                        </a>
                                     </li>
-                                {% endfor %}    
-                                </ul>
-                            {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
-
-
-               
-
-                </div>
                 
+
+
+
+                <!-- <div class="card post-widget">
+                    <div class="card-header">
+                        <h4 class="card-title">Derniers articles</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if blogs %}
+                        <ul class="latest-posts">
+                            {% for blog in blogs %}
+                            <li>
+                                <div class="post-thumb">
+                                    <a href="{{ blog.get_detail_url }}">
+                                        <img class="img-fluid" src="{{ blog.photo.url }}"
+                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
+                                            alt="">
+                                    </a>
+                                </div>
+                                <div class="post-info">
+                                    <h4>
+                                        <a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
+                                    </h4>
+                                    <p>{{ blog.timestamp|date:"M d, Y" }}</p>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div> -->
+
+
+
+
             </div>
-        {% endif %}
+
+        </div>
+       
     </div>
 </div>
 

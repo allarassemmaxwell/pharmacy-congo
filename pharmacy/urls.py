@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-# from dashboard.views import PasswordChangeView
+from dashboard_app.views import PasswordChangeView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('accounts/password/change/', PasswordChangeView.as_view(), name="account_change_password"),
+    path('accounts/password/change/', PasswordChangeView.as_view(), name="account_change_password"),
     path('accounts/', include('allauth.urls')),
     path('', include('landing_app.urls')),
+    path('summernote/', include('django_summernote.urls')),
     path('dashboard/', include('dashboard_app.urls')),
     # path('search/', include('search.urls')),
 ]
