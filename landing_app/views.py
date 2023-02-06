@@ -205,7 +205,7 @@ def product_view(request):
 		'category': category,
 	}
     
-    template = "landing/pharmacy/product.html"
+    template = "product.html"
     return render(request, template, context)
 
 
@@ -214,12 +214,30 @@ def product_view(request):
 
 
 
-#  PRODUCT FUNCTION
+#  PRODUCT LIST FUNCTION
 def product_list_view(request):
-	context  = {
+    category = ''
+    products    = Product.objects.filter(active=True)
+    names   = Product.objects.filter(active=True)
+    product_categories = ProductCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        products = Product.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator = Paginator(products, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+		'products': page_obj,
+		'names': names,
+		'product_categories': product_categories,
+		'category': category,
 	}
-	template = "landing/pharmacy/product-list.html"
-	return render(request, template, context)
+    
+    template = "product-list.html"
+    return render(request, template, context)
 
 
 
@@ -227,10 +245,30 @@ def product_list_view(request):
 
 #  PRODUCT DETAILS FUNCTION
 def product_detail_view(request):
-	context  = {
-	}
-	template = "landing/pharmacy/product-detail.html"
-	return render(request, template, context)
+    product = get_object_or_404(Product, active=True)
+    product_categories = ProductCategory.objects.filter(active=True)
+    recent_products    = Product.objects.filter(active=True).exclude(slug=product.slug)[:10]
+    related_products   = Product.objects.filter(active=True, category=product.category).exclude(slug=product.slug)[:10]
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.blog = product
+            form.save()
+            messages.success(request, _("Comment posted successfully"))
+            return redirect(request.META['HTTP_REFERER'])
+    else:
+        form = ProductForm()
+    context  = {
+        'product': product,
+        'form': form,
+        'product_categories': product_categories,
+        'recent_products': recent_products,
+        'related_products': related_products,
+    }
+	
+    template = "product-detail.html"
+    return render(request, template, context)
 
 
 
@@ -240,10 +278,12 @@ def product_detail_view(request):
 
 #  PHARMACY REGISTER FUNCTION
 def pharmacy_register_view(request):
-	context  = {
+    context ={
+		
 	}
-	template = "landing/pharmacy/pharmacy-register.html"
-	return render(request, template, context)
+    
+    template = "landing/pharmacy/pharmacy-register.html"
+    return render(request, template, context)
 
 
 
@@ -258,7 +298,7 @@ def pharmacy_register_view(request):
 def pharmacy_login_view(request):
 	context  = {
 	}
-	template = "landing/pharmacy/pharmacy-login.html"
+	template = "pharmacy-login.html"
 	return render(request, template, context)
 
 
@@ -270,10 +310,30 @@ def pharmacy_login_view(request):
 
 #  PHARMACY SEARCH FUNCTION
 def pharmacy_search_view(request):
-	context  = {
+    category = ''
+    pharmacies         = Pharmacy.objects.filter(active=True)
+    locations          = Pharmacy.objects.filter(active=True)
+    names              = Pharmacy.objects.filter(active=True)
+    pharmacy_categories = PharmacyCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        pharmacies = Pharmacy.objects.filter(category__slug=category_slug, active=True)
+    
+
+    # PAGINATION 
+    paginator = Paginator(pharmacies, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+		'pharmacies': pharmacies,
+		'locations': locations,
+		'names': names,
+        'pharmacy_categories': pharmacy_categories,
+		'category': category,
 	}
-	template = "landing/pharmacy/pharmacy-search.html"
-	return render(request, template, context)
+    template = "pharmacy-search.html"
+    return render(request, template, context)
 
 
 
@@ -286,10 +346,30 @@ def pharmacy_search_view(request):
 
 #  PHARMACY DETAIL FUNCTION
 def pharmacy_detail_view(request):
-	context  = {
-	}
-	template = "landing/pharmacy/pharmacy-detail.html"
-	return render(request, template, context)
+    pharmacy = get_object_or_404(Product, active=True)
+    pharmacy_categories = PharmacyCategory.objects.filter(active=True)
+    recent_pharmacies    = Product.objects.filter(active=True).exclude(slug=pharmacy.slug)[:10]
+    related_pharmacies   = Product.objects.filter(active=True, category=pharmacy.category).exclude(slug=pharmacy.slug)[:10]
+    if request.method == 'POST':
+        form = PharmacyForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.blog = pharmacy
+            form.save()
+            messages.success(request, _("Comment posted successfully"))
+            return redirect(request.META['HTTP_REFERER'])
+    else:
+        form = PharmacyForm()
+    context  = {
+        'pharmacy': pharmacy,
+        'form': form,
+        'pharmacy_categories': pharmacy_categories,
+        'recent_pharmacies': recent_pharmacies,
+        'related_pharmacies': related_pharmacies,
+    }
+    
+    template = "pharmacy-detail.html"
+    return render(request, template, context)
 
 
 

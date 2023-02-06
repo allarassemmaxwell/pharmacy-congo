@@ -276,6 +276,35 @@ class Patients(models.Model):
 
 
 
+# DOCTOR MODEL
+class Doctor(models.Model):
+    STATUS_CHOICES=(
+        ('Masculin','Masculin'),
+        ('Feminin','Feminin'),
+    )
+    # admin       = models.OneToOneField(User,null=True, on_delete = models.CASCADE)
+    emp_no      =models.CharField(_("Numero de Service(Travail)"),max_length=30,null=True,blank=True,unique=True)
+    age         = models.IntegerField(_("Age"),default='0', blank=True, null=True)
+    gender      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    phone       = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    address     = models.CharField(_("Address Patient"), max_length=255,null=True,blank=True)
+    photo       = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    # objects = models.Manager()
+    def __str__(self):
+        return str(self.admin)
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
 
 
 
@@ -309,6 +338,58 @@ class Pharmacist(models.Model):
 
 
 
+# PHARMACY CATEGORY MODEL
+
+class PharmacyCategory(models.Model):
+    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active     = models.BooleanField(_("Est actif"), default=True)
+    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+# PHARMACY MODEL
+class Pharmacy(models.Model):
+    category      = models.ForeignKey(PharmacyCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_Image")
+    name 	        = models.CharField(_("Nom Pharmacy"), max_length=255, null=False, blank=False)
+    location        = models.CharField(_("Localisation"), max_length=255, null=False, blank=False)
+    address         = models.TextField(_("Address"), null=False, blank=False)
+    photo           = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    start_hour      = models.TimeField(_("Heure d'ouverture"),auto_now=False, auto_now_add=False)
+    end_hour        = models.TimeField(_("Heure de fermeture"), auto_now=False, auto_now_add=False)
+    start_day       = models.DateField(_("Jour Ouvrable"))
+    end_day         = models.DateField(_("Jour de fermeture"))
+    active          = models.BooleanField(_("Est actif"), default=True)
+    timestamp       = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated         = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
 
 # SUPPLIER MODEL
 
@@ -330,6 +411,7 @@ class Supplier(models.Model):
     
     def __str__(self):
         return self.name
+
 
 
 
@@ -430,9 +512,6 @@ class Product(models.Model):
     class Meta:
         ordering = ('-timestamp',)
         
-
-
-
 
 
 

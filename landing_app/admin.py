@@ -205,7 +205,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     search_fields       = ['name', 'active', ]
     list_per_page       = 25
     class Meta:
-        model = Product
+        model = ProductCategory
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 
 
@@ -228,6 +228,43 @@ class ProductAdmin(admin.ModelAdmin):
     class Meta:
         model = Product
 admin.site.register(Product, ProductAdmin)
+
+
+
+
+
+
+
+
+# PHARMACY CATEGORY  ADMIN
+
+class PharmacyCategoryAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = PharmacyCategory
+admin.site.register(PharmacyCategory, PharmacyCategoryAdmin)
+
+
+
+
+
+# PHARMACY  ADMIN
+
+class PharmacyAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'location', 'address', 'category', 'start_hour', 'end_hour', 'start_day', 'end_day', 'active', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name', 'location', 'category', 'active', ]
+    list_per_page       = 25
+    class Meta:
+        model = Pharmacy
+admin.site.register(Pharmacy, PharmacyAdmin)
 
 
 

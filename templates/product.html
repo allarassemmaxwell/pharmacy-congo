@@ -89,10 +89,10 @@
                 <div class="col-md-7 col-12 d-md-block custom-short-by">
                   <div class="pharm-viewicon">
                     <div class="view-icons ">
-                      <a href="product-all.html" class="grid-view active">
+                      <a href="{% url 'landing:product' %}" class="grid-view active">
                         <i class="feather-grid"></i>
                       </a>
-                      <a href="product-list.html" class="list-view">
+                      <a href="{% url 'landing:product_list' %}" class="list-view">
                         <i class="feather-list"></i>
                       </a>
                     </div>
@@ -123,19 +123,19 @@
                       <div class="prod-widget">
                         <div class="deal-pro-img">
                           <div class="deal-pro-tags">
-                            <span class="offer">{{ product.discount }} %</span>
+                            <span class="offer">-{{ product.discount }} %</span>
                             <a href="javascript:void(0);" class="favourite-icon favourite-icon-filled">
                               <i class="far fa-heart"></i>
                             </a>
                           </div>
-                          <a href="product-list.html">
+                          <a href="{{ product.get_detail_url }}">
                             <img src="{{ product.photo.url }}" style="width: 100%; height: 230px; object-fit: cover;" alt="" class="img-fluid">
                           </a>
                         </div>
                         <div class="deal-pro-detail">
                           <h6>{{ product.category }}</h6>
                           <h4>
-                            <a href="product-list.html">{{ product.name }}, {{ product.genetic_name }}</a>
+                            <a href="{{ product_detail }}">{{ product.name }}, {{ product.genetic_name }}</a>
                           </h4>
                           <ul class="brand-pro">
                             <li>Ou <span>{{ product.brand_name }}</span>
