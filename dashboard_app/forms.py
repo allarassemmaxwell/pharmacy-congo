@@ -14,6 +14,9 @@ from datetime import date
 
 
 
+from .models import *
+from landing_app.models import *
+
 
 
 
@@ -69,10 +72,82 @@ class UserForm(forms.ModelForm):
 
 
 
+# BRANCH FORM
+class ProductCategoryForm(forms.ModelForm):
+    class Meta:
+        model  = ProductCategory
+        fields = [
+            "name",
+        ]
+        widgets = {
+            'name':     forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
-from .models import *
-from landing_app.models import *
+
+
+
+
+
+# BRANCH FORM
+class ServiceCategoryForm(forms.ModelForm):
+    class Meta:
+        model  = ServiceCategory
+        fields = [
+            "name",
+        ]
+        widgets = {
+            'name':     forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+# BRANCH FORM
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model  = Product
+        fields = [
+            "category",
+            "stock",
+            "name",
+            "unity_price",
+            "quantity",
+            "discount",
+            "product_image",
+            "brand_name",
+            "genetic_name",
+            "description"
+        ]
+        widgets = {
+            'name':     forms.TextInput(attrs={'class': 'form-control'}),
+            # 'category':    forms.Select(attrs={'class': 'form-control select2', 'data-toggle':'select2'}),
+            # 'photo':    forms.FileInput(attrs={'class': 'form-control'}),
+            'unity_price':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'discount':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            # 'since': forms.DateInput(attrs={'class': 'form-control', 'data-date-format':'yyyy-mm-dd', 'data-provide':'datepicker', 'data-date-autoclose':'true'}, format='%Y-%m-%d'),
+            'brand_name':     forms.TextInput(attrs={'class': 'form-control'}),
+            'genetic_name':     forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
+    # def clean(self):
+    #     cleaned_data = self.cleaned_data
+    #     since = cleaned_data.get('since')
+    #     if since > date.today():
+    #         self.add_error('since', "Année doit être inférieure à la date d'aujourd'hui.")
+    #     return cleaned_data
+
+
+
+
+
+
+
 
 # BRANCH FORM
 class BlogCategoryForm(forms.ModelForm):
@@ -84,6 +159,10 @@ class BlogCategoryForm(forms.ModelForm):
         widgets = {
             'name':     forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+
+
 
 
 

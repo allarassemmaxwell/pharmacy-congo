@@ -27,7 +27,17 @@ urlpatterns = [
     path('user/', user_view, name="user"),
     # path('testimony/add/', testimony_add_view, name="testimony_add"),
 
+
+    path('service/', service_view, name="service"),
+    path('service/category/', service_category_view, name="service_category"),
+    path('service/delete/<slug:slug>/', service_delete_view, name="service_delete"),
+
     path('product/', product_view, name="product"),
+    path('product/add/', product_add_view, name="product_add"),
+    path('product/image/', product_image_view, name="product_image"),
+    path('product/delete/<slug:slug>/', product_delete_view, name="product_delete"),
+    path('product/category/', product_category_view, name="product_category"),
+    path('product/category/delete/<slug:slug>/', product_category_delete_view, name="product_category_delete"),
 ]
 
 

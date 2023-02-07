@@ -238,8 +238,13 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def delete_url(self):
+        return reverse("product_category_delete", args=[str(self.slug)])
+
     class Meta:
         ordering = ('-timestamp',)
+
+
 
 
 
@@ -257,10 +262,9 @@ class Product(models.Model):
     stock         = models.ForeignKey(Stock, on_delete=models.SET_NULL, blank=True, null=True, related_name="stock")
     name          = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     unity_price   = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
-    quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    quantity      = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
     discount      = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=False, blank=False)
     product_image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
-    photo         = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
     brand_name    = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
     genetic_name  = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
     # producer      = models.CharField(_("Nom du Fabrican"), max_length=255, null=False, blank=False, unique=True)
@@ -273,9 +277,18 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    def delete_url(self):
+        return reverse("product_delete", args=[str(self.slug)])
+
     class Meta:
         ordering = ('-timestamp',)
         
+
+
+
+
+
+
 
 
 
@@ -306,6 +319,7 @@ class Patients(models.Model):
     timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
     def __str__(self):
         return str(self.admin)
     class Meta:
@@ -340,6 +354,7 @@ class Pharmacist(models.Model):
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     # objects = models.Manager()
+    
     def __str__(self):
         return str(self.admin)
 
@@ -471,6 +486,66 @@ class AppointmentPrescription(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BLOG CATEGORY MODEL
+class ServiceCategory(models.Model):
+    name        = models.CharField(_("Name"), max_length=255, null=False, blank=False, unique=True)
+    active      = models.BooleanField(_("Active"), default=True)
+    timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
+    def __str__(self):
+        return self.name
+
+    def delete_url(self):
+        return reverse("service_delete", args=[str(self.slug)])
+
+    class Meta:
+        ordering = ("-timestamp",)
+    
+    # verbose_name_plural = _('BlogCategories')
+
+
+
+
+
+
+
+
+# BLOG MODEL
+class Service(models.Model):
+    category    = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
+    name        = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+    photo       = models.ImageField(_("Image"), upload_to="Blog/%Y/%m/%d/", null=False, blank=False)
+    description = models.TextField(_("Description"), null=False, blank=False)
+    active      = models.BooleanField(_("Active"), default=True)
+    timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
+    def __str__(self):
+        return self.name
+
+    # GET ALERT DETAIL ABSOLUTE URL
+    def get_detail_url(self):
+        return reverse("landing:blog_detail", args=[str(self.slug)])
+
+    class Meta:
+        ordering = ("-timestamp",)
+
 
 
 
