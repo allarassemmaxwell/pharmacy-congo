@@ -1,0 +1,34 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}About{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}

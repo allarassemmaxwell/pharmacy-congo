@@ -50,3 +50,44 @@ class ProfileAdmin(admin.ModelAdmin):
 admin.site.register(Profile, ProfileAdmin)
 
 
+
+
+
+# # LANGUAGE ADMIN
+class ProductCategoryAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = ProductCategory
+admin.site.register(ProductCategory, ProductCategoryAdmin)
+
+
+
+
+
+
+
+
+
+
+
+# # LANGUAGE ADMIN
+class ProductAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'category', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = Product
+admin.site.register(Product, ProductAdmin)
+
+
+
+
+

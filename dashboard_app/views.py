@@ -286,13 +286,160 @@ def user_view(request):
 
 
 
+
+# BLOG VIEW 
+@login_required
+def service_view(request):
+    services    = Service.objects.all()
+    context = {
+        'services': services,
+    }
+    template = "dashboard/service/service.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+# BLOG VIEW 
+@login_required
+def service_category_view(request):
+    categories    = ServiceCategory.objects.all()
+    if request.method == 'POST':
+        form = ServiceCategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Category créé avec succès."))
+            return redirect('service_category')
+    else:
+        form = ServiceCategoryForm()
+    context = {
+        'categories': categories,
+        'form': form
+    }
+    template = "dashboard/service/category.html"
+    return render(request, template, context)
+
+
+
+
+
+@login_required
+def service_delete_view(request, slug=None):
+    caregory = get_object_or_404(ServiceCategory, slug=slug, active=True)
+    caregory.delete()
+    messages.success(request, _("Category deleted successfully."))
+    return redirect('service_category')
+
+
+
+
+
+
+
+# BLOG VIEW 
+@login_required
+def product_image_view(request):
+    products    = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    template = "dashboard/product/image.html"
+    return render(request, template, context)
+
+
+
+
 # BLOG VIEW 
 @login_required
 def product_view(request):
-    blogs    = Blog.objects.all()
-    context = {'blogs': blogs}
+    products    = Product.objects.all()
+    context = {
+        'products': products,
+    }
     template = "dashboard/product/product.html"
     return render(request, template, context)
+
+
+
+
+
+
+# BLOG VIEW 
+@login_required
+def product_add_view(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Produit créé avec succès."))
+            return redirect('product')
+    else:
+        form = ProductForm()
+
+    context = {'form': form}
+    template = "dashboard/product/product-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+@login_required
+def product_delete_view(request, slug=None):
+    caregory = get_object_or_404(Product, slug=slug, active=True)
+    caregory.delete()
+    messages.success(request, _("Category deleted successfully."))
+    return redirect('product')
+
+
+
+
+
+
+
+
+
+
+# BLOG VIEW 
+@login_required
+def product_category_view(request):
+    categories    = ProductCategory.objects.all()
+    if request.method == 'POST':
+        form = ProductCategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Category créé avec succès."))
+            return redirect('product_category')
+    else:
+        form = ProductCategoryForm()
+    context = {
+        'categories': categories,
+        'form': form
+    }
+    template = "dashboard/product/category.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+@login_required
+def product_category_delete_view(request, slug=None):
+    caregory = get_object_or_404(ProductCategory, slug=slug, active=True)
+    caregory.delete()
+    messages.success(request, _("Category deleted successfully."))
+    return redirect('product_category')
+
+
 
 
 
