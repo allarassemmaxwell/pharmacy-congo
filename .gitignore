@@ -133,8 +133,11 @@ dmypy.json
 
 
 
-
+landing_app/migrations/
+dashboard_app/migrations/
 db.sqlite3
+db.sqlite3/
+/db.sqlite3
 
 static_cdn/
 media_cdn/
