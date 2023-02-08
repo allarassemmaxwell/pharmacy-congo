@@ -35,6 +35,7 @@ urlpatterns = [
     path('product/', product_view, name="product"),
     path('product/add/', product_add_view, name="product_add"),
     path('product/image/', product_image_view, name="product_image"),
+    # path('product/image-add/', image_add_view, name="image_add"), # 👉 image add
     path('product/delete/<slug:slug>/', product_delete_view, name="product_delete"),
     path('product/category/', product_category_view, name="product_category"),
     path('product/category/delete/<slug:slug>/', product_category_delete_view, name="product_category_delete"),
