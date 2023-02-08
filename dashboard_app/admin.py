@@ -37,7 +37,7 @@ class UserAdmin(DjangoUserAdmin):
 
 
 
-# # LANGUAGE ADMIN
+# # PROFILE ADMIN
 class ProfileAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
     list_display        = ['user', 'phone', 'timestamp', 'updated']
@@ -53,7 +53,7 @@ admin.site.register(Profile, ProfileAdmin)
 
 
 
-# # LANGUAGE ADMIN
+# # PRODUCT CATEGORY ADMIN
 class ProductCategoryAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
     list_display        = ['name', 'timestamp', 'updated']
@@ -64,6 +64,21 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     class Meta:
         model = ProductCategory
 admin.site.register(ProductCategory, ProductCategoryAdmin)
+
+
+
+
+#  PRODUCT IMAGE ADMIN
+class ProductImageAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = ProductImage
+admin.site.register(ProductImage, ProductImageAdmin)
 
 
 

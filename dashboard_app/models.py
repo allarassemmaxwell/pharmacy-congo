@@ -209,6 +209,7 @@ class Stock(models.Model):
 # PRODUCT IMAGE MODEL
 class ProductImage(models.Model):
     file       = models.FileField(_("Fichier(pdf,image)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
+    # photo      = models.ImageField(_("Image"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
     name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     active     = models.BooleanField(_("Est actif"), default=True)
     timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)

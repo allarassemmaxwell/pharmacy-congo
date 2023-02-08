@@ -368,7 +368,7 @@ def product_view(request):
 
 
 
-# BLOG VIEW 
+# PRODUCT VIEW 
 @login_required
 def product_add_view(request):
     if request.method == 'POST':
@@ -386,6 +386,23 @@ def product_add_view(request):
 
 
 
+
+
+# IMAGE VIEW 
+@login_required
+def image_add_view(request):
+    if request.method == 'POST':
+        form = ProductImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Image ajoutée avec succès."))
+            return redirect('product')
+    else:
+        form = ProductImageForm()
+
+    context = {'form': form}
+    template = "dashboard/product/image.html"
+    return render(request, template, context)
 
 
 

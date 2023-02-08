@@ -143,7 +143,18 @@ class ProductForm(forms.ModelForm):
     #     return cleaned_data
 
 
-
+# BRANCH FORM
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model  = ProductImage
+        fields = [
+            "name",
+            "file",
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'file': forms.FileInput(attrs={'class': 'form-control'}),
+        }
 
 
 
