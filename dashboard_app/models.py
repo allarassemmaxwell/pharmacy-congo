@@ -218,6 +218,9 @@ class ProductImage(models.Model):
     def __str__(self):
         return self.name
 
+    def delete_url(self):
+        return reverse("product_image_delete", args=[str(self.id)])
+
     class Meta:
         ordering = ('-timestamp',)
 

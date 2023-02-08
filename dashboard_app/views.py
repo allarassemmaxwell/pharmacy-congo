@@ -343,12 +343,35 @@ def service_delete_view(request, slug=None):
 # BLOG VIEW 
 @login_required
 def product_image_view(request):
-    products    = Product.objects.all()
+    images    = ProductImage.objects.all()
+    if request.method == 'POST':
+        form = ProductImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Image ajoutée avec succès."))
+            return redirect('product_image')
+    else:
+        form = ProductImageForm()
     context = {
-        'products': products,
+        'images': images,
+        'form': form
     }
     template = "dashboard/product/image.html"
     return render(request, template, context)
+
+
+
+
+
+
+@login_required
+def product_image_delete_view(request, id=None):
+    image = get_object_or_404(ProductImage, id=id, active=True)
+    image.delete()
+    messages.success(request, _("Image deleted successfully."))
+    return redirect('product_image')
+
+
 
 
 
@@ -384,25 +407,6 @@ def product_add_view(request):
     template = "dashboard/product/product-add.html"
     return render(request, template, context)
 
-
-
-
-
-# IMAGE VIEW 
-@login_required
-def image_add_view(request):
-    if request.method == 'POST':
-        form = ProductImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Image ajoutée avec succès."))
-            return redirect('product')
-    else:
-        form = ProductImageForm()
-
-    context = {'form': form}
-    template = "dashboard/product/image.html"
-    return render(request, template, context)
 
 
 
