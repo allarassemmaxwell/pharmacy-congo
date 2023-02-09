@@ -287,7 +287,7 @@ def user_view(request):
 
 
 
-# BLOG VIEW 
+# SERVICE VIEW 
 @login_required
 def service_view(request):
     services    = Service.objects.all()
@@ -299,6 +299,35 @@ def service_view(request):
 
 
 
+
+# PRODUCT ADD VIEW 
+@login_required
+def service_add_view(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Service créé avec succès."))
+            return redirect('service')
+    else:
+        form = ServiceForm()
+
+    context = {'form': form}
+    template = "dashboard/service/service-add.html"
+    return render(request, template, context)
+
+
+
+
+
+# PRODUCT DELETE VIEW
+
+# @login_required
+# def service_delete_view(request, slug=None):
+#     caregory = get_object_or_404(Service, slug=slug, active=True)
+#     caregory.delete()
+#     messages.success(request, _("Category deleted successfully."))
+#     return redirect('service')
 
 
 
@@ -328,9 +357,9 @@ def service_category_view(request):
 
 
 @login_required
-def service_delete_view(request, slug=None):
-    caregory = get_object_or_404(ServiceCategory, slug=slug, active=True)
-    caregory.delete()
+def service_category_delete_view(request, slug=None):
+    category = get_object_or_404(ServiceCategory, slug=slug, active=True)
+    category.delete()
     messages.success(request, _("Category deleted successfully."))
     return redirect('service_category')
 
@@ -338,9 +367,19 @@ def service_delete_view(request, slug=None):
 
 
 
+# SERVICE DELETE VIEW
+
+@login_required
+def service_delete_view(request, slug=None):
+    service = get_object_or_404(Service, slug=slug, active=True)
+    service.delete()
+    messages.success(request, _("Service deleted successfully."))
+    return redirect('service')
 
 
-# BLOG VIEW 
+
+
+# PRODUCT IMAGE VIEW 
 @login_required
 def product_image_view(request):
     images    = ProductImage.objects.all()
@@ -362,7 +401,7 @@ def product_image_view(request):
 
 
 
-
+# PRODUCT IMAGE DELETE
 
 @login_required
 def product_image_delete_view(request, id=None):
@@ -376,7 +415,7 @@ def product_image_delete_view(request, id=None):
 
 
 
-# BLOG VIEW 
+# PRODUCT VIEW 
 @login_required
 def product_view(request):
     products    = Product.objects.all()
@@ -391,7 +430,7 @@ def product_view(request):
 
 
 
-# PRODUCT VIEW 
+# PRODUCT ADD VIEW 
 @login_required
 def product_add_view(request):
     if request.method == 'POST':
@@ -410,7 +449,7 @@ def product_add_view(request):
 
 
 
-
+# PRODUCT DELETE VIEW
 
 @login_required
 def product_delete_view(request, slug=None):
@@ -428,7 +467,7 @@ def product_delete_view(request, slug=None):
 
 
 
-# BLOG VIEW 
+# PRODUCT CATEGORY VIEW 
 @login_required
 def product_category_view(request):
     categories    = ProductCategory.objects.all()
@@ -453,6 +492,8 @@ def product_category_view(request):
 
 
 
+# PRODUCT CATEGORY DELETE
+
 @login_required
 def product_category_delete_view(request, slug=None):
     caregory = get_object_or_404(ProductCategory, slug=slug, active=True)
@@ -465,3 +506,117 @@ def product_category_delete_view(request, slug=None):
 
 
 
+
+
+
+
+
+# SUPPLIER VIEW 
+@login_required
+def supplier_view(request):
+    suppliers    = Supplier.objects.all()
+    context = {
+        'suppliers': suppliers,
+    }
+    template = "dashboard/supplier/supplier.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# SUPPLIER ADD VIEW 
+@login_required
+def supplier_add_view(request):
+    if request.method == 'POST':
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            supplier = form.save(commit=False)
+            supplier.created_by = request.user
+            form.save()
+            messages.success(request, _("Fournisseur créé avec succès."))
+            return redirect('supplier')
+    else:
+        form = SupplierForm()
+
+    context = {'form': form}
+    template = "dashboard/supplier/supplier-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# SUPPLIER DELETE VIEW
+
+@login_required
+def supplier_delete_view(request, slug=None):
+    supplier = get_object_or_404(Supplier, slug=slug, active=True)
+    supplier.delete()
+    messages.success(request, _("Supplier deleted successfully."))
+    return redirect('supplier')
+
+
+
+
+
+
+
+
+# STOCK VIEW 
+@login_required
+def stock_view(request):
+    stocks    = Supplier.objects.all()
+    context = {
+        'stocks': stocks,
+    }
+    template = "dashboard/stock/stock.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+# STOCK ADD VIEW 
+@login_required
+def stock_add_view(request):
+    if request.method == 'POST':
+        form = StockForm(request.POST)
+        if form.is_valid():
+            supplier = form.save(commit=False)
+            supplier.created_by = request.user
+            form.save()
+            messages.success(request, _("Stock créé avec succès."))
+            return redirect('stock')
+    else:
+        form = StockForm()
+
+    context = {'form': form}
+    template = "dashboard/stock/stock-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+# STOCK DELETE VIEW
+
+@login_required
+def stock_delete_view(request, slug=None):
+    stock = get_object_or_404(Stock, slug=slug, active=True)
+    stock.delete()
+    messages.success(request, _("Stock deleted successfully."))
+    return redirect('stock')

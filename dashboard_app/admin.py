@@ -90,7 +90,7 @@ admin.site.register(ProductImage, ProductImageAdmin)
 
 
 
-# # LANGUAGE ADMIN
+#  PRODUCT ADMIN
 class ProductAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
     list_display        = ['name', 'category', 'timestamp', 'updated']
@@ -106,3 +106,56 @@ admin.site.register(Product, ProductAdmin)
 
 
 
+
+#  SERVICE ADMIN
+class ServiceAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'category', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = Service
+admin.site.register(Service, ServiceAdmin)
+
+
+
+
+
+
+
+
+
+#  STOCK ADMIN
+class StockAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['supplier', 'quantity', 'total', 'description', 'timestamp', 'updated']
+    list_display_links  = ['supplier',]
+    list_filter         = ['active']
+    search_fields       = ['supplier__name', 'description']
+    list_per_page       = 50
+    class Meta:
+        model = Stock
+admin.site.register(Stock, StockAdmin)
+
+
+
+
+
+
+
+
+
+
+#  SUPPLIER ADMIN
+class SupplierAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'country', 'city', 'address',  'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = Supplier
+admin.site.register(Supplier, SupplierAdmin)
