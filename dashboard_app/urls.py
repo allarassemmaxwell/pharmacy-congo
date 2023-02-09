@@ -30,7 +30,9 @@ urlpatterns = [
 
     path('service/', service_view, name="service"),
     path('service/category/', service_category_view, name="service_category"),
+    path('service/add/', service_add_view, name="service_add"),
     path('service/delete/<slug:slug>/', service_delete_view, name="service_delete"),
+    path('service/category/delete/<slug:slug>/', service_category_delete_view, name="service_category_delete"),
 
     path('product/', product_view, name="product"),
     path('product/add/', product_add_view, name="product_add"),
@@ -40,6 +42,17 @@ urlpatterns = [
     path('product/delete/<slug:slug>/', product_delete_view, name="product_delete"),
     path('product/category/', product_category_view, name="product_category"),
     path('product/category/delete/<slug:slug>/', product_category_delete_view, name="product_category_delete"),
+
+
+    path('supplier/', supplier_view, name="supplier"),
+    path('supplier/add/', supplier_add_view, name="supplier_add"),
+    path('supplier/delete/<slug:slug>/', supplier_delete_view, name="supplier_delete"),
+    
+    
+    path('stock/', stock_view, name="stock"),
+    path('stock/add/', stock_add_view, name="stock_add"),
+
+
 ]
 
 

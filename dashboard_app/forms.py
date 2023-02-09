@@ -254,3 +254,94 @@ class TestimonyForm(forms.ModelForm):
         }
 
 
+
+
+
+
+
+
+# SERVICE  FORM
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model  = Service
+        fields = [
+            "name",
+            "category",
+            "photo",
+            "description"
+        ]
+        widgets = {
+            'name':     forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
+
+
+
+
+
+
+
+
+
+
+# SUPPLIER FORM
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model  = Supplier
+        fields = [
+            "name",
+            "email",
+            "phone",
+            "country",
+            "city",
+            "address",
+            "website",
+            "facebook_link",
+            "twitter_link",
+            "instagram_link"
+        ]
+        widgets = {
+            'name':     forms.TextInput(attrs={'class': 'form-control'}),
+            'email':     forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone':     forms.TextInput(attrs={'class': 'form-control'}),
+            'country':     forms.Select(attrs={'class': 'form-control'}),
+            'city':    forms.TextInput(attrs={'class': 'form-control'}),
+            'address':    forms.TextInput(attrs={'class': 'form-control'}),
+            'website':    forms.URLInput(attrs={'class': 'form-control'}),
+            'facebook_link':     forms.URLInput(attrs={'class': 'form-control'}),
+            'twitter_link':     forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram_link': forms.URLInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+
+# STOCK FORM
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = [
+            "supplier",
+            "quantity",
+            # "unity_price",
+            "total",
+            "description",
+            "active",
+        ]
+        widgets = {
+            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            # 'unity_price':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'total':    forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(StockForm, self).__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = Supplier.objects.all()
+        self.fields['supplier'].label_from_instance = lambda obj: obj.name
