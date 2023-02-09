@@ -52,11 +52,11 @@
                                         <th>Phone</th>
                                         <th>Country</th>
                                         <th>City</th>
-                                        <th>Address</th>
+                                        {% comment %} <th>Address</th>
                                         <th>Website</th>
                                         <th>Facebook_link</th>
                                         <th>Twitter_link</th>
-                                        <th>Instagram_link</th>
+                                        <th>Instagram_link</th> {% endcomment %}
                                         <th></th>
                                         <th></th>
 
@@ -80,12 +80,12 @@
                                         <td>{{ supplier.phone }}</td>
                                         <td>{{ supplier.country }}</td>
                                         <td>{{ supplier.city }}</td>
-                                        <td>{{ supplier.address }}</td>
+                                        {% comment %} <td>{{ supplier.address }}</td>
                                         <td>{{ supplier.website }}</td>
                                         <td>{{ supplier.facebook_link }}</td>
                                         <td>{{ supplier.twitter_link }}</td>
-                                        <td>{{ supplier.instagram_link }}</td>
-                                        <td>{{ product.timestamp|date:"d M Y" }}</td>
+                                        <td>{{ supplier.instagram_link }}</td> {% endcomment %}
+                                        <td>{{ supplier.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"

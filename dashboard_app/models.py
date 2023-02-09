@@ -534,7 +534,7 @@ class ServiceCategory(models.Model):
 class Service(models.Model):
     category    = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
     name        = models.CharField(_("Name"), max_length=255, null=False, blank=False)
-    photo       = models.ImageField(_("Image"), upload_to="Blog/%Y/%m/%d/", null=False, blank=False)
+    photo       = models.ImageField(_("Image"), upload_to="Service/%Y/%m/%d/", null=True, blank=True)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Active"), default=True)
     timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
