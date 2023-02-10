@@ -440,7 +440,7 @@ class Appointment(models.Model):
     subject      = models.CharField(_("Sujet"), max_length=255, null=False, blank=False, unique=True)
     gender       = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=False, blank=False)
     age          = models.IntegerField(_("Age"),default='0', blank=True, null=True)
-    hour         = models.DateTimeField(_("Horaire Rv"), auto_now_add=True, auto_now=False)
+    hour         = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
     date         = models.DateField(_("Date de RV"), blank=False, null=False)
     description  = models.TextField(_("Description"), null=False, blank=False)
     active       = models.BooleanField(_("Est actif"), default=True)
@@ -449,7 +449,7 @@ class Appointment(models.Model):
     
     
     def __str__(self):
-        return self.name
+        return self.first_name
 
     class Meta:
         ordering = ('-timestamp',)

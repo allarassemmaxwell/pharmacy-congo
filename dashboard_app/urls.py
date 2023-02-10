@@ -51,8 +51,17 @@ urlpatterns = [
     
     path('stock/', stock_view, name="stock"),
     path('stock/add/', stock_add_view, name="stock_add"),
-
-
+    
+    
+     path('appointment/symptoms/', appointment_symptom_view, name="appointment_symptom"),
+     path('appointment/symptoms/delete/<slug:slug>/', appointment_symptom_delete_view, name="appointment_symptom_delete"),
+     
+     path('appointment/', appointment_view, name="appointment"),
+     path('appointment/add', appointment_add_view, name="appointment_add"),
+     
+     path('appointment/prescription', appointment_prescription_view, name="appointment_prescription"),
+     path('appointment/prescription/add', appointment_prescription_add_view, name="appointment_prescription_add"),
+     path('appointment/prescription/delete/<slug:slug>/', appointment_prescription_delete_view, name="appointment_prescription_delete"),
 ]
 
 

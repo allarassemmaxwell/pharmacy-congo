@@ -620,3 +620,166 @@ def stock_delete_view(request, slug=None):
     stock.delete()
     messages.success(request, _("Stock deleted successfully."))
     return redirect('stock')
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT SYMPTOMS VIEW 
+@login_required
+def appointment_symptom_view(request):
+    appointmentSymptoms    = AppointmentSymptom.objects.all()
+    if request.method == 'POST':
+        form = AppointmentSymptomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Symptoms Rendez-vous créé avec succès."))
+            return redirect('appointment_symptom')
+    else:
+        form = AppointmentSymptomForm()
+    context = {
+        'appointmentSymptoms': appointmentSymptoms,
+        'form': form
+    }
+    template = "dashboard/appointment/appointment-symptom.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# APPOINTMENT SYMPTOMS DELETE VIEW 
+
+@login_required
+def appointment_symptom_delete_view(request, slug=None):
+    appointmentSymptom = get_object_or_404(AppointmentSymptom, slug=slug, active=True)
+    appointmentSymptom.delete()
+    messages.success(request, _("Appointment Symptom deleted successfully."))
+    return redirect('appointment_symptom')
+
+
+
+
+
+
+
+
+
+# APPOINTMENT VIEW 
+@login_required
+def appointment_view(request):
+    appointments    = Appointment.objects.all()
+    context = {
+        'appointments': appointments,
+    }
+    template = "dashboard/appointment/appointment.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT ADD VIEW 
+@login_required
+def appointment_add_view(request):
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Rendez-Vous créé avec succès."))
+            return redirect('appointment')
+    else:
+        form = AppointmentForm()
+
+    context = {'form': form}
+    template = "dashboard/appointment/appointment-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT DELETE VIEW
+
+@login_required
+def appointment_delete_view(request, slug=None):
+    appointment = get_object_or_404(Appointment, slug=slug, active=True)
+    appointment.delete()
+    messages.success(request, _("Appointment  deleted successfully."))
+    return redirect('appointment')
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT PRESCRIPTION VIEW 
+@login_required
+def appointment_prescription_view(request):
+    appointmentPrescriptions    = AppointmentPrescription.objects.all()
+    context = {
+        'appointmentPrescriptions': appointmentPrescriptions,
+    }
+    template = "dashboard/appointment/appointment-prescription.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# APPOINTMENT PRESCRIPTION ADD VIEW 
+@login_required
+def appointment_prescription_add_view(request):
+    if request.method == 'POST':
+        form = AppointmentPrescriptionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Prescription Rendez-Vous créé avec succès."))
+            return redirect('appointment_prescription')
+    else:
+        form = AppointmentPrescriptionForm()
+
+    context = {'form': form}
+    template = "dashboard/appointment/appointment-prescription-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+# APPOINTMENT PRESCRIPTION DELETE VIEW
+
+@login_required
+def appointment_prescription_delete_view(request, slug=None):
+    appointment = get_object_or_404(AppointmentPrescription, slug=slug, active=True)
+    appointment.delete()
+    messages.success(request, _("Appointment  Prescription  deleted successfully."))
+    return redirect('appointment_prescription')
