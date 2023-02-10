@@ -345,3 +345,112 @@ class StockForm(forms.ModelForm):
         super(StockForm, self).__init__(*args, **kwargs)
         self.fields['supplier'].queryset = Supplier.objects.all()
         self.fields['supplier'].label_from_instance = lambda obj: obj.name
+
+
+
+
+
+
+
+
+# APPOINTMENT SYMPTOMS FORM
+class AppointmentSymptomForm(forms.ModelForm):
+    class Meta:
+        model  = AppointmentSymptom
+        fields = [
+            "name",
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT FORM
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model  = Appointment
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "phone",
+            "subject",
+            "gender",
+            "age",
+            "hour",
+            "date",
+            "description"
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'hour': forms.TimeInput(attrs={'class': 'form-control','type': 'time'}),
+            'date': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
+
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT PRESCRIPTION FORM
+class AppointmentPrescriptionForm(forms.ModelForm):
+    class Meta:
+        model  = AppointmentPrescription
+        fields = [
+            "product_name",
+            "quantity",
+            "heart_rate",
+            "weight",
+            "blood_rate",
+            "body_temperature",
+            "glucose_level",
+            "blood_pressure",
+            "day",
+            "appointment_symptom",
+            "morning_times",
+            "afternoon_times",
+            "evening_times",
+            "night_times",
+            "appointment",
+            "price",
+            "by"
+        ]
+        widgets = {
+            'product_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'heart_rate': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'weight': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'blood_rate': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'body_temperature': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'glucose_level': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'blood_pressure': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'day': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'appointment_symptom': forms.TextInput(attrs={'class': 'form-control'}),
+            'morning_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'afternoon_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'evening_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'night_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'appointment': forms.Select(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'by': forms.TextInput(attrs={'class': 'form-control'}),
+        }
