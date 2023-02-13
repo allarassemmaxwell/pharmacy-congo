@@ -153,7 +153,7 @@ class ProductImageForm(forms.ModelForm):
         ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            # 'file': forms.FileInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class':'form-control-file', 'accept':'.png, .jpeg, .jpg'}),
         }
 
 
@@ -433,7 +433,8 @@ class AppointmentPrescriptionForm(forms.ModelForm):
             "night_times",
             "appointment",
             "price",
-            "by"
+            "by",
+            "description"
         ]
         widgets = {
             'product_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -445,12 +446,17 @@ class AppointmentPrescriptionForm(forms.ModelForm):
             'glucose_level': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'blood_pressure': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'day': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
-            'appointment_symptom': forms.TextInput(attrs={'class': 'form-control'}),
-            'morning_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'afternoon_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'evening_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'night_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'appointment_symptom': forms.Select(attrs={'class': 'form-control'}),
+            # 'morning_times': forms.CheckboxInput(attrs={'class': 'form-control checkbox'}),
+            # 'afternoon_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            # 'evening_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            # 'night_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'appointment': forms.Select(attrs={'class': 'form-control'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'by': forms.TextInput(attrs={'class': 'form-control'}),
+            'by': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
+
+
+
+

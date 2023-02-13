@@ -49,48 +49,39 @@
                                     <tr>
                                         <th>Prenom</th>
                                         <th>Nom</th>
-                                        <th>Email</th>
                                         <th>Phone</th>
                                         <th>Sujet</th>
                                         <th>Genre</th>
-                                        <th>Age</th>
-                                        <th>Heure</th>
                                         <th>Date</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Heure</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for appointment in appointments %}
-                                    {% include 'dashboard/modal/product-delete.html' with appointment=appointment %}
+                                    {% include 'dashboard/modal/appointment-delete.html' with appointment=appointment %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"><img
-                                                        class="avatar avatar-img"
-                                                        src="{% static 'admin/img/products/product1.jpg' %}"
-                                                        alt="User Image"></a>
                                                 <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ appointment.first_name }}</span></a>
+                                                    data-bs-target="#editModal"><span>{{ appointment.first_name }}</span>
+                                                </a>
                                             </h2>
                                         </td>
                                         <td>{{ appointment.last_name }}</td>
-                                        <td>{{ appointment.email }}</td>
                                         <td>{{ appointment.phone }}</td>
-                                        <td>{{ appointment.subject }}</td>
+                                        <td>{{ appointment.subject|safe|truncatechars:40 }}</td>
                                         <td>{{ appointment.gender }}</td>
-                                        <td>{{ appointment.age }}</td>
-                                        <td>{{ appointment.hour }}</td>
                                         <td>{{ appointment.date }}</td>
-                                        <td>{{ appointment.timestamp|date:"d M Y" }}</td>
+                                        <td>{{ appointment.hour }}</td>
                                         <td class="text-end">
                                             <div class="actions">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"
+                                                <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"
                                                     class="text-black">
                                                     <i class="feather-edit-3 me-1"></i> Edit
-                                                </a>
+                                                </a> -->
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#productDeleteModal-{{ forloop.counter }}">
+                                                    data-bs-target="#appointmentDeleteModal-{{ forloop.counter }}">
                                                     <i class="feather-trash-2 me-1"></i> Delete
                                                 </a>
                                             </div>

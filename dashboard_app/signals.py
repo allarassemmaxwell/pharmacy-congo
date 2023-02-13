@@ -77,6 +77,56 @@ pre_save.connect(presave_service, sender=Service)
 
 
 
+
+def create_service_supplier_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Supplier.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_service_supplier_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_supplier(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_service_supplier_slug(instance)
+pre_save.connect(presave_supplier, sender=Supplier)
+
+
+
+
+
+
+
+
+
+def create_product_image_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = ProductImage.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_product_image_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_product_image(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_product_image_slug(instance)
+pre_save.connect(presave_product_image, sender=ProductImage)
+
+
+
+
+
+
+
+
+
+
 def create_product_cat_slug(instance, new_slug=None):
     slug = slugify(instance.name)
     if new_slug is not None:
@@ -115,6 +165,35 @@ def presave_product(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_product_slug(instance)
 pre_save.connect(presave_product, sender=Product)
+
+
+
+
+
+
+
+
+
+
+
+def create_appoint_symt_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = AppointmentSymptom.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_appoint_symt_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_appoint_symt(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_appoint_symt_slug(instance)
+pre_save.connect(presave_appoint_symt, sender=AppointmentSymptom)
+
+
+
 
 
 

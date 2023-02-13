@@ -92,7 +92,7 @@ ROLE = (
 )
 
 class User(AbstractBaseUser, PermissionsMixin):
-    id        = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    id         = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_("Nom"), max_length=255,)
     last_name  = models.CharField(_("Prenom"), max_length=255,)
     email      = models.EmailField(_("Email"), max_length=200, unique=True, validators = [validators.EmailValidator()])
@@ -161,7 +161,7 @@ class Supplier(models.Model):
     name            = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     email           = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
     phone           = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    country        = CountryField(_("Pays"), max_length=255, null=True, blank=True)
+    country         = CountryField(_("Pays"), max_length=255, null=True, blank=True)
     city            = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address         = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     website         = models.URLField(_("Site Web"), max_length=255, null=True, blank=True)
@@ -172,9 +172,22 @@ class Supplier(models.Model):
     timestamp       = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated         = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     created_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="provider_created_by")
-    
+    slug            = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
     def __str__(self):
         return self.name
+
+    def delete_url(self):
+        return reverse("supplier_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("supplier_update", args=[str(self.slug)])
+
+
+
+
+
+
 
 
 
@@ -183,6 +196,7 @@ class Supplier(models.Model):
 
 # STOCK MODEL
 class Stock(models.Model):
+    id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     supplier    = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name="supplier")
     quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
     # unity_price   = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
@@ -194,6 +208,12 @@ class Stock(models.Model):
     
     def __str__(self):
         return self.supplier.name
+
+    def delete_url(self):
+        return reverse("stock_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("stock_update", args=[str(self.id)])
 
     class Meta:
         ordering = ('-timestamp',)
@@ -209,22 +229,24 @@ class Stock(models.Model):
 
 # PRODUCT IMAGE MODEL
 class ProductImage(models.Model):
-    file       = models.FileField(_("Fichier(pdf,image)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
-    # photo      = models.ImageField(_("Image"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
+    file       = models.FileField(_("Fichier(png, jpeg, jpg)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
     name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     active     = models.BooleanField(_("Est actif"), default=True)
     timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
     def __str__(self):
         return self.name
 
     def delete_url(self):
-        return reverse("product_image_delete", args=[str(self.id)])
+        return reverse("product_image_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("product_image_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ('-timestamp',)
-
 
 
 
@@ -245,6 +267,9 @@ class ProductCategory(models.Model):
 
     def delete_url(self):
         return reverse("product_category_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("product_category_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ('-timestamp',)
@@ -284,6 +309,9 @@ class Product(models.Model):
 
     def delete_url(self):
         return reverse("product_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("product_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ('-timestamp',)
@@ -408,13 +436,24 @@ class AppointmentSymptom(models.Model):
     active     = models.BooleanField(_("Est actif"), default=True)
     timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return self.name
 
+    def delete_url(self):
+        return reverse("appointment_symptom_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("appointment_symptom_update", args=[str(self.slug)])
+
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+
+
 
 
 
@@ -433,19 +472,20 @@ class Appointment(models.Model):
         ('Masculin', 'Masculin'),
         ('Feminin', 'Feminin'),
     )
-    first_name   = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-    last_name    = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
-    email        = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    phone        = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    subject      = models.CharField(_("Sujet"), max_length=255, null=False, blank=False, unique=True)
-    gender       = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=False, blank=False)
-    age          = models.IntegerField(_("Age"),default='0', blank=True, null=True)
-    hour         = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
-    date         = models.DateField(_("Date de RV"), blank=False, null=False)
-    description  = models.TextField(_("Description"), null=False, blank=False)
-    active       = models.BooleanField(_("Est actif"), default=True)
-    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    first_name  = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
+    last_name   = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    email       = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    phone       = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    subject     = models.CharField(_("Sujet"), max_length=255, null=False, blank=False, unique=True)
+    gender      = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=False, blank=False)
+    age         = models.IntegerField(_("Age"),default='0', blank=True, null=True)
+    hour        = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
+    date        = models.DateField(_("Date de RV"), blank=False, null=False)
+    description = models.TextField(_("Description"), null=False, blank=False)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     
     def __str__(self):
@@ -454,6 +494,8 @@ class Appointment(models.Model):
     class Meta:
         ordering = ('-timestamp',)
 
+    def delete_url(self):
+        return reverse("appointment_delete", args=[str(self.id)])
 
 
 
@@ -473,14 +515,15 @@ class AppointmentPrescription(models.Model):
     glucose_level       = models.DecimalField(_("Taux de Glucose"), decimal_places=2, max_digits=15, null=False, blank=False)
     blood_pressure      = models.DecimalField(_("Pression Sanguine"), decimal_places=2, max_digits=15, null=False, blank=False)
     day                 = models.DateField(_("Jour de RV"), blank=False, null=False)
-    appointment_symptom = models.TextField(_("Symptome Patient"), null=False, blank=False)
+    appointment_symptom = models.ForeignKey(AppointmentSymptom, on_delete=models.SET_NULL, blank=True, null=True)
     morning_times       = models.BooleanField(_("Matin"), default=False)
     afternoon_times     = models.BooleanField(_("Apres Midi"), default=False)
     evening_times       = models.BooleanField(_("Soir"), default=True)
     night_times         = models.BooleanField(_("Nuit"), default=True)
     appointment         = models.ForeignKey(Appointment, on_delete=models.SET_NULL, blank=True, null=True, related_name="product")
     price               = models.DecimalField(_("Prix"), decimal_places=2, max_digits=15, null=False, blank=False)
-    by                  = models.CharField(_("Nom du Pharmacien(e)"), max_length=255, null=False, blank=False, unique=True)
+    by                  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    description         = models.TextField(_("Description"), null=True, blank=False)
     active              = models.BooleanField(_("Est actif"), default=True)
     timestamp           = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated             = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
@@ -516,7 +559,10 @@ class ServiceCategory(models.Model):
         return self.name
 
     def delete_url(self):
-        return reverse("service_delete", args=[str(self.slug)])
+        return reverse("service_category_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("service_category_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ("-timestamp",)
@@ -547,6 +593,12 @@ class Service(models.Model):
     # GET ALERT DETAIL ABSOLUTE URL
     def get_detail_url(self):
         return reverse("landing:blog_detail", args=[str(self.slug)])
+
+    def delete_url(self):
+        return reverse("service_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("service_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ("-timestamp",)

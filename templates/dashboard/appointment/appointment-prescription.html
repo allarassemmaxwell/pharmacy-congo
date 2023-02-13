@@ -47,58 +47,31 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Medicament</th>
-                                        <th>Qte</th>
-                                        <th>Rythme cardiaque</th>
+                                        <th>Nom & Prenom</th>
                                         <th>Poids</th>
-                                        <th>Taux sanguin</th>
-                                        <th>body_temperature</th>
-                                        <th>glucose_level</th>
-                                        <th>blood_pressure</th>
-                                        <th>day</th>
-                                        <th>appointment_symptom</th>
-                                        <th>morning_times</th>
-                                        <th>afternoon_times</th>
-                                        <th>evening_times</th>
-                                        <th>night_times</th>
-                                        <th>appointment</th>
-                                        <th>price</th>
-                                        <th>by</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Medicament</th>
+                                        <th>Jour</th>
+                                        <th>Par</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for appointmentPrescription in appointmentPrescriptions %}
+                                    {% for prescription in appointmentPrescriptions %}
                                     {% include 'dashboard/modal/appointment-prescription-delete.html' with appointmentPrescription=appointmentPrescription %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"><img
-                                                        class="avatar avatar-img"
-                                                        src="{% static 'admin/img/products/product1.jpg' %}"
-                                                        alt="User Image"></a>
                                                 <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ appointmentPrescription.product_name }}</span></a>
+                                                    data-bs-target="#editModal"><span>{{ prescription.appointment.first_name }} {{ prescription.appointment.last_name }}</span>
+                                                </a>
                                             </h2>
                                         </td>
-                                        <td>{{ appointmentPrescription.quantity }}</td>
-                                        <td>{{ appointmentPrescription.heart_rate }} Hz</td>
-                                        <td>{{ appointmentPrescription.weight }}</td>
-                                        <td>{{ appointmentPrescription.blood_rate }}</td>
-                                        <td>{{ appointmentPrescription.body_temperature }}</td>
-                                        <td>{{ appointmentPrescription.glucose_level }}</td>
-                                        <td>{{ appointmentPrescription.blood_pressure }}</td>
-                                        <td>{{ appointmentPrescription.day }}</td>
-                                        <td>{{ appointmentPrescription.appointment_symptom }}</td>
-                                        <td>{{ appointmentPrescription.morning_times }}</td>
-                                        <td>{{ appointmentPrescription.afternoon_times }}</td>
-                                        <td>{{ appointmentPrescription.evening_times }}</td>
-                                        <td>{{ appointmentPrescription.night_times }}</td>
-                                        <td>{{ appointmentPrescription.appointment }}</td>
-                                        <td>{{ appointmentPrescription.price }}</td>
-                                        <td>{{ appointmentPrescription.by }}</td>
-                                        <td>{{ appointment.timestamp|date:"d M Y" }}</td>
+                                        <td>{{ prescription.weight }}</td>
+                                        <td>{{ prescription.product_name }} Hz</td>
+                                        <td>{{ prescription.price }}</td>
+                                        <td>{{ prescription.by.first_name }} {{ prescription.by.last_name }}</td>
+                                        <td>{{ prescription.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"

@@ -320,14 +320,45 @@ def service_add_view(request):
 
 
 
-# PRODUCT DELETE VIEW
 
-# @login_required
-# def service_delete_view(request, slug=None):
-#     caregory = get_object_or_404(Service, slug=slug, active=True)
-#     caregory.delete()
-#     messages.success(request, _("Category deleted successfully."))
-#     return redirect('service')
+
+# SERVICE DELETE VIEW
+
+@login_required
+def service_delete_view(request, slug=None):
+    service = get_object_or_404(Service, slug=slug, active=True)
+    service.delete()
+    messages.success(request, _("Service deleted successfully."))
+    return redirect('service')
+
+
+
+
+
+
+
+@login_required
+def service_update_view(request, slug=None):
+    obj  = get_object_or_404(Service, slug=slug)
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Service updated successfully."))
+            return redirect('service')
+    else:
+        form = ServiceForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/service/sercvice-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
 
 
 
@@ -356,6 +387,8 @@ def service_category_view(request):
 
 
 
+
+
 @login_required
 def service_category_delete_view(request, slug=None):
     category = get_object_or_404(ServiceCategory, slug=slug, active=True)
@@ -367,14 +400,25 @@ def service_category_delete_view(request, slug=None):
 
 
 
-# SERVICE DELETE VIEW
 
 @login_required
-def service_delete_view(request, slug=None):
-    service = get_object_or_404(Service, slug=slug, active=True)
-    service.delete()
-    messages.success(request, _("Service deleted successfully."))
-    return redirect('service')
+def service_category_update_view(request, slug=None):
+    obj  = get_object_or_404(ServiceCategory, slug=slug)
+    if request.method == 'POST':
+        form = ServiceCategoryForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Category updated successfully."))
+            return redirect('service_category')
+    else:
+        form = ServiceCategoryForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/service/category-update.html"
+    return render(request, template, context)
+
+
 
 
 
@@ -404,11 +448,36 @@ def product_image_view(request):
 # PRODUCT IMAGE DELETE
 
 @login_required
-def product_image_delete_view(request, id=None):
-    image = get_object_or_404(ProductImage, id=id, active=True)
+def product_image_delete_view(request, slug=None):
+    image = get_object_or_404(ProductImage, slug=slug, active=True)
     image.delete()
     messages.success(request, _("Image deleted successfully."))
     return redirect('product_image')
+
+
+
+
+
+
+def product_image_update_view(request, slug=None):
+    obj  = get_object_or_404(ProductImage, slug=slug)
+    if request.method == 'POST':
+        form = ProductImageForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Image updated successfully."))
+            return redirect('product_image')
+    else:
+        form = ProductImageForm(instance=obj)
+    image = obj.file
+    context = { 
+        'form': form,
+        'image': image
+    }
+    template = "dashboard/product/image-update.html"
+    return render(request, template, context)
+
+
 
 
 
@@ -467,6 +536,35 @@ def product_delete_view(request, slug=None):
 
 
 
+# KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def product_update_view(request, slug=None):
+    obj  = get_object_or_404(Product, slug=slug)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Product updated successfully."))
+            return redirect('product')
+    else:
+        form = ProductForm(instance=obj)
+    # image = obj.product_image.file
+    context = { 
+        'form': form,
+        # 'image': image
+    }
+    template = "dashboard/product/product-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
 # PRODUCT CATEGORY VIEW 
 @login_required
 def product_category_view(request):
@@ -503,6 +601,31 @@ def product_category_delete_view(request, slug=None):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+# KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def product_category_update_view(request, slug=None):
+    obj  = get_object_or_404(ProductCategory, slug=slug)
+    form = ProductCategoryForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.success(request, _("Category updated successfully."))
+        return redirect('product_category')
+    context = { 
+        'form': form
+    }
+    template = "dashboard/product/category-update.html"
+    return render(request, template, context)
 
 
 
@@ -559,7 +682,7 @@ def supplier_add_view(request):
 
 @login_required
 def supplier_delete_view(request, slug=None):
-    supplier = get_object_or_404(Supplier, slug=slug, active=True)
+    supplier = get_object_or_404(Supplier, slug=slug)
     supplier.delete()
     messages.success(request, _("Supplier deleted successfully."))
     return redirect('supplier')
@@ -571,10 +694,37 @@ def supplier_delete_view(request, slug=None):
 
 
 
+
+# KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def supplier_update_view(request, slug=None):
+    obj  = get_object_or_404(Supplier, slug=slug)
+    if request.method == 'POST':
+        form = SupplierForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Fournisseur updated successfully."))
+            return redirect('supplier')
+    else:
+        form = SupplierForm(instance=obj)
+    context = { 
+        'form': form,
+    }
+    template = "dashboard/supplier/supplier-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
 # STOCK VIEW 
 @login_required
 def stock_view(request):
-    stocks    = Supplier.objects.all()
+    stocks    = Stock.objects.all()
     context = {
         'stocks': stocks,
     }
@@ -615,12 +765,37 @@ def stock_add_view(request):
 # STOCK DELETE VIEW
 
 @login_required
-def stock_delete_view(request, slug=None):
-    stock = get_object_or_404(Stock, slug=slug, active=True)
+def stock_delete_view(request, id=None):
+    stock = get_object_or_404(Stock, id=id)
     stock.delete()
     messages.success(request, _("Stock deleted successfully."))
     return redirect('stock')
 
+
+
+
+
+
+
+
+
+# KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def stock_update_view(request, id=None):
+    obj  = get_object_or_404(Stock, id=id)
+    if request.method == 'POST':
+        form = StockForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Stock updated successfully."))
+            return redirect('stock')
+    else:
+        form = StockForm(instance=obj)
+    context = { 
+        'form': form,
+    }
+    template = "dashboard/stock/stock-update.html"
+    return render(request, template, context)
 
 
 
@@ -661,10 +836,37 @@ def appointment_symptom_view(request):
 
 @login_required
 def appointment_symptom_delete_view(request, slug=None):
-    appointmentSymptom = get_object_or_404(AppointmentSymptom, slug=slug, active=True)
+    appointmentSymptom = get_object_or_404(AppointmentSymptom, slug=slug)
     appointmentSymptom.delete()
     messages.success(request, _("Appointment Symptom deleted successfully."))
     return redirect('appointment_symptom')
+
+
+
+
+
+
+
+
+
+
+# KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def appointment_symptom_update_view(request, slug=None):
+    obj  = get_object_or_404(AppointmentSymptom, slug=slug)
+    if request.method == 'POST':
+        form = AppointmentSymptomForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Appointment Symptom updated successfully."))
+            return redirect('appointment_symptom')
+    else:
+        form = AppointmentSymptomForm(instance=obj)
+    context = { 
+        'form': form,
+    }
+    template = "dashboard/appointment/appointment-symptom-update.html"
+    return render(request, template, context)
 
 
 
@@ -721,10 +923,10 @@ def appointment_add_view(request):
 # APPOINTMENT DELETE VIEW
 
 @login_required
-def appointment_delete_view(request, slug=None):
-    appointment = get_object_or_404(Appointment, slug=slug, active=True)
+def appointment_delete_view(request, id=None):
+    appointment = get_object_or_404(Appointment, id=id)
     appointment.delete()
-    messages.success(request, _("Appointment  deleted successfully."))
+    messages.success(request, _("Appointment deleted successfully."))
     return redirect('appointment')
 
 
