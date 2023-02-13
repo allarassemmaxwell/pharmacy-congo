@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Category{% endblock %}
 
 
 {% block content %}
@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h5 class="mb-3">Add Service</h5>
+                <h5 class="mb-3">Update Product Image</h5>
                 <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
@@ -18,25 +18,14 @@
                                 {{ form.name|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.category|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.photo|as_crispy_field }}
-                            </div>
-                        </div>
                         <div class="col-md-12">
+                            <img src="{{ image.url }}" width="100px" height="100px">
                             <div class="form-group form-focus">
-                                {{ form.description|as_crispy_field }}
+                                {{ form.file|as_crispy_field }}
                             </div>
                         </div>
-
-                       
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
+                    <button type="submit" class="btn btn-primary save-btn">Update</button>
                 </form>
             </div>
         </div>

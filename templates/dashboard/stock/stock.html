@@ -49,11 +49,9 @@
                                     <tr>
                                         <th>Supplier</th>
                                         <th>Quantity</th>
-                                        {% comment %} <th>unity_price</th> {% endcomment %}
-                                        <th>total</th>
-                                        <th>description</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Total</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,22 +60,21 @@
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"><img
-                                                        class="avatar avatar-img"
-                                                        src="{% static 'admin/img/products/product1.jpg' %}"
-                                                        alt="User Image"></a>
-                                                <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ stock.name }}</span></a>
+                                                {% if stock.supplier %}
+                                                    <a href="#"><span>{{ stock.supplier.name }}</span>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" class="text-danger"><span>Supplier does not exist</span>
+                                                    </a>
+                                                {% endif %}
                                             </h2>
                                         </td>
                                         <td>{{ stock.quantity }}</td>
                                         <td>{{ stock.total }}</td>
-                                        <td>{{ stock.description }}</td>
                                         <td>{{ stock.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                    class="text-black">
+                                                <a href="{{ stock.update_url }}" class="text-black">
                                                     <i class="feather-edit-3 me-1"></i> Edit
                                                 </a>
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"
