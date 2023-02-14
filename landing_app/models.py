@@ -43,9 +43,35 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+    
+    
+    def delete_url(self):
+        return reverse("contact_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("contact_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ("-timestamp",)
+
+
+
+
+def create_contact_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Contact.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_contact_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_contact(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_contact_slug(instance)
+pre_save.connect(presave_contact, sender=Contact)
 
 
 
@@ -244,6 +270,25 @@ class Partner(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+def create_partner_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Blog.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_partner_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_partner(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_partner_slug(instance)
+pre_save.connect(presave_partner, sender=Partner)
+
 
 
 
