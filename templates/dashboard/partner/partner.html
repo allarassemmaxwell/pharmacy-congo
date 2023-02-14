@@ -55,6 +55,7 @@
                                 </thead>
                                 <tbody>
                                     {% for partner in partners %}
+                                    {% include 'dashboard/modal/partner-delete.html' with partner=partner %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">

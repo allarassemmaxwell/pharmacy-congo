@@ -632,3 +632,49 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ("-timestamp",)
+
+
+
+
+
+
+
+
+# PARTNER MODEL
+class Partner(models.Model):
+    name 	     = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+    logo         = models.ImageField(_("Logo"), upload_to='Partner/%Y/%m/', null=False, blank=False)
+    website      = models.URLField(_("Website URL"), max_length=255, null=True, blank=True)
+    active 	     = models.BooleanField(_("Status"), default=True)
+    timestamp    = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated      = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug         = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
+    def __str__(self):
+        return self.name
+    
+    
+    def delete_url(self):
+        return reverse("partner_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("partner_update", args=[str(self.slug)])
+
+
+
+
+def create_partner_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Partner.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_partner_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_partner(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_partner_slug(instance)
+pre_save.connect(presave_partner, sender=Partner)
