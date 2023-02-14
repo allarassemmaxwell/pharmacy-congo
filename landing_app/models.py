@@ -232,6 +232,13 @@ class Partner(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+    def delete_url(self):
+        return reverse("partner_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("partner_update", args=[str(self.slug)])
 
 
 
