@@ -460,3 +460,76 @@ class AppointmentPrescriptionForm(forms.ModelForm):
 
 
 
+
+
+
+
+
+
+
+
+
+# CONTACT FORM
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model  = Contact
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "subject",
+            "phone",
+            "message",
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email':     forms.EmailInput(attrs={'class': 'form-control'}),
+            'subject':   forms.TextInput(attrs={'class': 'form-control'}),
+            'phone':   forms.TextInput(attrs={'class': 'form-control'}),
+            'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'cols':30}),
+        }
+
+
+
+
+
+
+
+
+
+
+
+# CONTACT FORM
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model  = Profile
+        fields = [
+            "user",
+            "photo",
+            "phone",
+            "date_of_birth",
+            "country",
+            "city",
+            "address",
+            "gender",
+            "position",
+            "facebook",
+            "instagram",
+            "twitter",
+            "linked_in",
+        ]
+        widgets = {
+            'phone':    forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
+            'country':     forms.Select(attrs={'class': 'form-control'}),
+            'city':   forms.TextInput(attrs={'class': 'form-control'}),
+            'address':   forms.TextInput(attrs={'class': 'form-control'}),
+            'gender':   forms.Select(attrs={'class': 'form-control'}),
+            'position':   forms.TextInput(attrs={'class': 'form-control'}),
+            # 'email':     forms.EmailInput(attrs={'class': 'form-control'}),
+            'facebook':   forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram':   forms.URLInput(attrs={'class': 'form-control'}),
+            'twitter':   forms.URLInput(attrs={'class': 'form-control'}),
+            'linked_in':   forms.URLInput(attrs={'class': 'form-control'}),
+        }

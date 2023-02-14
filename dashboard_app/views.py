@@ -94,7 +94,7 @@ def blog_view(request):
 
 
 
-# BLOG VIEW 
+# BLOG ADD VIEW 
 @login_required
 def blog_add_view(request):
     if request.method == 'POST':
@@ -119,7 +119,52 @@ def blog_add_view(request):
 
 
 
-# BLOG VIEW 
+
+# BLOG  UPDATE VIEW
+
+@login_required
+def blog_update_view(request, slug=None):
+    obj  = get_object_or_404(Blog, slug=slug)
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Blog mis a jour avec succès.."))
+            return redirect('blog')
+    else:
+        form = BlogForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/blog/blog-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# BLOG DELETE VIEW
+
+@login_required
+def blog_delete_view(request, slug=None):
+    blog = get_object_or_404(Blog, slug=slug, active=True)
+    blog.delete()
+    messages.success(request, _("Blog deleted successfully."))
+    return redirect('blog')
+
+
+
+
+
+
+
+
+
+# BLOG CATEGORY VIEW 
 @login_required
 def blog_category_view(request):
     categories = BlogCategory.objects.all()
@@ -159,13 +204,83 @@ def blog_category_add_view(request):
 
 
 
-# BLOG VIEW 
+# CONTACT  VIEW 
 @login_required
 def contact_view(request):
     contacts    = Contact.objects.all()
     context = {'contacts': contacts}
     template = "dashboard/contact.html"
     return render(request, template, context)
+
+
+
+
+
+
+
+
+# CONTACT  ADD VIEW 
+@login_required
+def contact_add_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Contact créé avec succès."))
+            return redirect('contact')
+    else:
+        form = ContactForm()
+
+    context = {'form': form}
+    template = "dashboard/contact-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+# CONTACT UPDATE VIEW
+
+@login_required
+def contact_update_view(request, slug=None):
+    obj  = get_object_or_404(Contact, slug=slug)
+    if request.method == 'POST':
+        form = ContactForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Contact mis a jour avec succès.."))
+            return redirect('contact')
+    else:
+        form = ContactForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/contact-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+# CONTACT DELETE VIEW
+
+@login_required
+def contact_delete_view(request, slug=None):
+    contact = get_object_or_404(Contact, slug=slug, active=True)
+    contact.delete()
+    messages.success(request, _("Contact deleted successfully."))
+    return redirect('contact')
+
+
+
+
+
 
 
 
@@ -183,7 +298,7 @@ def newsletter_view(request):
 
 
 
-# BLOG VIEW 
+# BLOG NEWSLETTER ADD VIEW 
 @login_required
 def newsletter_add_view(request):
     if request.method == 'POST':
@@ -205,7 +320,55 @@ def newsletter_add_view(request):
 
 
 
-# BLOG VIEW 
+
+
+
+
+
+# BLOG NEWSLETTER UPDATE VIEW
+
+@login_required
+def newsletter_update_view(request, slug=None):
+    obj  = get_object_or_404(Subscriber, slug=slug)
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Abonné(e) mis a jour avec succès.."))
+            return redirect('newsletter')
+    else:
+        form = NewsletterForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/newsletter/newsletter-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# NEWSLETTER DELETE VIEW
+
+@login_required
+def newsletter_delete_view(request, slug=None):
+    newsletter = get_object_or_404(Subscriber, slug=slug, active=True)
+    newsletter.delete()
+    messages.success(request, _("Subscriber deleted successfully."))
+    return redirect('newsletter')
+
+
+
+
+
+
+
+
+# BLOG PARTNER VIEW 
 @login_required
 def partner_view(request):
     partners    = Partner.objects.all()
@@ -217,7 +380,7 @@ def partner_view(request):
 
 
 
-# BLOG VIEW 
+# BLOG PARTNER ADD VIEW 
 @login_required
 def partner_add_view(request):
     if request.method == 'POST':
@@ -238,7 +401,51 @@ def partner_add_view(request):
 
 
 
-# BLOG VIEW 
+
+
+
+# BLOG PARTNER UPDATE VIEW
+
+@login_required
+def partner_update_view(request, slug=None):
+    obj  = get_object_or_404(Partner, slug=slug)
+    if request.method == 'POST':
+        form = PartnerForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Partenaire mis a jour avec succès.."))
+            return redirect('partner')
+    else:
+        form = PartnerForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/partner/partner-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# PARTNER DELETE VIEW
+
+@login_required
+def partner_delete_view(request, slug=None):
+    partner = get_object_or_404(Partner, slug=slug, active=True)
+    partner.delete()
+    messages.success(request, _("Partner deleted successfully."))
+    return redirect('partner')
+
+
+
+
+
+
+# BLOG TESTIMONY VIEW 
 @login_required
 def testimony_view(request):
     testimonies    = Testimony.objects.all()
@@ -252,7 +459,7 @@ def testimony_view(request):
 
 
 
-# BLOG VIEW 
+# BLOG TESTIMONY VIEW 
 @login_required
 def testimony_add_view(request):
     if request.method == 'POST':
@@ -274,13 +481,156 @@ def testimony_add_view(request):
 
 
 
-# BLOG VIEW 
+
+
+# BLOG TESTIMONY UPDATE VIEW
+
+@login_required
+def testimony_update_view(request, slug=None):
+    obj  = get_object_or_404(Testimony, slug=slug)
+    if request.method == 'POST':
+        form = TestimonyForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Partenaire mis a jour avec succès.."))
+            return redirect('partner')
+    else:
+        form = TestimonyForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/testimony/testimony-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# TESTIMONY DELETE VIEW
+
+@login_required
+def testimony_delete_view(request, slug=None):
+    testimony = get_object_or_404(Testimony, slug=slug, active=True)
+    testimony.delete()
+    messages.success(request, _("Témoignage supprimé avec success."))
+    return redirect('testimony')
+
+
+
+
+
+
+
+
+
+
+# USER VIEW 
 @login_required
 def user_view(request):
     users    = User.objects.all()
     context = {'users': users}
     template = "dashboard/user/user.html"
     return render(request, template, context)
+
+
+
+
+
+
+
+# USER ADD VIEW
+
+@login_required
+def user_add_view(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        profile = ProfileForm(request.POST, request.FILES)
+        if form.is_valid() and profile.is_valid():
+            user = form.save()
+            profile = profile.save(commit=False)
+            created_by = User.objects.get(email=request.user.email)
+            profile.user = user
+            profile.created_by = created_by
+            profile.save()
+            # Notification.objects.create(name="Cet utilisateur a ajouté  un utilisateur: %s %s"%(user.first_name, user.last_name), sender=request.user, user=user)
+            messages.success(request, _("Utilisateur/Utilisatrice créé(e) avec succès."))
+            return redirect('user')
+    else:
+        form = UserForm()
+        profile = ProfileForm()
+    context  = {
+        'form': form,
+        'profile': profile
+    }
+    template = "dashboard/user/user-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+# USER UPDATE VIEW
+
+@login_required
+def user_update_view(request, id=None):
+    obj  = get_object_or_404(Profile, id=id)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=obj.user)
+        profile = ProfileForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid() and profile.is_valid():
+            # obj = form.save(commit=False)
+            # email = form.cleaned_data['email']
+            # check_email = User.objects.filter(email=email).exclude(id=id)
+            # if check_email:
+            #     print("==== CHECK EMAIL HERE =====")
+            #     print(check_email)
+                # messages.error(request, _("Utilisateur avec cet email existe déjà."))
+                # return redirect(request.META['HTTP_REFERER'])
+                # return redirect('utilisateur')
+            form.save()
+            profile.save()
+            messages.success(request, _("Utilisateur/Utilisatrice modifié(e) avec succès."))
+            return redirect('utilisateur')
+    else:
+        form = UserForm(instance=obj.user)
+        profile = ProfileForm(instance=obj)
+    context  = {
+        'form': form,
+        'profile': profile,
+        'photo': obj.photo
+    }
+    template = "dashboard/user/user-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# USER DELETE VIEW
+
+@login_required
+def user_delete_view(request, id=None):
+    user = get_object_or_404(User, id=id)
+    # Notification.objects.create(name="Cet utilisateur a supprimé l'utilisateur: %s %s."%(user.first_name, user.last_name), sender=request.user, user=user)
+    user.delete()
+    messages.success(request, _("Utlisateur/Utilisatrice supprimé(e) avec succès."))
+    return redirect('user')
 
 
 

@@ -59,11 +59,11 @@
                                     <a href="" class="dropdown-item">
                                         <i class="mdi mdi-eye me-1"></i>Voir
                                     </a>
-                                    <a href="" class="dropdown-item">
+                                    <a href="{{ blog.update_url }}" class="dropdown-item">
                                         <i class="mdi mdi-pen me-1"></i>Modifier
                                     </a>
                                     <a class="dropdown-item text-danger" data-bs-toggle="modal"
-                                        data-bs-target=".delete-business-{{ forloop.counter }}">
+                                        data-bs-target=".blogDeleteModal-{{ forloop.counter }}">
                                         <i class="mdi mdi-delete me-1"></i>Delete
                                     </a>
                                 </div>
