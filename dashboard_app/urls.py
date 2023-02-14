@@ -9,22 +9,37 @@ urlpatterns = [
     path('profile/', profile_view, name="profile"),
     path('blog/', blog_view, name="blog"),
     path('blog/add/', blog_add_view, name="blog_add"),
+    path('blog/delete/<slug:slug>/', blog_delete_view, name="blog_delete"),
+    path('blog/update/<slug:slug>/', blog_update_view, name="blog_update"),
 
     path('blog-category/', blog_category_view, name="blog_category"),
     path('blog-category/add/', blog_category_add_view, name="blog_category_add"),
+    
 
     path('contacts/', contact_view, name="contact"),
+    path('contacts/add/', contact_add_view, name="contact_add"),
+    path('contacts/delete/<slug:slug>/', contact_delete_view, name="contact_delete"),
+    path('contacts/update/<slug:slug>/', contact_update_view, name="contact_update"),
 
     path('newsletters/', newsletter_view, name="newsletter"),
     path('newsletters/add/', newsletter_add_view, name="newsletter_add"),
+    path('newsletters/delete/<slug:slug>/', partner_delete_view, name="newsletter_delete"),
+    path('newsletters/update/<slug:slug>/', partner_update_view, name="newsletter_update"),
 
     path('partner/', partner_view, name="partner"),
     path('partner/add/', partner_add_view, name="partner_add"),
+    path('partner/delete/<slug:slug>/', partner_delete_view, name="partner_delete"),
+    path('partner/update/<slug:slug>/', partner_update_view, name="partner_update"),
 
     path('testimony/', testimony_view, name="testimony"),
     path('testimony/add/', testimony_add_view, name="testimony_add"),
+    path('testimony/delete/<slug:slug>/', testimony_delete_view, name="testimony_delete"),
+    path('testimony/update/<slug:slug>/', testimony_update_view, name="testimony_update"),
 
     path('user/', user_view, name="user"),
+    path('user/add/', user_add_view, name="user_add"),
+    path('user/delete/<slug:slug>/', user_delete_view, name="user_delete"),
+    path('user/update/<slug:slug>/', user_update_view, name="user_update"),
     # path('testimony/add/', testimony_add_view, name="testimony_add"),
 
 

@@ -18,6 +18,9 @@
                             
                         </ul>
                     </div>
+                    <div class="col-md-3 text-md-end">
+                        <a href="{% url 'contact_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Contact</a>
+                    </div>
                     
                 </div>
                 
@@ -86,11 +89,11 @@
                                                     <a href="" class="dropdown-item">
                                                         <i class="mdi mdi-eye me-1"></i>Voir
                                                     </a>
-                                                    <a href="" class="dropdown-item">
+                                                    <a href="{{ contact.update_url }}" class="dropdown-item">
                                                         <i class="mdi mdi-pen me-1"></i>Modifier
                                                     </a>
                                                     <a class="dropdown-item text-danger" data-bs-toggle="modal"
-                                                        data-bs-target=".delete-user-{{ forloop.counter }}">
+                                                        data-bs-target=".contactDeleteModal-{{ forloop.counter }}">
                                                         <i class="mdi mdi-delete me-1"></i>Delete
                                                     </a>
                                                 </div>

@@ -132,6 +132,7 @@ class Profile(models.Model):
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
     position      = models.CharField(_("Pays"), max_length=255, null=True, blank=True)
+    # email         = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
     facebook      = models.URLField(_("Facebook Link"), max_length=255, null=True, blank=True)
     instagram     = models.URLField(_("Instagram Link"), max_length=255, null=True, blank=True)
     twitter       = models.URLField(_("Twitter Link"), max_length=255, null=True, blank=True)
@@ -609,3 +610,25 @@ class Service(models.Model):
 
 
 
+
+
+
+
+
+# CONTACT MODEL
+class Contact(models.Model):
+    first_name = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
+    last_name  = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    email      = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
+    phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
+    message    = models.TextField(_("Message"), null=False, blank=False)
+    active     = models.BooleanField(_("Active"), default=True)
+    timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        ordering = ("-timestamp",)
