@@ -68,3 +68,21 @@ class BlogCommentForm(forms.ModelForm):
             'email':forms.EmailInput(attrs={'class': 'form-control'}),
             'comment':forms.Textarea(attrs={'class': 'form-control', 'rows':5}),   
         }
+
+
+
+
+
+# BRANCH FORM
+class PartnerForm(forms.ModelForm):
+    class Meta:
+        model  = Partner
+        fields = [
+            "name",
+            "logo",
+            "website",
+        ]
+        widgets = {
+            'name':    forms.TextInput(attrs={'class': 'form-control'}),
+            'website': forms.URLInput(attrs={'class': 'form-control'}),
+        }

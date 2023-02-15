@@ -616,90 +616,52 @@ class Service(models.Model):
 
 
 # CONTACT MODEL
-class Contact(models.Model):
-    first_name = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-    last_name  = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
-    email      = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
-    phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
-    message    = models.TextField(_("Message"), null=False, blank=False)
-    active     = models.BooleanField(_("Active"), default=True)
-    timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
-
-    def __str__(self):
-        return self.email
-    
-    def delete_url(self):
-            return reverse("contact_delete", args=[str(self.slug)])
-
-    def update_url(self):
-        return reverse("contact_update", args=[str(self.slug)])
-    class Meta:
-        ordering = ("-timestamp",)
-    
-    
-    
-    
-
-def create_contact_slug(instance, new_slug=None):
-    slug = slugify(instance.name)
-    if new_slug is not None:
-        slug = new_slug
-    ourQuery = Contact.objects.filter(slug=slug)
-    exists = ourQuery.exists()
-    if exists:
-        new_slug = "%s-%s" % (slug, ourQuery.first().id)
-        return create_contact_slug(instance, new_slug=new_slug)
-    return slug
-
-def presave_contact(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_contact_slug(instance)
-pre_save.connect(presave_contact, sender=Contact)
-
-
-
-
-
-
-
-
-# # PARTNER MODEL
-# class Partner(models.Model):
-#     name 	     = models.CharField(_("Name"), max_length=255, null=False, blank=False)
-#     logo         = models.ImageField(_("Logo"), upload_to='Partner/%Y/%m/', null=False, blank=False)
-#     website      = models.URLField(_("Website URL"), max_length=255, null=True, blank=True)
-#     active 	     = models.BooleanField(_("Status"), default=True)
-#     timestamp    = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
-#     updated      = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
-#     slug         = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+# class Contact(models.Model):
+#     first_name = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
+#     last_name  = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+#     email      = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+#     subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
+#     phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
+#     message    = models.TextField(_("Message"), null=False, blank=False)
+#     active     = models.BooleanField(_("Active"), default=True)
+#     timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+#     updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
 
 #     def __str__(self):
-#         return self.name
-    
+#         return self.email
     
 #     def delete_url(self):
-#         return reverse("partner_delete", args=[str(self.slug)])
+#             return reverse("contact_delete", args=[str(self.slug)])
 
 #     def update_url(self):
-#         return reverse("partner_update", args=[str(self.slug)])
+#         return reverse("contact_update", args=[str(self.slug)])
+#     class Meta:
+#         ordering = ("-timestamp",)
+    
+    
+    
+    
 
-
-
-
-# def create_partner_slug(instance, new_slug=None):
+# def create_contact_slug(instance, new_slug=None):
 #     slug = slugify(instance.name)
 #     if new_slug is not None:
 #         slug = new_slug
-#     ourQuery = Partner.objects.filter(slug=slug)
+#     ourQuery = Contact.objects.filter(slug=slug)
 #     exists = ourQuery.exists()
 #     if exists:
 #         new_slug = "%s-%s" % (slug, ourQuery.first().id)
-#         return create_partner_slug(instance, new_slug=new_slug)
+#         return create_contact_slug(instance, new_slug=new_slug)
 #     return slug
 
-# def presave_partner(sender, instance, *args, **kwargs):
+# def presave_contact(sender, instance, *args, **kwargs):
 #     if not instance.slug:
-#         instance.slug = create_partner_slug(instance)
-# pre_save.connect(presave_partner, sender=Partner)
+#         instance.slug = create_contact_slug(instance)
+# pre_save.connect(presave_contact, sender=Contact)
+
+
+
+
+
+
+
+

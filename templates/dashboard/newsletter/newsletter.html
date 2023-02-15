@@ -35,7 +35,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Blog Catégorie</h5>
+                                <h5 class="card-title">NewsLetter  List</h5>
                             </div>
                             <div class="col-auto d-flex">
                                 
@@ -54,6 +54,7 @@
                                 </thead>
                                 <tbody>
                                     {% for newsletter in newsletters %}
+                                    {% include 'dashboard/modal/newsletter-delete.html' with newsletter=newsletter %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">

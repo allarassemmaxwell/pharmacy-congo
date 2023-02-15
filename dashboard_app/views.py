@@ -204,6 +204,51 @@ def blog_category_add_view(request):
 
 
 
+
+# BLOG CATEGORY UPDATE VIEW
+
+@login_required
+def blog_category_update_view(request, slug=None):
+    obj  = get_object_or_404(BlogCategory, slug=slug)
+    if request.method == 'POST':
+        form = BlogCategoryForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Contact mis a jour avec succès.."))
+            return redirect('blog_category')
+    else:
+        form = BlogCategoryForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/blog/category-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# BLOG CATEGORY DELETE VIEW
+
+@login_required
+def blog_category_delete_view(request, slug=None):
+    category = get_object_or_404(BlogCategory, slug=slug, active=True)
+    category.delete()
+    messages.success(request, _("Blog Category deleted successfully."))
+    return redirect('blog_category')
+
+
+
+
+
+
+
+
 # CONTACT  VIEW 
 @login_required
 def contact_view(request):
@@ -271,8 +316,8 @@ def contact_update_view(request, slug=None):
 # CONTACT DELETE VIEW
 
 @login_required
-def contact_delete_view(request, slug=None):
-    contact = get_object_or_404(Contact, slug=slug, active=True)
+def contact_delete_view(request, id):
+    contact = get_object_or_404(Contact, id=id, active=True)
     contact.delete()
     messages.success(request, _("Contact deleted successfully."))
     return redirect('contact')
@@ -355,8 +400,8 @@ def newsletter_update_view(request, slug=None):
 # NEWSLETTER DELETE VIEW
 
 @login_required
-def newsletter_delete_view(request, slug=None):
-    newsletter = get_object_or_404(Subscriber, slug=slug, active=True)
+def newsletter_delete_view(request, id):
+    newsletter = get_object_or_404(Subscriber, id=id, active=True)
     newsletter.delete()
     messages.success(request, _("Subscriber deleted successfully."))
     return redirect('newsletter')
@@ -513,8 +558,8 @@ def testimony_update_view(request, slug=None):
 # TESTIMONY DELETE VIEW
 
 @login_required
-def testimony_delete_view(request, slug=None):
-    testimony = get_object_or_404(Testimony, slug=slug, active=True)
+def testimony_delete_view(request, id):
+    testimony = get_object_or_404(Testimony, id=id, active=True)
     testimony.delete()
     messages.success(request, _("Témoignage supprimé avec success."))
     return redirect('testimony')

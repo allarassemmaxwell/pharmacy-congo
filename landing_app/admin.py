@@ -141,6 +141,20 @@ admin.site.register(Testimony, TestimonyAdmin)
 
 
 
+# PARTNER ADMIN
+class PartnerAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'website',  'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = Partner
+admin.site.register(Partner, PartnerAdmin)
+
+
+
 
 
 
