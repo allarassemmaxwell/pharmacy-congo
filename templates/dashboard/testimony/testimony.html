@@ -54,6 +54,7 @@
                                 </thead>
                                 <tbody>
                                     {% for testimony in testimonies %}
+                                    {% include 'dashboard/modal/testimony-delete.html' with testimony=testimony %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">

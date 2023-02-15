@@ -14,17 +14,20 @@ urlpatterns = [
 
     path('blog-category/', blog_category_view, name="blog_category"),
     path('blog-category/add/', blog_category_add_view, name="blog_category_add"),
+    path('blog-category/delete/<slug:slug>/', blog_category_delete_view, name="blog_category_delete"),
+    path('blog-category/update/<slug:slug>/', blog_category_update_view, name="blog_category_update"),
+
     
 
     path('contacts/', contact_view, name="contact"),
     path('contacts/add/', contact_add_view, name="contact_add"),
-    path('contacts/delete/<slug:slug>/', contact_delete_view, name="contact_delete"),
+    path('contacts/delete/<int:id>/', contact_delete_view, name="contact_delete"),
     path('contacts/update/<slug:slug>/', contact_update_view, name="contact_update"),
 
     path('newsletters/', newsletter_view, name="newsletter"),
     path('newsletters/add/', newsletter_add_view, name="newsletter_add"),
-    path('newsletters/delete/<slug:slug>/', partner_delete_view, name="newsletter_delete"),
-    path('newsletters/update/<slug:slug>/', partner_update_view, name="newsletter_update"),
+    path('newsletters/delete/<int:id>/', newsletter_delete_view, name="newsletter_delete"),
+    path('newsletters/update/<slug:slug>/', newsletter_update_view, name="newsletter_update"),
 
     path('partner/', partner_view, name="partner"),
     path('partner/add/', partner_add_view, name="partner_add"),
@@ -33,7 +36,7 @@ urlpatterns = [
 
     path('testimony/', testimony_view, name="testimony"),
     path('testimony/add/', testimony_add_view, name="testimony_add"),
-    path('testimony/delete/<slug:slug>/', testimony_delete_view, name="testimony_delete"),
+    path('testimony/delete/<int:id>/', testimony_delete_view, name="testimony_delete"),
     path('testimony/update/<slug:slug>/', testimony_update_view, name="testimony_update"),
 
     path('user/', user_view, name="user"),

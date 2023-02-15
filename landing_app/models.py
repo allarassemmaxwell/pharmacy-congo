@@ -43,13 +43,16 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+    
+    
+    def delete_url(self):
+        return reverse("contact_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("contact_update", args=[str(self.id)])
 
     class Meta:
         ordering = ("-timestamp",)
-
-
-
-
 
 
 
@@ -68,6 +71,12 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.email
+    
+    def delete_url(self):
+        return reverse("newsletter_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("newsletter_update", args=[str(self.id)])
 
     class Meta:
         ordering = ("-timestamp",)
@@ -93,11 +102,22 @@ class BlogCategory(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+    def delete_url(self):
+        return reverse("blog_category_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("blog_category_update", args=[str(self.slug)])
 
     class Meta:
         ordering = ("-timestamp",)
     
     verbose_name_plural = _('BlogCategories')
+
+
+
+
 
 def create_blog_cat_slug(instance, new_slug=None):
     slug = slugify(instance.name)
@@ -208,11 +228,22 @@ class Testimony(models.Model):
 
     def __str__(self):
         return self.full_name
+    
+    def delete_url(self):
+        return reverse("testimony_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("testimony_update", args=[str(self.id)])
 
 
     class Meta:
         ordering = ('-timestamp',)
         verbose_name_plural = _('Testimonies')
+
+
+
+
+
 
 
 
@@ -244,6 +275,25 @@ class Partner(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+
+
+def create_partner_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Partner.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_partner_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_partner(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_partner_slug(instance)
+pre_save.connect(presave_partner, sender=Partner)
+
 
 
 
