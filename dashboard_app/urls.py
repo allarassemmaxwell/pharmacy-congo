@@ -27,7 +27,7 @@ urlpatterns = [
     path('newsletters/', newsletter_view, name="newsletter"),
     path('newsletters/add/', newsletter_add_view, name="newsletter_add"),
     path('newsletters/delete/<int:id>/', newsletter_delete_view, name="newsletter_delete"),
-    path('newsletters/update/<slug:slug>/', newsletter_update_view, name="newsletter_update"),
+    path('newsletters/update/<int:id>/', newsletter_update_view, name="newsletter_update"),
 
     path('partner/', partner_view, name="partner"),
     path('partner/add/', partner_add_view, name="partner_add"),
@@ -37,7 +37,7 @@ urlpatterns = [
     path('testimony/', testimony_view, name="testimony"),
     path('testimony/add/', testimony_add_view, name="testimony_add"),
     path('testimony/delete/<int:id>/', testimony_delete_view, name="testimony_delete"),
-    path('testimony/update/<slug:slug>/', testimony_update_view, name="testimony_update"),
+    path('testimony/update/<int:id>/', testimony_update_view, name="testimony_update"),
 
     path('user/', user_view, name="user"),
     path('user/add/', user_add_view, name="user_add"),
@@ -97,6 +97,9 @@ urlpatterns = [
     path('appointment/prescription/', appointment_prescription_view, name="appointment_prescription"),
     path('appointment/prescription/add/', appointment_prescription_add_view, name="appointment_prescription_add"),
     path('appointment/prescription/delete/<slug:slug>/', appointment_prescription_delete_view, name="appointment_prescription_delete"),
+
+
+    path('patient/', patient_view, name="patient"),
 ]
 
 
