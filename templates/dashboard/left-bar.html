@@ -6,97 +6,111 @@
 
                 <li class="menu-title"><span>Main</span></li>
 
-                
-                <li class="submenu">
-                    <a href="#"><i class="feather-file-text"></i> <span> Produit</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{% url 'product_category' %}">Categories</a></li>
-                         <li><a href="{% url 'product_image' %}">Image</a></li>
-                        <li><a href="{% url 'product' %}">Produit</a></li>
-                    </ul>
-                </li>
+                {% if request.user.role == 'Admin' %}
+                    <li class="submenu">
+                        <a href="#"><i class="feather-file-text"></i> <span> Produit</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'product_category' %}">Categories</a></li>
+                             <li><a href="{% url 'product_image' %}">Image</a></li>
+                            <li><a href="{% url 'product' %}">Produit</a></li>
+                        </ul>
+                    </li>
 
 
-                <li class="menu-title">
-                    <span>Service</span>
-                </li>
-                <li class="submenu">
-                    <a href="#"><i class="feather-file-plus"></i> <span> Service</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{% url 'service_category' %}">Categories</a></li>
-                        <li><a href="{% url 'service' %}">Service</a></li>
-                    </ul>
-                </li>
+                    <li class="menu-title">
+                        <span>Service</span>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="feather-file-plus"></i> <span> Service</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'service_category' %}">Categories</a></li>
+                            <li><a href="{% url 'service' %}">Service</a></li>
+                        </ul>
+                    </li>
 
 
-                <li class="">
-                    <a href="{% url 'user' %}"><i class="feather-grid"></i> <span>Utilisateur</span></a>
-                </li>
+                    <li class="">
+                        <a href="{% url 'user' %}"><i class="feather-grid"></i> <span>Utilisateur</span></a>
+                    </li>
 
-                <li class="">
-                    <a href="{% url 'supplier' %}"><i class="feather-grid"></i> <span>Fournisseur</span></a>
-                </li>
+                    <li class="">
+                        <a href="{% url 'supplier' %}"><i class="feather-grid"></i> <span>Fournisseur</span></a>
+                    </li>
 
-                <li class="">
-                    <a href="{% url 'stock' %}"><i class="feather-grid"></i> <span>Stock</span></a>
-                </li>
-                <li class="">
-                    <a href=""><i class="feather-grid"></i> <span>Patient</span></a>
-                </li>
+                    <li class="">
+                        <a href="{% url 'stock' %}"><i class="feather-grid"></i> <span>Stock</span></a>
+                    </li>
+                    
+                    <li class="">
+                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Patient </span></a>
+                    </li>
 
-                <li class="menu-title">
-                    <span>Rendez-vous</span>
-                </li>
-                <li class="submenu">
-                    <a href="#"><i class="feather-shopping-cart"></i> <span> Rendez-vous</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{% url 'appointment_symptom' %}">Symptôme</a></li>
-                        <li><a href="{% url 'appointment' %}">Rendez-vous</a></li>
-                        <li><a href="{% url 'appointment_prescription' %}">Ordonnance</a></li>
-                    </ul>
-                </li>
-
-
-                <li class="submenu">
-                    <a href="#"><i class="feather-file-text"></i> <span> Vente</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="appointment-report.html">Appointment Report</a></li>
-                        <li><a href="income-report.html">Income Report</a></li>
-                        <li><a href="invoice-report.html">Invoice Report</a></li>
-                        <li><a href="user-reports.html">Users Report</a></li>
-                    </ul>
-                </li>
-
-                <li class="menu-title">
-                    <span>Blog</span>
-                </li>
-                <li class="submenu">
-                    <a href="#"><i class="feather-grid"></i> <span> Blog</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{% url 'blog_category' %}">Catégorie</a></li>
-                        <li><a href="{% url 'blog' %}">Blog</a></li>
-                    </ul>
-                </li>
+                    <li class="menu-title">
+                        <span>Rendez-vous</span>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="feather-shopping-cart"></i> <span> Rendez-vous</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'appointment_symptom' %}">Symptôme</a></li>
+                            <li><a href="{% url 'appointment' %}">Rendez-vous</a></li>
+                            <li><a href="{% url 'appointment_prescription' %}">Ordonnance</a></li>
+                        </ul>
+                    </li>
 
 
-                <li class="">
-                    <a href="{% url 'contact' %}"><i class="feather-grid"></i> <span>Contact</span></a>
-                </li>
-                <li class="">
-                    <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
-                </li>
+                    <li class="submenu">
+                        <a href="#"><i class="feather-file-text"></i> <span> Vente</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="appointment-report.html">Appointment Report</a></li>
+                            <li><a href="income-report.html">Income Report</a></li>
+                            <li><a href="invoice-report.html">Invoice Report</a></li>
+                            <li><a href="user-reports.html">Users Report</a></li>
+                        </ul>
+                    </li>
 
-                <li class="">
-                    <a href="{% url 'testimony' %}"><i class="feather-grid"></i> <span>Témoignage</span></a>
-                </li>
-                <li class="">
-                    <a href="{% url 'partner' %}"><i class="feather-grid"></i> <span>Partenaire</span></a>
-                </li>
+                    <li class="menu-title">
+                        <span>Blog</span>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="feather-grid"></i> <span> Blog</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'blog_category' %}">Catégorie</a></li>
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="">
+                        <a href="{% url 'contact' %}"><i class="feather-grid"></i> <span>Contact</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
+                    </li>
+
+                    <li class="">
+                        <a href="{% url 'testimony' %}"><i class="feather-grid"></i> <span>Témoignage</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'partner' %}"><i class="feather-grid"></i> <span>Partenaire</span></a>
+                    </li>
+                {% endif %}
+
+                {% if request.user.role == 'Patient' %}
+                    <li class="">
+                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Rendez-vous </span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Symptôme </span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Ordonnance </span></a>
+                    </li>
+                {% endif %}
                 
             </ul>
         </div>

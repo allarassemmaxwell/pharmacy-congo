@@ -214,7 +214,7 @@ def blog_category_update_view(request, slug=None):
         form = BlogCategoryForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Contact mis a jour avec succès.."))
+            messages.success(request, _("Categories mis a jour avec succès.."))
             return redirect('blog_category')
     else:
         form = BlogCategoryForm(instance=obj)
@@ -350,7 +350,7 @@ def newsletter_add_view(request):
         form = NewsletterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Témoignage créé avec succès."))
+            messages.success(request, _("Newsletter créé avec succès."))
             return redirect('newsletter')
     else:
         form = NewsletterForm()
@@ -373,8 +373,8 @@ def newsletter_add_view(request):
 # BLOG NEWSLETTER UPDATE VIEW
 
 @login_required
-def newsletter_update_view(request, slug=None):
-    obj  = get_object_or_404(Subscriber, slug=slug)
+def newsletter_update_view(request, id=None):
+    obj  = get_object_or_404(Subscriber, id=id)
     if request.method == 'POST':
         form = NewsletterForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
@@ -531,14 +531,14 @@ def testimony_add_view(request):
 # BLOG TESTIMONY UPDATE VIEW
 
 @login_required
-def testimony_update_view(request, slug=None):
-    obj  = get_object_or_404(Testimony, slug=slug)
+def testimony_update_view(request, id=None):
+    obj  = get_object_or_404(Testimony, id=id)
     if request.method == 'POST':
         form = TestimonyForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Partenaire mis a jour avec succès.."))
-            return redirect('partner')
+            messages.success(request, _("Témoignage mis a jour avec succès.."))
+            return redirect('testimony')
     else:
         form = TestimonyForm(instance=obj)
     context = { 
@@ -567,6 +567,18 @@ def testimony_delete_view(request, id):
 
 
 
+
+
+
+
+
+# CONTACT  VIEW 
+@login_required
+def patient_view(request):
+    contacts    = Contact.objects.all()
+    context = {'contacts': contacts}
+    template = "dashboard/patient/patient.html"
+    return render(request, template, context)
 
 
 

@@ -30,6 +30,7 @@
 
         <div class="row">
             <div class="col-sm-12">
+                {% include 'message.html' %}
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -49,7 +50,7 @@
                                         <th>Nom</th>
                                         <th>Occupation</th>
                                         <th>Date</th>
-                                        <th>Action</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,7 +63,7 @@
                                                     {% if testimony.image %}
                                                         <img class="avatar avatar-img" src="{{ testimony.image.url }}" alt="{{ testimony.full_name|title }}">
                                                     {% else %}
-                                                        <img class="avatar avatar-img" src="{{ testimony.image }}" alt="{{ testimony.full_name|title }}">
+                                                        <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ testimony.full_name|title }}">
                                                     {% endif %}
                                                 </a>
                                                 <a href="#"><span class="user-name">{{ testimony.full_name|title }}</span></a>
@@ -70,7 +71,7 @@
                                         </td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#">{{ testimony.occupation|title }}</a>
+                                                <a href="#">{{ testimony.occupation|safe|truncatechars:50 }}</a>
                                             </h2>
                                         </td>
                                         <td>
@@ -80,8 +81,7 @@
                                         </td>
                                         <td class="text-end">
                                             <div class="actions">
-                                                <a href="{{ testimony.update_url }}" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                    class="text-black">
+                                                <a href="{{ testimony.update_url }}" class="text-black">
                                                     <i class="feather-edit-3 me-1"></i> Edit
                                                 </a>
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"

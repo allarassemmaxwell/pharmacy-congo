@@ -88,7 +88,7 @@ class UserManager(BaseUserManager):
 
 ROLE = (
     ("Patient", _("Patient")),
-    # ("Agent", _("Agent")),
+    ("Admin", _("Admin")),
 )
 
 class User(AbstractBaseUser, PermissionsMixin):
