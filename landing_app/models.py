@@ -162,6 +162,13 @@ class Blog(models.Model):
     # GET ALERT DETAIL ABSOLUTE URL
     def get_detail_url(self):
         return reverse("landing:blog_detail", args=[str(self.slug)])
+    
+    def delete_url(self):
+        return reverse("blog_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("blog_update", args=[str(self.slug)])
+
 
     class Meta:
         ordering = ("-timestamp",)

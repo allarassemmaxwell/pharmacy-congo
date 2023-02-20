@@ -22,7 +22,7 @@ urlpatterns = [
     path('contacts/', contact_view, name="contact"),
     path('contacts/add/', contact_add_view, name="contact_add"),
     path('contacts/delete/<int:id>/', contact_delete_view, name="contact_delete"),
-    path('contacts/update/<slug:slug>/', contact_update_view, name="contact_update"),
+    path('contacts/update/<int:id>/', contact_update_view, name="contact_update"),
 
     path('newsletters/', newsletter_view, name="newsletter"),
     path('newsletters/add/', newsletter_add_view, name="newsletter_add"),
