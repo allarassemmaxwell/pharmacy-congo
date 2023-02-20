@@ -153,7 +153,7 @@ def blog_update_view(request, slug=None):
 def blog_delete_view(request, slug=None):
     blog = get_object_or_404(Blog, slug=slug, active=True)
     blog.delete()
-    messages.success(request, _("Blog deleted successfully."))
+    messages.success(request, _("Blog  deleted successfully."))
     return redirect('blog')
 
 
@@ -233,6 +233,7 @@ def blog_category_update_view(request, slug=None):
 
 
 
+
 # BLOG CATEGORY DELETE VIEW
 
 @login_required
@@ -290,8 +291,8 @@ def contact_add_view(request):
 # CONTACT UPDATE VIEW
 
 @login_required
-def contact_update_view(request, slug=None):
-    obj  = get_object_or_404(Contact, slug=slug)
+def contact_update_view(request, id):
+    obj  = get_object_or_404(Contact, id=id)
     if request.method == 'POST':
         form = ContactForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
@@ -925,6 +926,8 @@ def product_add_view(request):
 
 
 
+
+
 # PRODUCT DELETE VIEW
 
 @login_required
@@ -933,6 +936,7 @@ def product_delete_view(request, slug=None):
     caregory.delete()
     messages.success(request, _("Category deleted successfully."))
     return redirect('product')
+
 
 
 
