@@ -356,6 +356,12 @@ class Patients(models.Model):
     
     def __str__(self):
         return str(self.admin)
+    
+    def delete_url(self):
+        return reverse("patient_delete", args=[str(self.slug)])
+
+    def update_url(self):
+        return reverse("patient_update", args=[str(self.slug)])
     class Meta:
         ordering = ('-timestamp',)
 

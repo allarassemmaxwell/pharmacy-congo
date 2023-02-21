@@ -8,6 +8,7 @@ from django.utils.translation import activate, gettext_lazy as _
 from .models import *
 # from .serializers import *
 # from .utils import *
+from django.utils import timezone
 
 from django.contrib import messages
 
@@ -573,13 +574,80 @@ def testimony_delete_view(request, id):
 
 
 
-# CONTACT  VIEW 
+# PATIENT  VIEW 
 @login_required
 def patient_view(request):
-    contacts    = Contact.objects.all()
-    context = {'contacts': contacts}
+    patients    = Patients.objects.all()
+    context = {'patients': patients}
     template = "dashboard/patient/patient.html"
     return render(request, template, context)
+
+
+
+
+
+
+
+
+# PATIENT ADD VIEW 
+@login_required
+def patient_add_view(request):
+    if request.method == 'POST':
+        form = PatientForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Patient créé avec succès."))
+            return redirect('patient')
+    else:
+        form = PatientForm()
+
+    context = {'form': form}
+    template = "dashboard/patient/patient-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+# PATIENT UPDATE VIEW
+
+
+@login_required
+def patient_update_view(request, slug=None):
+    obj  = get_object_or_404(Patients, slug=slug)
+    if request.method == 'POST':
+        form = PatientForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Patient updated successfully."))
+            return redirect('patient')
+    else:
+        form = PatientForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/patient/patient-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+# PATIENT DELETE VIEW
+
+@login_required
+def patient_delete_view(request, slug=None):
+    patient = get_object_or_404(Patients, slug=slug, active=True)
+    patient.delete()
+    messages.success(request, _("Patient deleted successfully."))
+    return redirect('patient')
+
+
+
+
 
 
 
@@ -708,7 +776,7 @@ def service_view(request):
 
 
 
-# PRODUCT ADD VIEW 
+# SERVICE ADD VIEW 
 @login_required
 def service_add_view(request):
     if request.method == 'POST':
