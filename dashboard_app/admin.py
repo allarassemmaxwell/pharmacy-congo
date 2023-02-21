@@ -206,3 +206,18 @@ admin.site.register(Appointment, AppointmentAdmin)
 
 
 
+
+
+#  PRODUCT ADMIN
+class PatientsAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['reg_no', 'first_name','last_name', 'timestamp', 'updated']
+    list_display_links  = ['first_name',]
+    list_filter         = ['first_name']
+    search_fields       = ['first_name']
+    list_per_page       = 50
+    class Meta:
+        model = Patients
+admin.site.register(Patients, PatientsAdmin)
+
+

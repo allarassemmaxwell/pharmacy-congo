@@ -500,7 +500,7 @@ class ContactForm(forms.ModelForm):
 
 
 
-# CONTACT FORM
+# PROFILE FORM
 class ProfileForm(forms.ModelForm):
     class Meta:
         model  = Profile
@@ -532,4 +532,47 @@ class ProfileForm(forms.ModelForm):
             'instagram':   forms.URLInput(attrs={'class': 'form-control'}),
             'twitter':   forms.URLInput(attrs={'class': 'form-control'}),
             'linked_in':   forms.URLInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+
+# PATIENTS FORM
+class PatientForm(forms.ModelForm):
+    class Meta:
+        model = Patients
+        fields = [
+            "admin",
+            "reg_no",
+            "gender",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "phone",
+            "email",
+            "photo",
+            "age",
+            "address",
+            # "date_admitted",
+            # "last_updated",
+        ]
+        widgets = {
+            # 'admin': forms.HiddenInput(),
+            'reg_no': forms.TextInput(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'photo': forms.FileInput(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'date_admitted': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            # 'last_updated': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
         }

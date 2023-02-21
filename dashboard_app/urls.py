@@ -101,6 +101,9 @@ urlpatterns = [
     path('appointment/prescription/update/<int:id>/', appointment_prescription_update_view, name="appointment_prescription_update"),
 
     path('patient/', patient_view, name="patient"),
+    path('patient/add/', patient_add_view, name="patient_add"),
+    path('patient/delete/<slug:slug>/', patient_delete_view, name="patient_delete"),
+    path('patient/update/<slug:slug>/', patient_update_view, name="patient_update"),
 ]
 
 
