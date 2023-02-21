@@ -1328,6 +1328,29 @@ def appointment_add_view(request):
 
 
 
+# APPOINTMENT UPDATE VIEW FUNCTION
+@login_required
+def appointment_update_view(request, id):
+    obj  = get_object_or_404(Appointment, id=id)
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Appointment Symptom updated successfully."))
+            return redirect('appointment')
+    else:
+        form = AppointmentForm(instance=obj)
+    context = { 
+        'form': form,
+    }
+    template = "dashboard/appointment/appointment-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
 
 
 
@@ -1388,11 +1411,36 @@ def appointment_prescription_add_view(request):
 
 
 
+# APPOINTMENT PRESCRIPTION UPDATE VIEW FUNCTION
+@login_required
+def appointment_prescription_update_view(request, id):
+    obj  = get_object_or_404(AppointmentPrescription, id=id)
+    if request.method == 'POST':
+        form = AppointmentPrescriptionForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Appointment Prescription updated successfully."))
+            return redirect('appointment_prescription')
+    else:
+        form = AppointmentPrescriptionForm(instance=obj)
+    context = { 
+        'form': form,
+    }
+    template = "dashboard/appointment/appointment-prescription-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
 # APPOINTMENT PRESCRIPTION DELETE VIEW
 
 @login_required
-def appointment_prescription_delete_view(request, slug=None):
-    appointment = get_object_or_404(AppointmentPrescription, slug=slug, active=True)
+def appointment_prescription_delete_view(request, id):
+    appointment = get_object_or_404(AppointmentPrescription, id=id, active=True)
     appointment.delete()
     messages.success(request, _("Appointment  Prescription  deleted successfully."))
     return redirect('appointment_prescription')

@@ -497,6 +497,8 @@ class Appointment(models.Model):
 
     def delete_url(self):
         return reverse("appointment_delete", args=[str(self.id)])
+    def update_url(self):
+        return reverse("appointment_update", args=[str(self.id)])
 
 
 
@@ -532,6 +534,12 @@ class AppointmentPrescription(models.Model):
     
     def __str__(self):
         return self.name
+    
+    
+    def delete_url(self):
+        return reverse("appointment_prescription_delete", args=[str(self.id)])
+    def update_url(self):
+        return reverse("appointment_prescription_update", args=[str(self.id)])
 
     class Meta:
         ordering = ('-timestamp',)
