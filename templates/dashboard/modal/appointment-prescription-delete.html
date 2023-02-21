@@ -9,9 +9,9 @@
                 <div class="delete-wrap text-center">
                     <div class="del-icon"><i class="feather-x-circle"></i></div>
                     <h2>Sure you Want to delete</h2>
-                    <p>“{{ appointmentPrescription.name }}”</p>
+                    <p>“{{ prescription.appointment.first_name }} {{ prescription.appointment.last_name }}”</p>
                     <div class="submit-section">
-                        <a href="{{ appointmentPrescription.delete_url }}" class="btn btn-success me-2">Yes</a>
+                        <a href="{{ prescription.delete_url }}" class="btn btn-success me-2">Yes</a>
                         <a href="#" class="btn btn-danger" data-bs-dismiss="modal">No</a>
                     </div>
                 </div>

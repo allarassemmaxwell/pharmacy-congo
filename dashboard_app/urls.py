@@ -92,12 +92,13 @@ urlpatterns = [
     path('appointment/', appointment_view, name="appointment"),
     path('appointment/add', appointment_add_view, name="appointment_add"),
     path('appointment/delete/<str:id>/', appointment_delete_view, name="appointment_delete"),
+    path('appointment/update/<str:id>/', appointment_update_view, name="appointment_update"),
 
 
     path('appointment/prescription/', appointment_prescription_view, name="appointment_prescription"),
     path('appointment/prescription/add/', appointment_prescription_add_view, name="appointment_prescription_add"),
-    path('appointment/prescription/delete/<slug:slug>/', appointment_prescription_delete_view, name="appointment_prescription_delete"),
-
+    path('appointment/prescription/delete/<int:id>/', appointment_prescription_delete_view, name="appointment_prescription_delete"),
+    path('appointment/prescription/update/<int:id>/', appointment_prescription_update_view, name="appointment_prescription_update"),
 
     path('patient/', patient_view, name="patient"),
 ]
