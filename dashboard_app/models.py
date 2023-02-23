@@ -596,7 +596,7 @@ class ServiceCategory(models.Model):
 
 
 
-# BLOG MODEL
+# SERVICE MODEL
 class Service(models.Model):
     category    = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
     name        = models.CharField(_("Name"), max_length=255, null=False, blank=False)
@@ -631,56 +631,154 @@ class Service(models.Model):
 
 
 
+# INVOICE REPORT MODEL
+class InvoiceReport(models.Model):
+    STATUS_CHOICES=(
+        ('Payé','Payé'),
+        ('Impayé','Impayé'),
+        ('En Attente','En Attente'),
+    )
+    
+    inv_no      = models.CharField(_("Numero de Facture"),max_length=30,null=True,blank=True,unique=True)
+    prod_name   = models.CharField(_("Nom de Produit"),max_length=30,null=True,blank=True,unique=True)
+    prod_photo  = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    
+    def __str__(self):
+        return str(self.prod_name)
+
+    class Meta:
+        ordering = ('-timestamp',)
 
 
 
-# CONTACT MODEL
-# class Contact(models.Model):
-#     first_name = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-#     last_name  = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
-#     email      = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-#     subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
-#     phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
-#     message    = models.TextField(_("Message"), null=False, blank=False)
-#     active     = models.BooleanField(_("Active"), default=True)
-#     timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
-#     updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
 
+
+
+
+
+
+
+
+# INCOME REPORT MODEL
+class IncomeReport(models.Model):
+    id                 = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    doctor_name        = models.CharField(_("Nom Medecin"),max_length=30,null=True,blank=True,unique=True)
+    speciality         = models.CharField(_("Specialité Medecin"),max_length=30,null=True,blank=True,unique=True)
+    date_integration   = models.DateField(_("Date de Naissance"), blank=True, null=True)
+    num_of_appointment = models.PositiveIntegerField(_("Nombre RV"), null=True, blank=True, default=1)
+    total_income       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    account_status     = models.BooleanField(_("Status du Compte"), default=False)
+    created_at         = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active             = models.BooleanField(_("Est actif"), default=True)
+    timestamp          = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated            = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug               = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    
+    def __str__(self):
+        return str(self.doctor_name)
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+
+
+# APPOINTMENT REPORT MODEL
+class AppointmentReport(models.Model):
+    id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    patient     =  models.ForeignKey(Patients, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
+    # doctor    = models.ForeignKey(Doctor, on_delete=models.SET_NULL, blank=True, null=True, related_name="doctor") 👉  doctor to create after
+    disease     = models.CharField(_("Nom Maladie"),max_length=30,null=True,blank=True,unique=True)
+    amount      = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    
+    def __str__(self):
+        return str(self.patient)
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+# TRANSACTION REPORT MODEL 👉 model to check 🔥
+
+# class TransactionReport(models.Model):
+#     STATUS_CHOICES=(
+#         ('Payé','Payé'),
+#         ('Impayé','Impayé'),
+#         ('En Attente','En Attente'),
+#     )
+#     id          = models.UUIDField(primary_key=True, default=uuid.uuid4)
+#     inv_no      = models.ForeignKey(InvoiceReport, on_delete=models.SET_NULL, null=True, related_name="invoice_report") 
+#     patient     = models.ForeignKey(Patients, on_delete=models.SET_NULL, null=True, related_name="patient")
+#     birth_date  = models.DateField(_("Date de Naissance"), null=True)
+#     total       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=9, null=False, blank=False)
+#     status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+#     created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+#     active      = models.BooleanField(_("Est actif"), default=True)
+#     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+#     updated     = models.DateTimeField(_("Modifié le"), auto_now=True)
+#     slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, unique=False)
+    
 #     def __str__(self):
-#         return self.email
-    
-#     def delete_url(self):
-#             return reverse("contact_delete", args=[str(self.slug)])
+#         return str(self.patient)
 
-#     def update_url(self):
-#         return reverse("contact_update", args=[str(self.slug)])
 #     class Meta:
-#         ordering = ("-timestamp",)
+#         ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+
+
+# USER REPORT MODEL 👉 model to check 🔥
+
+# class PatientReport(models.Model):
+#     id                 = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+#     patient            =  models.ForeignKey(Patients, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
+#     # doctor    = models.ForeignKey(Doctor, on_delete=models.SET_NULL, blank=True, null=True, related_name="doctor") 👉  doctor to create after
+#     num_of_appointment = models.PositiveIntegerField(_("Nombre RV"), null=True, blank=True, default=1)
+#     total              = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+#     created_at         = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+#     active             = models.BooleanField(_("Est actif"), default=True)
+#     timestamp          = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+#     updated            = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+#     slug               = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     
-    
-    
-
-# def create_contact_slug(instance, new_slug=None):
-#     slug = slugify(instance.name)
-#     if new_slug is not None:
-#         slug = new_slug
-#     ourQuery = Contact.objects.filter(slug=slug)
-#     exists = ourQuery.exists()
-#     if exists:
-#         new_slug = "%s-%s" % (slug, ourQuery.first().id)
-#         return create_contact_slug(instance, new_slug=new_slug)
-#     return slug
-
-# def presave_contact(sender, instance, *args, **kwargs):
-#     if not instance.slug:
-#         instance.slug = create_contact_slug(instance)
-# pre_save.connect(presave_contact, sender=Contact)
-
-
-
-
-
-
-
-
+#     def __str__(self):
+#         return str(self.patient)

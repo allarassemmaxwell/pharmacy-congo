@@ -1602,3 +1602,94 @@ def sale_update_view(request, id):
 
 
 
+
+
+
+
+# APPOINTMENT REPORT VIEWS
+
+@login_required
+def appointment_report_view(request):
+    # sales    = Sale.objects.all()
+    # context = {
+    #     'sales': sales,
+    # }
+    template = "dashboard/report/appointment-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+
+# INCOME REPORT VIEWS
+
+@login_required
+def income_report_view(request):
+    # sales    = Sale.objects.all()
+    # context = {
+    #     'sales': sales,
+    # }
+    template = "dashboard/report/income-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE REPORT VIEWS
+
+@login_required
+def invoice_report_view(request):
+    # sales    = Sale.objects.all()
+    # context = {
+    #     'sales': sales,
+    # }
+    template = "dashboard/report/invoice-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+
+# USER REPORT VIEWS
+
+@login_required
+def user_report_view(request):
+    # sales    = Sale.objects.all()
+    # context = {
+    #     'sales': sales,
+    # }
+    template = "dashboard/report/user-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# TRANSACTION  VIEWS
+
+@login_required
+def transaction_view(request):
+    # sales    = Sale.objects.all()
+    # context = {
+    #     'sales': sales,
+    # }
+    template = "dashboard/report/transaction.html"
+    return render(request, template)
