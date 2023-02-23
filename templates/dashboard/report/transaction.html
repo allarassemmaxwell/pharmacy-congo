@@ -1,0 +1,468 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}About{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+      <div class="page-header">
+        <div class="row align-items-center">
+          <div class="col-md-12 d-flex justify-content-end">
+            <div class="doc-badge me-3">Total Transactions <span class="ms-1">48</span>
+            </div>
+            <div class="SortBy">
+              <div class="selectBoxes order-by">
+                <p class="mb-0">
+                  <img src="assets/img/icon/sort.png" class="me-2" alt="icon"> Order by
+                </p>
+                <span class="down-icon">
+                  <i class="feather-chevron-down"></i>
+                </span>
+              </div>
+              <div id="checkBox">
+                <form action="transaction.html">
+                  <p class="lab-title">Order By </p>
+                  <label class="custom_radio w-100">
+                    <input type="radio" name="sort">
+                    <span class="checkmark"></span> Invoice Number </label>
+                  <label class="custom_radio w-100">
+                    <input type="radio" name="sort">
+                    <span class="checkmark"></span> Total Amount </label>
+                  <label class="custom_radio w-100 mb-4">
+                    <input type="radio" name="sort">
+                    <span class="checkmark"></span> ID </label>
+                  <p class="lab-title">Sort By</p>
+                  <label class="custom_radio w-100">
+                    <input type="radio" name="sort">
+                    <span class="checkmark"></span> Ascending </label>
+                  <label class="custom_radio w-100 mb-4">
+                    <input type="radio" name="sort">
+                    <span class="checkmark"></span> Descending </label>
+                  <button type="submit" class="btn w-100 btn-primary">Apply</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header border-bottom-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title">Transaction</h5>
+                </div>
+                <div class="col-auto d-flex">
+                  <div class="form-custom me-2">
+                    <div id="tableSearch" class="dataTables_wrapper"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="datatable table table-borderless hover-table" id="data-table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Invoice Number</th>
+                      <th>Patient</th>
+                      <th>Date</th>
+                      <th>Total Amount</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0001</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-07.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Bess Twishes</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#8774</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0002</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-04.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Bess Twishes</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0003</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-02.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Abdul Aziz Lazis</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0004</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-05.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Alex Siauw</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0005</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-13.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Gobbs Siauw</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0006</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-11.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Deborah</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0007</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-03.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Sofia</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <a href="transaction.html#" data-bs-toggle="modal" data-bs-target="#transaction">
+                          <span class="text-primary user-name">INV 0008</span>
+                        </a>
+                      </td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-13.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Paul</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>$330.00</td>
+                      <td>
+                        <span class="badge bg-badge-grey text-success">
+                          <i class="fas fa-circle me-1"></i> Paid </span>
+                      </td>
+                      <td class="text-end">
+                        <div class="actions">
+                          <a class="text-danger" href="transaction.html#" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="feather-trash-2"></i> Delete </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="tablepagination" class="dataTables_wrapper"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade contentmodal" id="transaction" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content doctor-profile">
+        <div class="modal-header border-bottom-0 justify-content-end pb-0">
+          <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+            <i class="feather-x-circle"></i>
+          </button>
+        </div>
+        <div class="modal-body pt-0">
+          <div class="rating-wrapper">
+            <form action="transaction.html">
+              <h4 class="text-center mb-4">Transaction Details</h4>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Consultation ID </h6>
+                    <p>#454445</p>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Paid On </h6>
+                    <p>14 Nov 2022 05:30 PM</p>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Payment Mode</h6>
+                    <p>Online</p>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Consultation Fees</h6>
+                    <p>$300.00</p>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Tax Fees</h6>
+                    <p>$30.00</p>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="mem-info">
+                    <h6>Total Fees</h6>
+                    <p>$300.00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-section">
+                <button type="submit" class="btn btn-primary btn-download">Download Invoice</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade contentmodal" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content doctor-profile">
+        <div class="modal-header border-bottom-0 justify-content-end">
+          <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+            <i class="feather-x-circle"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-wrap text-center">
+            <div class="del-icon">
+              <i class="feather-x-circle"></i>
+            </div>
+            <h2>Sure you Want to delete</h2>
+            <p>“Transaction”</p>
+            <div class="submit-section">
+              <a href="transaction.html" class="btn btn-success me-2">Yes</a>
+              <a href="transaction.html#" class="btn btn-danger" data-bs-dismiss="modal">No</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}

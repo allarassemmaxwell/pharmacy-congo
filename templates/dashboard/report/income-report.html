@@ -1,0 +1,310 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}About{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <div class="content container-fluid content-wrap">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title">Income Report</h5>
+                </div>
+                <div class="col-auto">
+                  <div class="bookingrange btn btn-white btn-sm">
+                    <div class="cal-ico">
+                      <i class="feather-calendar mr-1"></i>
+                      <span>Select Date</span>
+                    </div>
+                    <div class="ico">
+                      <i class="fas fa-chevron-left"></i>
+                      <i class="fas fa-chevron-right"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="w-100">
+                <div class="income-rev">Total Revenue : <span>$451254K</span>
+                </div>
+              </div>
+              <div id="totincome-report"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="app-listing">
+            <div class="custom-list">
+              <div class="SortBy">
+                <div class="selectBoxes order-by">
+                  <p class="mb-0">
+                    <img src="assets/img/icon/sort.png" class="me-2" alt="icon"> Order by
+                  </p>
+                  <span class="down-icon">
+                    <i class="feather-chevron-down"></i>
+                  </span>
+                </div>
+                <div id="checkBox">
+                  <form action="income-report.html">
+                    <p class="lab-title">Order By </p>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> ID </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Amount </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Date </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Number of Appointments </label>
+                    <p class="lab-title">Sort By</p>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span> Ascending </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span> Descending </label>
+                    <button type="submit" class="btn w-100 btn-primary">Apply</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="import-list">
+              <a href="income-report.html#">
+                <i class="feather-download"></i> Import </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title">Doctors</h5>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="datatable table table-borderless hover-table" id="data-tables">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Doctor</th>
+                      <th>Specialities</th>
+                      <th>Member Since</th>
+                      <th>Number of Appointments</th>
+                      <th>Total Income</th>
+                      <th>Account Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a class="avatar-pos" href="income-report.html#" data-bs-target="#doctorlist" data-bs-toggle="modal">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-05.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html" class="user-name">Dr. Rayan</a>
+                        </h2>
+                      </td>
+                      <td>Gyanoclogist</td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>545</td>
+                      <td>$300.00</td>
+                      <td>
+                        <label class="toggle-switch" for="status1">
+                          <input type="checkbox" class="toggle-switch-input" id="status1">
+                          <span class="toggle-switch-label">
+                            <span class="toggle-switch-indicator"></span>
+                          </span>
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#8774</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a class="avatar-pos" href="income-report.html#">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-02.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html" class="user-name">Dr. Monroe</a>
+                        </h2>
+                      </td>
+                      <td>Hair Specialities</td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>654</td>
+                      <td>$300.00</td>
+                      <td>
+                        <label class="toggle-switch" for="status2">
+                          <input type="checkbox" class="toggle-switch-input" id="status2" checked>
+                          <span class="toggle-switch-label">
+                            <span class="toggle-switch-indicator"></span>
+                          </span>
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a class="avatar-pos" href="income-report.html#">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-07.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html" class="user-name">Dr. Lester</a>
+                        </h2>
+                      </td>
+                      <td>Orthopaedics</td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>787</td>
+                      <td>$300.00</td>
+                      <td>
+                        <label class="toggle-switch" for="status3">
+                          <input type="checkbox" class="toggle-switch-input" id="status3" checked>
+                          <span class="toggle-switch-label">
+                            <span class="toggle-switch-indicator"></span>
+                          </span>
+                        </label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a class="empty-user" href="profile.html">
+                            <i class="feather-user"></i>
+                          </a>
+                          <a href="profile.html" class="user-name">Dr. Clint</a>
+                        </h2>
+                      </td>
+                      <td>Orthopaedics </td>
+                      <td>
+                        <span class="user-name">26 November 2022 </span>
+                        <span class="d-block">12/20/2022</span>
+                      </td>
+                      <td>454</td>
+                      <td>$300.00</td>
+                      <td>
+                        <label class="toggle-switch" for="status4">
+                          <input type="checkbox" class="toggle-switch-input" id="status4" checked>
+                          <span class="toggle-switch-label">
+                            <span class="toggle-switch-indicator"></span>
+                          </span>
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="tablepagination" class="dataTables_wrapper"></div>
+    </div>
+  </div>
+
+
+
+
+<div class="modal fade contentmodal" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header">
+                <h3 class="mb-0">Edit Appointment</h3>
+                <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                    <div class="add-wrap">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" value="Community pharmacy">
+                            <label class="focus-label">Pharmacy Name<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="form-group">
+                            <select class="select">
+                                <option>Select Category*</option>
+                                <option selected>Pharmacy</option>
+                                <option>Hospital</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" value="96 Red Hawk Road Cyrus, MN 56323">
+                            <label class="focus-label">Pharmacy Address <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="change-photo-btn">
+                            <div><i class="feather-upload"></i>
+                                <p>Upload File</p>
+                            </div>
+                            <input type="file" class="upload">
+                            <span class="file-upload-text"></span>
+                        </div>
+                        <p class="file-name text-success">Product image.jpg <a href="#" class="text-danger"><i
+                                    class="feather-x"></i></a></p>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" value="Patinson">
+                            <label class="focus-label">Administrator Name <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" value="8789904950">
+                            <label class="focus-label">Phone Name <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary btn-save">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}

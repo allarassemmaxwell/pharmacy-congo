@@ -1,0 +1,169 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}About{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="page-wrapper">
+    <div class="content container-fluid content-wrap">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="app-listing">
+            <div class="custom-list">
+              <div class="SortBy">
+                <div class="selectBoxes order-by">
+                  <p class="mb-0">
+                    <img src="assets/img/icon/sort.png" class="me-2" alt="icon"> Order by
+                  </p>
+                  <span class="down-icon">
+                    <i class="feather-chevron-down"></i>
+                  </span>
+                </div>
+                <div id="checkBox">
+                  <form action="user-reports.html">
+                    <p class="lab-title">Order By </p>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> ID </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Amount </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Date </label>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span> Number of Appointments </label>
+                    <p class="lab-title">Sort By</p>
+                    <label class="custom_radio w-100">
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span> Ascending </label>
+                    <label class="custom_radio w-100 mb-3">
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span> Descending </label>
+                    <button type="submit" class="btn w-100 btn-primary">Apply</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="import-list">
+              <a href="user-reports.html#">
+                <i class="feather-download"></i> Import </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header border-bottom-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title">User Reports</h5>
+                </div>
+                <div class="col-auto d-flex">
+                  <div class="form-custom me-2">
+                    <div id="tableSearch" class="dataTables_wrapper"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="datatable table table-borderless hover-table" id="data-table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Patient Name</th>
+                      <th>Number of Appointments</th>
+                      <th>Total Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-07.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Bess Twishes</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>54</td>
+                      <td>30</td>
+                    </tr>
+                    <tr>
+                      <td>#8774</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-04.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Bess Twishes</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>$2330.00</td>
+                      <td>$330.00</td>
+                    </tr>
+                    <tr>
+                      <td>#4546</td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="profile.html">
+                            <img class="avatar avatar-img" src="assets/img/profiles/avatar-02.jpg" alt="User Image">
+                          </a>
+                          <a href="profile.html">
+                            <span class="user-name">Abdul Aziz Lazis</span>
+                          </a>
+                        </h2>
+                      </td>
+                      <td>54</td>
+                      <td>$9330.00</td>
+                    </tr>
+                    
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="tablepagination" class="dataTables_wrapper"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}
