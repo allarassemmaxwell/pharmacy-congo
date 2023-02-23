@@ -221,3 +221,25 @@ class PatientsAdmin(admin.ModelAdmin):
 admin.site.register(Patients, PatientsAdmin)
 
 
+
+
+
+
+
+
+
+
+
+#  SALE ADMIN
+class SaleAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['reference', 'product', 'quantity', 'total', 'timestamp', 'updated']
+    list_display_links  = ['product',]
+    list_filter         = ['reference', 'product']
+    search_fields       = ['product']
+    list_per_page       = 50
+    class Meta:
+        model = Sale
+admin.site.register(Sale, SaleAdmin)
+
+

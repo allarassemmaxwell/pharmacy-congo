@@ -424,7 +424,12 @@ class Sale(models.Model):
     
     
     def __str__(self):
-        return self.name
+        return self.reference
+    
+    def delete_url(self):
+        return reverse("sale_delete", args=[str(self.id)])
+    def update_url(self):
+        return reverse("sale_update", args=[str(self.id)])
 
     class Meta:
         ordering = ('-timestamp',)

@@ -1512,3 +1512,93 @@ def appointment_prescription_delete_view(request, id):
     appointment.delete()
     messages.success(request, _("Appointment  Prescription  deleted successfully."))
     return redirect('appointment_prescription')
+
+
+
+
+
+
+
+
+
+
+# SALE VIEWS
+
+@login_required
+def sale_view(request):
+    sales    = Sale.objects.all()
+    context = {
+        'sales': sales,
+    }
+    template = "dashboard/sale/sale.html"
+    return render(request, template, context)
+
+
+
+
+
+
+# SALE ADD VIEW 
+@login_required
+def sale_add_view(request):
+    if request.method == 'POST':
+        form = SaleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Vente créé avec succès."))
+            return redirect('sale')
+    else:
+        form = SaleForm()
+
+    context = {'form': form}
+    template = "dashboard/sale/sale-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+# SALE DELETE VIEW
+
+@login_required
+def sale_delete_view(request, id=None):
+    sale = get_object_or_404(Sale, id=id)
+    sale.delete()
+    messages.success(request, _("Sale deleted successfully."))
+    return redirect('sale')
+
+
+
+
+
+
+
+
+
+# SALE UPDATE VIEW
+
+@login_required
+def sale_update_view(request, id):
+    obj  = get_object_or_404(Sale, id=id)
+    if request.method == 'POST':
+        form = SaleForm(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Sale updated successfully."))
+            return redirect('sale')
+    else:
+        form = SaleForm(instance=obj)
+    context = { 
+        'form': form
+    }
+    template = "dashboard/sale/sale-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+

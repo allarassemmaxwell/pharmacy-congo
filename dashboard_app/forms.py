@@ -576,3 +576,33 @@ class PatientForm(forms.ModelForm):
             # 'date_admitted': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             # 'last_updated': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
         }
+
+
+
+
+
+
+
+
+
+
+
+
+# SALE  FORM
+class SaleForm(forms.ModelForm):
+    class Meta:
+        model  = Sale
+        fields = [
+            "reference",
+            "product",
+            "quantity",
+            "total",
+            "recu"
+        ]
+        widgets = {
+            'reference':  forms.TextInput(attrs={'class': 'form-control'}),
+            'product':   forms.Select(attrs={'class': 'form-control'}),
+            'quantity':  forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'total':  forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'recu': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
