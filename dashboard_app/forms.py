@@ -45,26 +45,25 @@ class CustomSignupForm(UserCreationForm):
 
 
 
-# BRANCH RESPONSABILITY FORM
 
+# BRANCH FORM
 class UserForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].required    = True
-        self.fields['last_name'].required = True
-        self.fields['email'].required   = True
     class Meta:
         model  = User
         fields = [
             "first_name",
             "last_name",
-            "email"
+            "email",
+            "role"
         ]
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'role':     forms.Select(attrs={'class': 'form-control'}),
         }
+
+
 
 
 
@@ -141,6 +140,12 @@ class ProductForm(forms.ModelForm):
     #     if since > date.today():
     #         self.add_error('since', "Année doit être inférieure à la date d'aujourd'hui.")
     #     return cleaned_data
+
+
+
+
+
+
 
 
 # BRANCH FORM
@@ -487,7 +492,7 @@ class ContactForm(forms.ModelForm):
             'email':     forms.EmailInput(attrs={'class': 'form-control'}),
             'subject':   forms.TextInput(attrs={'class': 'form-control'}),
             'phone':   forms.TextInput(attrs={'class': 'form-control'}),
-            'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'cols':30}),
+            'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
         }
 
 
@@ -521,17 +526,17 @@ class ProfileForm(forms.ModelForm):
         ]
         widgets = {
             'phone':    forms.TextInput(attrs={'class': 'form-control'}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
-            'country':     forms.Select(attrs={'class': 'form-control'}),
-            'city':   forms.TextInput(attrs={'class': 'form-control'}),
+            # 'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
+            'date_of_birth':    forms.DateInput(attrs={'class': 'form-control', 'data-date-format':'yyyy-mm-dd', 'data-provide':'datepicker', 'data-date-autoclose':'true'}, format='%Y-%m-%d'),
+            'country':   forms.Select(attrs={'class': 'form-control'}),
+            'city':      forms.TextInput(attrs={'class': 'form-control'}),
             'address':   forms.TextInput(attrs={'class': 'form-control'}),
-            'gender':   forms.Select(attrs={'class': 'form-control'}),
-            'position':   forms.TextInput(attrs={'class': 'form-control'}),
-            # 'email':     forms.EmailInput(attrs={'class': 'form-control'}),
-            'facebook':   forms.URLInput(attrs={'class': 'form-control'}),
-            'instagram':   forms.URLInput(attrs={'class': 'form-control'}),
+            'gender':    forms.Select(attrs={'class': 'form-control'}),
+            'position':  forms.TextInput(attrs={'class': 'form-control'}),
+            'facebook':  forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram': forms.URLInput(attrs={'class': 'form-control'}),
             'twitter':   forms.URLInput(attrs={'class': 'form-control'}),
-            'linked_in':   forms.URLInput(attrs={'class': 'form-control'}),
+            'linked_in': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
 

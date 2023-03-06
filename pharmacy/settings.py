@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # APPS INSTALLATION
     'landing_app.apps.LandingAppConfig',
     'dashboard_app.apps.DashboardAppConfig',
+    'patient_app.apps.PatientAppConfig',
 
     'crispy_forms', # pip install django-crispy-forms
     'rest_framework', # pip install djangorestframework

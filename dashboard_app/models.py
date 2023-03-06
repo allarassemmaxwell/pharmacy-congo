@@ -131,8 +131,7 @@ class Profile(models.Model):
     city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-    position      = models.CharField(_("Pays"), max_length=255, null=True, blank=True)
-    # email         = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    position      = models.CharField(_("Position"), max_length=255, null=True, blank=True)
     facebook      = models.URLField(_("Facebook Link"), max_length=255, null=True, blank=True)
     instagram     = models.URLField(_("Instagram Link"), max_length=255, null=True, blank=True)
     twitter       = models.URLField(_("Twitter Link"), max_length=255, null=True, blank=True)
@@ -208,7 +207,7 @@ class Stock(models.Model):
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
-        return self.supplier.name
+        return str(self.timestamp)
 
     def delete_url(self):
         return reverse("stock_delete", args=[str(self.id)])
