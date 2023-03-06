@@ -673,16 +673,20 @@ def user_view(request):
 @login_required
 def user_add_view(request):
     if request.method == 'POST':
+        print("========== 0 =======")
         form = UserForm(request.POST)
         profile = ProfileForm(request.POST, request.FILES)
         if form.is_valid() and profile.is_valid():
+            print("========= 1 ========")
+            user = form.save(commit=False)
+            user.set_password="Maxwell 1"
             user = form.save()
+            print("======== 2 =========")
             profile = profile.save(commit=False)
-            created_by = User.objects.get(email=request.user.email)
+            print("========= 3 ========")
+            print(profile)
             profile.user = user
-            profile.created_by = created_by
             profile.save()
-            # Notification.objects.create(name="Cet utilisateur a ajouté  un utilisateur: %s %s"%(user.first_name, user.last_name), sender=request.user, user=user)
             messages.success(request, _("Utilisateur/Utilisatrice créé(e) avec succès."))
             return redirect('user')
     else:

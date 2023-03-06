@@ -10,27 +10,88 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h5 class="mb-3">Add Blog</h5>
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                <h5 class="mb-3">Add User</h5>
+                <form class="custom-validation" method="POST">{% csrf_token %}
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.full_name|as_crispy_field }}
+                                {{ form.first_name|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.image|as_crispy_field }}
+                                {{ form.last_name|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.occupation|as_crispy_field }}
+                                {{ form.email|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.description|as_crispy_field }}
+                                {{ form.role|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.photo|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.phone|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.date_of_birth|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.country|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.city|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.address|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.gender|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.position|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.facebook|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.instagram|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.twitter|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ profile.linked_in|as_crispy_field }}
                             </div>
                         </div>
                     </div>
