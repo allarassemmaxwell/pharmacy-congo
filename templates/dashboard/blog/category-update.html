@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Mettre à jour{% endblock %}
 
 
 {% block content %}
@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 {% include 'message.html' %}
-                <h5 class="mb-3">Update Category</h5>
+                <h5 class="mb-3">Mettre à jour la catégorie</h5>
                 <form class="custom-validation" method="POST">{% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Update</button>
+                    <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>
                 </form>
             </div>
         </div>

@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Catégorie de service{% endblock %}
 
 
 {% block extra_css %}
@@ -24,7 +24,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12 d-flex justify-content-end">
                     <a href="#" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                            class="feather-plus-square me-1"></i> Ajouter Categorie</a>
+                            class="feather-plus-square me-1"></i> Ajouter Catégorie</a>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Service categorie</h5>
+                                <h5 class="card-title">Catégorie de service</h5>
                             </div>
                             <div class="col-auto custom-list d-flex">
                                 <div class="form-custom me-2">
@@ -65,11 +65,11 @@
                                             <td class="text-end">
                                                 <div class="actions">
                                                     <a href="{{ category.update_url }}" class="text-black">
-                                                        <i class="feather-edit-3 me-1"></i> Edit
+                                                        <i class="feather-edit-3 me-1"></i> Modifier
                                                     </a>
                                                     <a class="text-danger" href="#" data-bs-toggle="modal"
                                                         data-bs-target="#serviceCategoryDeleteModal-{{ forloop.counter }}">
-                                                        <i class="feather-trash-2 me-1"></i> Delete
+                                                        <i class="feather-trash-2 me-1"></i> Supprimer
                                                     </a>
                                                 </div>
                                             </td>
@@ -92,7 +92,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content doctor-profile">
             <div class="modal-header">
-                <h3 class="mb-0">Add Category</h3>
+                <h3 class="mb-0">Ajouter Catégorie</h3>
                 <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
                         class="feather-x-circle"></i></button>
             </div>

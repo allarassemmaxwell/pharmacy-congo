@@ -55,7 +55,7 @@ from .forms import *
 def dashboard_view(request):
     context = {
     }
-    template = "dashboard/index.html"
+    template = "patient/index.html"
     return render(request,template,context)
 
     

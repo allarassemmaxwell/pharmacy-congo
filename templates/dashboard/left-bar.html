@@ -3,31 +3,35 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-
-                <li class="menu-title"><span>Main</span></li>
-
                 {% if request.user.role == 'Admin' %}
-                    <li class="submenu">
-                        <a href="#"><i class="feather-file-text"></i> <span> Produit</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'product_category' %}">Categories</a></li>
-                             <li><a href="{% url 'product_image' %}">Image</a></li>
-                            <li><a href="{% url 'product' %}">Produit</a></li>
-                        </ul>
+                    <li class="">
+                        <a href="{% url 'dashboard' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
                     </li>
+                    <li class="menu-title"><span>Produits</span></li>
+                    <li class="">
+                        <a href="{% url 'product_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'product_image' %}"><i class="feather-grid"></i> <span>Image</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'product' %}"><i class="feather-grid"></i> <span>Produit</span></a>
+                    </li>
+
 
 
                     <li class="menu-title">
                         <span>Service</span>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="feather-file-plus"></i> <span> Service</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'service_category' %}">Categories</a></li>
-                            <li><a href="{% url 'service' %}">Service</a></li>
-                        </ul>
+                    <li class="">
+                        <a href="{% url 'service_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'service' %}"><i class="feather-grid"></i> <span>Service</span></a>
+                    </li>
+
+                    <li class="menu-title">
+                        <span></span>
                     </li>
 
 
@@ -47,31 +51,29 @@
                         <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Patient </span></a>
                     </li>
 
+
+
                     <li class="menu-title">
                         <span>Rendez-vous</span>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="feather-shopping-cart"></i> <span> Rendez-vous</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'appointment_symptom' %}">Symptôme</a></li>
-                            <li><a href="{% url 'appointment' %}">Rendez-vous</a></li>
-                            <li><a href="{% url 'appointment_prescription' %}">Ordonnance</a></li>
-                        </ul>
+                    <li class="">
+                        <a href="{% url 'appointment_symptom' %}"><i class="feather-grid"></i> <span>Symptôme</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment' %}"><i class="feather-grid"></i> <span>Rendez-vous</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment_prescription' %}"><i class="feather-grid"></i> <span>Ordonnance</span></a>
                     </li>
 
 
-                    <li class="submenu">
-                        <a href="#"><i class="feather-file-text"></i> <span> Vente</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'sale' %}">Vente</a></li>
-                            <!--<li><a href="appointment-report.html">Appointment Report</a></li>
-                            <li><a href="income-report.html">Income Report</a></li>
-                            <li><a href="invoice-report.html">Invoice Report</a></li>
-                            <li><a href="user-reports.html">Users Report</a></li>-->
-                        </ul>
+                    <li class="menu-title">
+                        <span></span>
                     </li>
+                    <li class="">
+                        <a href="{% url 'sale' %}"><i class="feather-grid"></i> <span>Vente</span></a>
+                    </li>
+
 
                     <li class="submenu">
                         <a href="#"><i class="feather-file-text"></i> <span> Report</span> <span
@@ -88,24 +90,45 @@
                         <a href="{% url 'transaction' %}"><i class="feather-grid"></i> <span>Transaction</span></a>
                     </li>
 
+
+
+
                     <li class="menu-title">
                         <span>Blog</span>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="feather-grid"></i> <span> Blog</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'blog_category' %}">Catégorie</a></li>
-                            <li><a href="{% url 'blog' %}">Blog</a></li>
-                        </ul>
+                    <li class="">
+                        <a href="{% url 'blog_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'blog' %}"><i class="feather-grid"></i> <span>Blog</span></a>
                     </li>
 
 
+                    <li class="menu-title">
+                        <span>Newsletter</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'newsletter_email' %}"><i class="feather-grid"></i> <span>Email Envoyé</span></a>
+                    </li>
+
+
+                    <li class="menu-title">
+                        <span>Contact</span>
+                    </li>
                     <li class="">
                         <a href="{% url 'contact' %}"><i class="feather-grid"></i> <span>Contact</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
+                        <a href="{% url 'newsletter_email' %}"><i class="feather-grid"></i> <span>Contact Repondu</span></a>
+                    </li>
+
+
+
+                    <li class="menu-title">
+                        <span></span>
                     </li>
 
                     <li class="">
@@ -118,7 +141,10 @@
 
                 {% if request.user.role == 'Patient' %}
                     <li class="">
-                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Rendez-vous </span></a>
+                        <a href="{% url 'patient:patient' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'patient:patient' %}"><i class="feather-grid"></i> <span>Rendez-vous </span></a>
                     </li>
                     <li class="">
                         <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Symptôme </span></a>

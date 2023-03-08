@@ -16,11 +16,13 @@ from .models import *
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        if instance.is_superuser:
+            Profile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    if instance.is_superuser:
+        instance.profile.save()
 
 
 
@@ -191,6 +193,33 @@ def presave_appoint_symt(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_appoint_symt_slug(instance)
 pre_save.connect(presave_appoint_symt, sender=AppointmentSymptom)
+
+
+
+
+
+
+
+
+
+
+
+def create_patient_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Patient.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_patient_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_patient(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_patient_slug(instance)
+pre_save.connect(presave_patient, sender=Patient)
+
 
 
 

@@ -49,10 +49,10 @@
                             <img src="{% static 'admin/img/logo.png' %}" class="img-fluid" alt="Logo">
                         </div>
                         <h3>Login</h3>
-                        <p class="account-subtitle">login to your account to continue</p>
+                        <p class="account-subtitle">Connectez-vous à votre compte pour continuer</p>
                         <form method="POST">{% csrf_token %}
                             {% if form.errors %}
-                                <div class="alert alert-danger" role="alert">Incorrect email or password
+                                <div class="alert alert-danger" role="alert">Email ou mot de passe incorrect
                                 </div>
                             {% endif %}
                             {% include 'message.html' %}
@@ -71,14 +71,14 @@
                                         </label> -->
                                     </div>
                                     <div class="col-6 text-end">
-                                        <a class="forgot-link" href="{% url 'account_reset_password' %}">Forgot Password ?</a>
+                                        <a class="forgot-link" href="{% url 'account_reset_password' %}">Mot de passe oublié ?</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary" type="submit">Login</button>
+                                <button class="btn btn-primary" type="submit">Connexion</button>
                             </div>
-                            <div class="dont-have">Don't have an account? <a href="{% url 'account_signup' %}">Sign up</a></div>
+                            <div class="dont-have">Je n'ai pas de compte? <a href="{% url 'account_signup' %}">S'inscrire</a></div>
                             <!-- <div class="login-or">
                                 <span class="or-line"></span>
                                 <p class="span-or">or login with </p>

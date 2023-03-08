@@ -11,8 +11,8 @@
         <div class="row">
             <div class="col-md-12">
                 {% include 'message.html' %}
-                <h5 class="mb-3">Update Newsletter</h5>
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                <h5 class="mb-3">Mettre à jour l'abonné(e)</h5>
+                <form class="custom-validation" method="POST">{% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group form-focus">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Update</button>
+                    <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>
                 </form>
             </div>
         </div>
