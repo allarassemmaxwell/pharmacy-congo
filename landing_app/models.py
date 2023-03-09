@@ -8,6 +8,7 @@ import uuid
 from django.db import models
 from django.db.models.fields import DateField
 from django_countries.fields import CountryField
+# from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db.models.signals import pre_save, post_save
