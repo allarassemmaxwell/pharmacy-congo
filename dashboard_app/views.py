@@ -415,6 +415,21 @@ def newsletter_delete_view(request, id):
 
 
 
+
+# BLOG VIEW 
+@login_required
+def newsletter_email_view(request):
+    emails    = EmailSubscriber.objects.all()
+    context = {'emails': emails}
+    template = "dashboard/newsletter/email-subscriber.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
 # BLOG PARTNER VIEW 
 @login_required
 def partner_view(request):
@@ -577,7 +592,7 @@ def testimony_delete_view(request, id):
 # PATIENT  VIEW 
 @login_required
 def patient_view(request):
-    patients    = Patients.objects.all()
+    patients    = Patient.objects.all()
     context = {'patients': patients}
     template = "dashboard/patient/patient.html"
     return render(request, template, context)
@@ -615,7 +630,7 @@ def patient_add_view(request):
 
 @login_required
 def patient_update_view(request, slug=None):
-    obj  = get_object_or_404(Patients, slug=slug)
+    obj  = get_object_or_404(Patient, slug=slug)
     if request.method == 'POST':
         form = PatientForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
@@ -640,7 +655,7 @@ def patient_update_view(request, slug=None):
 
 @login_required
 def patient_delete_view(request, slug=None):
-    patient = get_object_or_404(Patients, slug=slug, active=True)
+    patient = get_object_or_404(Patient, slug=slug, active=True)
     patient.delete()
     messages.success(request, _("Patient deleted successfully."))
     return redirect('patient')
@@ -673,19 +688,14 @@ def user_view(request):
 @login_required
 def user_add_view(request):
     if request.method == 'POST':
-        print("========== 0 =======")
         form = UserForm(request.POST)
         profile = ProfileForm(request.POST, request.FILES)
         if form.is_valid() and profile.is_valid():
-            print("========= 1 ========")
             user = form.save(commit=False)
-            user.set_password="Maxwell 1"
-            user = form.save()
-            print("======== 2 =========")
+            user.set_password="Log Support@#!1"
             profile = profile.save(commit=False)
-            print("========= 3 ========")
-            print(profile)
             profile.user = user
+            user.save()
             profile.save()
             messages.success(request, _("Utilisateur/Utilisatrice créé(e) avec succès."))
             return redirect('user')
@@ -714,26 +724,18 @@ def user_add_view(request):
 
 @login_required
 def user_update_view(request, id=None):
-    obj  = get_object_or_404(Profile, id=id)
+    obj  = get_object_or_404(Profile, user_id=id)
+
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=obj.user)
+        form = UserUpdateForm(request.POST, instance=obj.user)
         profile = ProfileForm(request.POST, request.FILES, instance=obj)
         if form.is_valid() and profile.is_valid():
-            # obj = form.save(commit=False)
-            # email = form.cleaned_data['email']
-            # check_email = User.objects.filter(email=email).exclude(id=id)
-            # if check_email:
-            #     print("==== CHECK EMAIL HERE =====")
-            #     print(check_email)
-                # messages.error(request, _("Utilisateur avec cet email existe déjà."))
-                # return redirect(request.META['HTTP_REFERER'])
-                # return redirect('utilisateur')
             form.save()
             profile.save()
             messages.success(request, _("Utilisateur/Utilisatrice modifié(e) avec succès."))
-            return redirect('utilisateur')
+            return redirect('user')
     else:
-        form = UserForm(instance=obj.user)
+        form = UserUpdateForm(instance=obj.user)
         profile = ProfileForm(instance=obj)
     context  = {
         'form': form,
@@ -757,7 +759,6 @@ def user_update_view(request, id=None):
 @login_required
 def user_delete_view(request, id=None):
     user = get_object_or_404(User, id=id)
-    # Notification.objects.create(name="Cet utilisateur a supprimé l'utilisateur: %s %s."%(user.first_name, user.last_name), sender=request.user, user=user)
     user.delete()
     messages.success(request, _("Utlisateur/Utilisatrice supprimé(e) avec succès."))
     return redirect('user')

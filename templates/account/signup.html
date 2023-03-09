@@ -48,8 +48,7 @@
                         <div class="img-logo">
                             <img src="{% static 'admin/img/logo.png' %}" class="img-fluid" alt="Logo">
                         </div>
-                        <h3>Login</h3>
-                        <p class="account-subtitle">login to your account to continue</p>
+                        <h3>S'inscrire</h3>
                         <form method="POST">{% csrf_token %}
                             {% if form.errors %}
                                 <div class="alert alert-danger" role="alert">Incorrect email or password
@@ -75,9 +74,9 @@
                                 {{ form.i_agree|as_crispy_field }}
                             </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary" type="submit">Sign up</button>
+                                <button class="btn btn-primary" type="submit">S'inscrire</button>
                             </div>
-                            <div class="dont-have">Already have an account? <a href="{% url 'account_login' %}">Login</a></div>
+                            <div class="dont-have">Vous avez déjà un compte? <a href="{% url 'account_login' %}">Connexion</a></div>
                             <!-- <div class="login-or">
                                 <span class="or-line"></span>
                                 <p class="span-or">or login with </p>

@@ -56,7 +56,7 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
     def save_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError(_('The given email must be set'))
+            raise ValueError(_("L'email donné doit être défini"))
         email = self.normalize_email(email)
         user  = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -77,7 +77,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('is_superuser should be True'))
+            raise ValueError(_('is_superuser doit être vrai'))
         extra_fields['is_staff'] = True
         return self.save_user(email, password, **extra_fields) 
     
@@ -94,7 +94,7 @@ ROLE = (
 class User(AbstractBaseUser, PermissionsMixin):
     id         = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(_("Nom"), max_length=255,)
-    last_name  = models.CharField(_("Prenom"), max_length=255,)
+    last_name  = models.CharField(_("Prénom"), max_length=255,)
     email      = models.EmailField(_("Email"), max_length=200, unique=True, validators = [validators.EmailValidator()])
     is_staff   = models.BooleanField(default=False)
     is_active  = models.BooleanField(default=True)
@@ -106,6 +106,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def delete_url(self):
+        return reverse("user_delete", args=[str(self.id)])
+
+        # GET ALERT DETAIL ABSOLUTE URL
+    def update_url(self):
+        return reverse("user_update", args=[str(self.id)])
+
+
+
 
 
 
@@ -130,7 +140,7 @@ class Profile(models.Model):
     country       = CountryField(_("Pays"), max_length=255, null=True, blank=True)
     city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
-    gender        = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    gender        = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
     position      = models.CharField(_("Position"), max_length=255, null=True, blank=True)
     facebook      = models.URLField(_("Facebook Link"), max_length=255, null=True, blank=True)
     instagram     = models.URLField(_("Instagram Link"), max_length=255, null=True, blank=True)
@@ -145,7 +155,6 @@ class Profile(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
-
 
 
 
@@ -330,16 +339,16 @@ class Product(models.Model):
 
 
 # PATIENT MODEL
-class Patients(models.Model):
-    STATUS_CHOICES=(
+class Patient(models.Model):
+    SEXE_CHOICES=(
         ('Masculin','Masculin'),
         ('Feminin','Feminin'),
     )
-    admin          = models.OneToOneField(User,null=True, on_delete = models.CASCADE)
-    reg_no         = models.CharField(_("Numero de Registration"),max_length=30,null=True,blank=True,unique=True)
-    gender         = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    user           = models.ForeignKey(User, on_delete = models.CASCADE, null=True, blank=True)
     first_name     = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
     last_name      = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    reg_no         = models.CharField(_("Numero de Registration"),max_length=30, null=True, blank=True, unique=True)
+    gender         = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
     date_of_birth  = models.DateField(_("Date de Naissance"), blank=True, null=True)
     phone          = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
     email          = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
@@ -352,7 +361,7 @@ class Patients(models.Model):
     timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    
+
     def __str__(self):
         return str(self.admin)
     
@@ -701,7 +710,7 @@ class IncomeReport(models.Model):
 # APPOINTMENT REPORT MODEL
 class AppointmentReport(models.Model):
     id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    patient     =  models.ForeignKey(Patients, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
+    patient     =  models.ForeignKey(Patient, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
     # doctor    = models.ForeignKey(Doctor, on_delete=models.SET_NULL, blank=True, null=True, related_name="doctor") 👉  doctor to create after
     disease     = models.CharField(_("Nom Maladie"),max_length=30,null=True,blank=True,unique=True)
     amount      = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)

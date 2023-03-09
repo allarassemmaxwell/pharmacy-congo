@@ -23,10 +23,10 @@ from landing_app.models import *
 
 
 class CustomSignupForm(UserCreationForm):
-    first_name      = forms.CharField(max_length=50, label='Nom', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name      = forms.CharField(max_length=50, label='Prenom', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(max_length=50, label='Nom', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name  = forms.CharField(max_length=50, label='Prénom', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email     = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    i_agree   = forms.BooleanField(label=mark_safe(_('By registering you agree to the Nubatar (<a href="/terms-and-conditions/" target="_blank">Terms of Use</a>)')), required=True)
+    i_agree   = forms.BooleanField(label=mark_safe(_("En vous inscrivant, vous acceptez le ... (<a href='/terms-and-conditions/' target='_blank'>Conditions d'utilisation</a>)")), required=True)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label='Password(again)',widget=forms.PasswordInput(attrs={'class':'form-control'}))
     class Meta:
@@ -36,7 +36,9 @@ class CustomSignupForm(UserCreationForm):
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
         user.role = 'Patient'
+        profile = Profile.objects.create(user=user)
         user.save()
+        profile.save()
         return user
 
 
@@ -58,10 +60,74 @@ class UserForm(forms.ModelForm):
         ]
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'role':     forms.Select(attrs={'class': 'form-control'}),
+            'last_name':  forms.TextInput(attrs={'class': 'form-control'}),
+            'email':      forms.EmailInput(attrs={'class': 'form-control'}),
+            'role':       forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+
+
+
+
+
+
+# BRANCH FORM
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model  = User
+        fields = [
+            "first_name",
+            "last_name",
+            "role"
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name':  forms.TextInput(attrs={'class': 'form-control'}),
+            'role':       forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+
+
+# PROFILE FORM
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model  = Profile
+        fields = [
+            "photo",
+            "phone",
+            "date_of_birth",
+            "country",
+            "city",
+            "address",
+            "gender",
+            "position",
+            "facebook",
+            "instagram",
+            "twitter",
+            "linked_in",
+        ]
+        widgets = {
+            'phone':    forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'country':   forms.Select(attrs={'class': 'form-control'}),
+            'city':      forms.TextInput(attrs={'class': 'form-control'}),
+            'address':   forms.TextInput(attrs={'class': 'form-control'}),
+            'gender':    forms.Select(attrs={'class': 'form-control'}),
+            'position':  forms.TextInput(attrs={'class': 'form-control'}),
+            'facebook':  forms.URLInput(attrs={'class': 'form-control'}),
+            'instagram': forms.URLInput(attrs={'class': 'form-control'}),
+            'twitter':   forms.URLInput(attrs={'class': 'form-control'}),
+            'linked_in': forms.URLInput(attrs={'class': 'form-control'}),
+        }
+
 
 
 
@@ -505,42 +571,6 @@ class ContactForm(forms.ModelForm):
 
 
 
-# PROFILE FORM
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model  = Profile
-        fields = [
-            "user",
-            "photo",
-            "phone",
-            "date_of_birth",
-            "country",
-            "city",
-            "address",
-            "gender",
-            "position",
-            "facebook",
-            "instagram",
-            "twitter",
-            "linked_in",
-        ]
-        widgets = {
-            'phone':    forms.TextInput(attrs={'class': 'form-control'}),
-            # 'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
-            'date_of_birth':    forms.DateInput(attrs={'class': 'form-control', 'data-date-format':'yyyy-mm-dd', 'data-provide':'datepicker', 'data-date-autoclose':'true'}, format='%Y-%m-%d'),
-            'country':   forms.Select(attrs={'class': 'form-control'}),
-            'city':      forms.TextInput(attrs={'class': 'form-control'}),
-            'address':   forms.TextInput(attrs={'class': 'form-control'}),
-            'gender':    forms.Select(attrs={'class': 'form-control'}),
-            'position':  forms.TextInput(attrs={'class': 'form-control'}),
-            'facebook':  forms.URLInput(attrs={'class': 'form-control'}),
-            'instagram': forms.URLInput(attrs={'class': 'form-control'}),
-            'twitter':   forms.URLInput(attrs={'class': 'form-control'}),
-            'linked_in': forms.URLInput(attrs={'class': 'form-control'}),
-        }
-
-
-
 
 
 
@@ -550,9 +580,9 @@ class ProfileForm(forms.ModelForm):
 # PATIENTS FORM
 class PatientForm(forms.ModelForm):
     class Meta:
-        model = Patients
+        model = Patient
         fields = [
-            "admin",
+            # "admin",
             "reg_no",
             "gender",
             "first_name",

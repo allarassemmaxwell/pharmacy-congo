@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Produits{% endblock %}
 
 
 {% block extra_css %}
@@ -38,7 +38,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Products</h5>
+                                <h5 class="card-title">Produits</h5>
                             </div>
                         </div>
                     </div>
@@ -48,13 +48,12 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Name</th>
-                                        <th>Categories</th>
+                                        <th>Catégorie</th>
                                         <th>Prix unitaire</th>
-                                        <th>Quantite</th>
+                                        <th>Quantité</th>
                                         {% comment %} <th>Prix total</th> {% endcomment %}
                                         <th>Date</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,11 +81,11 @@
                                         <td class="text-end">
                                             <div class="actions">
                                                 <a href="{{ product.update_url }}" class="text-black">
-                                                    <i class="feather-edit-3 me-1"></i> Edit
+                                                    <i class="feather-edit-3 me-1"></i> Modifier
                                                 </a>
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"
                                                     data-bs-target="#productDeleteModal-{{ forloop.counter }}">
-                                                    <i class="feather-trash-2 me-1"></i> Delete
+                                                    <i class="feather-trash-2 me-1"></i> Supprimer
                                                 </a>
                                             </div>
                                         </td>

@@ -29,6 +29,9 @@ urlpatterns = [
     path('newsletters/delete/<int:id>/', newsletter_delete_view, name="newsletter_delete"),
     path('newsletters/update/<int:id>/', newsletter_update_view, name="newsletter_update"),
 
+
+    path('newsletters/email/', newsletter_email_view, name="newsletter_email"),
+
     path('partner/', partner_view, name="partner"),
     path('partner/add/', partner_add_view, name="partner_add"),
     path('partner/delete/<slug:slug>/', partner_delete_view, name="partner_delete"),
@@ -41,8 +44,8 @@ urlpatterns = [
 
     path('user/', user_view, name="user"),
     path('user/add/', user_add_view, name="user_add"),
-    path('user/delete/<slug:slug>/', user_delete_view, name="user_delete"),
-    path('user/update/<slug:slug>/', user_update_view, name="user_update"),
+    path('user/delete/<str:id>/', user_delete_view, name="user_delete"),
+    path('user/update/<str:id>/', user_update_view, name="user_update"),
     # path('testimony/add/', testimony_add_view, name="testimony_add"),
 
 
