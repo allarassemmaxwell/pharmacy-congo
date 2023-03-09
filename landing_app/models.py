@@ -23,6 +23,19 @@ from django.urls import reverse
 
 
 
+import random   
+import string  
+import secrets 
+
+
+
+
+
+# GENERATE RANDOM STRING WITH LENGTH 
+def random_string(num):   
+    res = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(num))  
+    return str(res)
+
 
 
 
@@ -38,9 +51,11 @@ class Contact(models.Model):
     subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
     phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
     message    = models.TextField(_("Message"), null=False, blank=False)
+    read       = models.BooleanField(_("Lu"), default=False)
     active     = models.BooleanField(_("Active"), default=True)
     timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
     updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
         return self.email
@@ -54,6 +69,77 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ("-timestamp",)
+
+def create_contact_slug(instance, new_slug=None):
+    slug = slugify(random_string(14))
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Contact.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_contact_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_contact(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_contact_slug(instance)
+pre_save.connect(presave_contact, sender=Contact)
+
+
+
+
+
+
+
+
+
+
+# CONTACT MODEL
+class ContactResponse(models.Model):
+    contact   = models.ForeignKey(Contact, on_delete=models.CASCADE, null=False, blank=False, related_name="contact_response")
+    response  = models.TextField(_("Message"), null=False, blank=False)
+    active    = models.BooleanField(_("Active"), default=True)
+    timestamp = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
+    def __str__(self):
+        return self.contact.email
+    
+    
+    def delete_url(self):
+        return reverse("contact_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("contact_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ("-timestamp",)
+
+
+
+
+def create_contact_slug(instance, new_slug=None):
+    slug = slugify(random_string(14))
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = ContactResponse.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_contact_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_contact(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_contact_slug(instance)
+pre_save.connect(presave_contact, sender=ContactResponse)
+
+
+
+
+
 
 
 
@@ -81,6 +167,56 @@ class Subscriber(models.Model):
 
     class Meta:
         ordering = ("-timestamp",)
+
+
+
+
+
+
+
+
+
+# SUBSCRIBER MODEL
+class EmailSubscriber(models.Model):
+    name        = models.CharField(_("Titre"), max_length=255, null=False, blank=False)
+    description = models.TextField(_("Description"), null=False, blank=False)
+    active      = models.BooleanField(_("Active"), default=True)
+    timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    def __str__(self):
+        return self.name
+    
+    # def delete_url(self):
+    #     return reverse("newsletter_delete", args=[str(self.id)])
+
+    # def update_url(self):
+    #     return reverse("newsletter_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ("-timestamp",)
+
+
+
+def create_email_subs_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = EmailSubscriber.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_email_subs_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_email_subs(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_email_subs_slug(instance)
+pre_save.connect(presave_email_subs, sender=EmailSubscriber)
+
+
+
+
 
 
 

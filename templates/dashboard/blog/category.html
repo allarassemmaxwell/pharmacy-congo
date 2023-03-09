@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Catégories{% endblock %}
 
 
 {% block content %}
@@ -20,7 +20,7 @@
                     </div>
                     
                     <div class="col-md-3 text-md-end">
-                        <a href="{% url 'blog_category_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Blog Category</a>
+                        <a href="{% url 'blog_category_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter une catégorie</a>
                     </div>
                 </div>
                 
@@ -35,7 +35,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Blog Catégorie</h5>
+                                <h5 class="card-title">Catégories</h5>
                             </div>
                             <div class="col-auto d-flex">
                                 
@@ -49,6 +49,7 @@
                                     <tr>
                                         <th>Nom</th>
                                         <th>Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,11 +69,11 @@
                                         <td class="text-end">
                                             <div class="actions">
                                                 <a href="{{ category.update_url }}" class="text-black">
-                                                    <i class="feather-edit-3 me-1"></i> Edit
+                                                    <i class="feather-edit-3 me-1"></i> Modifier
                                                 </a>
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"
                                                     data-bs-target="#blogCategoryDeleteModal-{{ forloop.counter }}">
-                                                    <i class="feather-trash-2 me-1"></i> Delete
+                                                    <i class="feather-trash-2 me-1"></i> Supprimer
                                                 </a>
                                             </div>
                                         </td>
@@ -83,7 +84,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="tablepagination" class="dataTables_wrapper"></div>
             </div>
         </div>
 
