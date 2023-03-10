@@ -8,10 +8,12 @@ import uuid
 from django.db import models
 from django.db.models.fields import DateField
 from django_countries.fields import CountryField
+# from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.core.mail import send_mail
 
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
@@ -224,6 +226,40 @@ pre_save.connect(presave_email_subs, sender=EmailSubscriber)
 
 
 
+# SUBSCRIBER RESPONSE MODEL
+class SubscriberResponse(models.Model):
+    subscriber   = models.ForeignKey(Subscriber, on_delete=models.CASCADE, null=False, blank=False, related_name="subscriber_response")
+    subject  = models.TextField(_("Sujet"), null=False, blank=False)
+    message  = models.TextField(_("Message"), null=False, blank=False)
+    active    = models.BooleanField(_("Active"), default=True)
+    timestamp = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+
+    def __str__(self):
+        return self.subscriber.email
+    
+    
+    def delete_url(self):
+        return reverse("subscriber_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("subscriber_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ("-timestamp",)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -270,6 +306,7 @@ def presave_blog_cat(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_blog_cat_slug(instance)
 pre_save.connect(presave_blog_cat, sender=BlogCategory)
+
 
 
 

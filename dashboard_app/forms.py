@@ -231,7 +231,7 @@ class ProductImageForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# BLOG CATEGORY FORM
 class BlogCategoryForm(forms.ModelForm):
     class Meta:
         model  = BlogCategory
@@ -250,7 +250,7 @@ class BlogCategoryForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# BLOG FORM
 class BlogForm(forms.ModelForm):
     class Meta:
         model  = Blog
@@ -271,7 +271,7 @@ class BlogForm(forms.ModelForm):
 
 
  
-# BRANCH FORM
+# PARTNER FORM
 class PartnerForm(forms.ModelForm):
     class Meta:
         model  = Partner
@@ -291,7 +291,7 @@ class PartnerForm(forms.ModelForm):
 
 
  
-# BRANCH FORM
+# NEWSLETTER FORM
 class NewsletterForm(forms.ModelForm):
     class Meta:
         model  = Subscriber
@@ -308,7 +308,7 @@ class NewsletterForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# TESTIMONY FORM
 class TestimonyForm(forms.ModelForm):
     class Meta:
         model  = Testimony
@@ -640,4 +640,25 @@ class SaleForm(forms.ModelForm):
             'quantity':  forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'total':  forms.NumberInput(attrs={'class': 'form-control'}),
             # 'recu': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
+
+
+
+
+
+
+
+
+
+# CONTACT FORM
+class SubscriberResponseForm(forms.ModelForm):
+    class Meta:
+        model  = SubscriberResponse
+        fields = [
+            "subject",
+            "message",
+        ]
+        widgets = {
+            'subject':   forms.TextInput(attrs={'class': 'form-control'}),
+            'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
         }
