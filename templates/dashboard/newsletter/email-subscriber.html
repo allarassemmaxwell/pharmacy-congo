@@ -20,7 +20,72 @@
                     </div>
                     
                     <div class="col-md-3 text-md-end">
-                        <a href="{% url 'newsletter_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Email</a>
+                        <a href="{% url 'newsletter_add' %}" class="btn btn-primary btn-blog mb-3">Envoyer Email</a>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% include 'message.html' %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h5 class="card-title">Liste des Abonnées</h5>
+                                        </div>
+                                        <div class="col-auto d-flex">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="datatable table table-borderless hover-table" id="data-tables">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Subscriber</th>
+                                                    <th>Email</th>
+                                                    <th>Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for newsletter in newsletters %}
+                                                {% include 'dashboard/modal/newsletter-delete.html' with newsletter=newsletter %}
+                                                <tr>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a href="#">{{ newsletter.subscriber }}</a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a href="#">{{ newsletter.email|title }}</a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a class="avatar-pos" href="#">{{ newsletter.timestamp|date:"d M Y"  }}</a>
+                                                        </h2>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="actions">
+                                                            <a href="{{ newsletter.update_url }}" class="text-black">
+                                                                <i class="feather-edit-3 me-1"></i> Modifier
+                                                            </a>
+                                                            <a class="text-danger" href="#" data-bs-toggle="modal"
+                                                                data-bs-target="#newsletterDeleteModal-{{ forloop.counter }}">
+                                                                <i class="feather-trash-2 me-1"></i> Supprimer
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 

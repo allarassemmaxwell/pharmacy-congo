@@ -572,6 +572,43 @@ class AppointmentPrescription(models.Model):
 
 
 
+# NOTIFICATION MODEL
+class Notification(models.Model):
+    name   = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="patient_name")
+    photo  = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    description = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=False, blank=False, related_name="appointment_description")
+    pharmacist = models.ForeignKey(Pharmacist, on_delete=models.CASCADE, null=False, blank=False, related_name="pharmacist_name")
+    active     = models.BooleanField(_("Est actif"), default=True)
+    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    
+    
+    def __str__(self):
+        return self.first_name
+    
+    
+    def delete_url(self):
+        return reverse("notification_delete", args=[str(self.id)])
+    def update_url(self):
+        return reverse("notification_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -630,6 +667,53 @@ class Service(models.Model):
 
     class Meta:
         ordering = ("-timestamp",)
+
+
+
+
+
+
+
+
+
+
+
+
+# TRANSACTION  MODEL
+class Transaction(models.Model):
+    STATUS_CHOICES=(
+        ('Payé','Payé'),
+        ('Impayé','Impayé'),
+        ('En Attente','En Attente'),
+    )
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    inv_num = models.CharField(_("Numero Transaction"),max_length=30,null=True,blank=True,unique=True)
+    name        = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
+    photo       = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    date        = models.DateField(_("Date de Transaction"), blank=False, null=False)
+    amount      = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
+    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+
+
+    
+    def __str__(self):
+        return self.name
+    
+    
+    def delete_url(self):
+        return reverse("transaction_delete", args=[str(self.id)])
+    def update_url(self):
+        return reverse("transaction_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
 
 
 

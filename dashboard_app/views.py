@@ -416,13 +416,69 @@ def newsletter_delete_view(request, id):
 
 
 
-# BLOG VIEW 
+# NEWSLETTER VIEW 
 @login_required
 def newsletter_email_view(request):
     emails    = EmailSubscriber.objects.all()
     context = {'emails': emails}
     template = "dashboard/newsletter/email-subscriber.html"
     return render(request, template, context)
+
+
+
+
+
+
+# SEND EMAIL 👉 check this code if it's correct
+@login_required
+def send_email(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        message = request.POST['message']
+        subscribers = request.POST.getlist('subscriber')
+        
+        recipient_list = [subscriber.email for subscriber in Subscriber.objects.filter(id__in=subscribers)]
+        
+        send_mail(subject, message, 'admin@example.com', recipient_list)
+        
+        return redirect('success')
+    
+    subscribers = Subscriber.objects.all()
+    
+    return render(request, 'send_email.html', {'subscribers': subscribers})
+
+
+
+
+
+
+
+
+
+
+# SEND EMAIL TO CONTACT 👉 check the code
+@login_required 
+def contact_subscriber(request): 
+    if request.method == 'POST': 
+        form = ContactForm(request.POST) 
+        if form.is_valid(): 
+            subject = request.POST['subject'] 
+            message = request.POST['message'] 
+            from_email = request.POST['from_email'] 
+            to = request.POST['to'] 
+            try: 
+                send_mail(subject, message, from_email, [to]) 
+            except BadHeaderError: 
+                return HttpResponse('Invalid header found.') 
+            return redirect('home') 
+    else: 
+        form = ContactForm() 
+    return render(request, "contact.html", {'form': form})
+
+
+
+
+
 
 
 
