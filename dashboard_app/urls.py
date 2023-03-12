@@ -106,6 +106,7 @@ urlpatterns = [
     path('patient/', patient_view, name="patient"),
     path('patient/add/', patient_add_view, name="patient_add"),
     path('patient/delete/<slug:slug>/', patient_delete_view, name="patient_delete"),
+    path('patient-user/delete/<slug:slug>/', patient_user_delete_view, name="patient_user_delete"),
     path('patient/update/<slug:slug>/', patient_update_view, name="patient_update"),
     
     

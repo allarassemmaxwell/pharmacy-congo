@@ -36,9 +36,11 @@ class CustomSignupForm(UserCreationForm):
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
         user.role = 'Patient'
-        profile = Profile.objects.create(user=user)
+        profile = Profile.objects.create(user = user)
+        patient = Patient.objects.create(user = user, reg_no = random_string(7))
         user.save()
         profile.save()
+        patient.save()
         return user
 
 
@@ -575,41 +577,38 @@ class ContactForm(forms.ModelForm):
 
 
 
-
-
 # PATIENTS FORM
 class PatientForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PatientForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required    = True
+        self.fields['last_name'].required = True
+        self.fields['profession'].required    = True
+        self.fields['gender'].required = True
+        self.fields['country'].required = True
+        self.fields['city'].required = True
     class Meta:
         model = Patient
         fields = [
-            # "admin",
-            "reg_no",
-            "gender",
             "first_name",
             "last_name",
+            "profession",
+            "gender",
             "date_of_birth",
             "phone",
-            "email",
-            "photo",
-            "age",
-            "address",
-            # "date_admitted",
-            # "last_updated",
-        ]
+            "country",
+            "city",
+            "address",        ]
         widgets = {
-            # 'admin': forms.HiddenInput(),
-            'reg_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'profession': forms.TextInput(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'photo': forms.FileInput(attrs={'class': 'form-control'}),
-            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            # 'date_admitted': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            # 'last_updated': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
         }
 
 

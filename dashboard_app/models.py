@@ -32,8 +32,9 @@ from django.core.files.images import get_image_dimensions
 from mimetypes import guess_type
 from django_countries.fields import CountryField
 
+from django.shortcuts import redirect, get_object_or_404
 
-
+from django.contrib import messages
 
 
 
@@ -88,6 +89,7 @@ class UserManager(BaseUserManager):
 
 ROLE = (
     ("Patient", _("Patient")),
+    ("Docteur", _("Docteur")),
     ("Admin", _("Admin")),
 )
 
@@ -141,7 +143,7 @@ class Profile(models.Model):
     city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-    position      = models.CharField(_("Position"), max_length=255, null=True, blank=True)
+    position      = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
     facebook      = models.URLField(_("Facebook Link"), max_length=255, null=True, blank=True)
     instagram     = models.URLField(_("Instagram Link"), max_length=255, null=True, blank=True)
     twitter       = models.URLField(_("Twitter Link"), max_length=255, null=True, blank=True)
@@ -344,29 +346,57 @@ class Patient(models.Model):
         ('Masculin','Masculin'),
         ('Feminin','Feminin'),
     )
-    user           = models.ForeignKey(User, on_delete = models.CASCADE, null=True, blank=True)
-    first_name     = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-    last_name      = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    user           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.SET_NULL, null=True, blank=True)
+    first_name     = models.CharField(_("Nom"), max_length=255, null=True, blank=True)
+    last_name      = models.CharField(_("Prénom"), max_length=255, null=True, blank=True)
     reg_no         = models.CharField(_("Numero de Registration"),max_length=30, null=True, blank=True, unique=True)
+    profession     = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
     gender         = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
     date_of_birth  = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    phone          = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    email          = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    photo          = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    age            = models.IntegerField(_("Age"),default='0', blank=True, null=True)
-    address        = models.CharField(_("Address Patient"), max_length=255,null=True,blank=True)
-    date_admitted  = models.DateTimeField(_("Date Admission"), auto_now_add=True, auto_now=False)
-    last_updated   = models.DateTimeField(_("Derniere Mise a jour"), auto_now_add=False, auto_now=True)
+    phone          = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True)
+    country        = CountryField(_("Pays"), max_length=255, null=True, blank=True)
+    city           = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
+    address        = models.CharField(_("Address"), max_length=255, null=True, blank=True)
     active         = models.BooleanField(_("Est actif"), default=True)
     timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
-        return str(self.admin)
+        if self.user:
+            return str(self.user.first_name)+" "+str(self.user.last_name)
+        else:
+            return str(self.first_name)+" "+str(self.last_name)
+
+    def get_name(self):
+        if self.user:
+            return str(self.user.first_name)+" "+str(self.user.last_name)
+        else:
+            return str(self.first_name)+" "+str(self.last_name)
+
+    def get_phone(self):
+        if self.user:
+            return self.user.profile.phone
+        else:
+            return self.phone
+
+    def get_gender(self):
+        if self.user:
+            return self.user.profile.gender
+        else:
+            return self.gender
+
+    def get_date_of_birth(self):
+        if self.user:
+            return self.user.profile.date_of_birth
+        else:
+            return self.date_of_birth
     
-    def delete_url(self):
-        return reverse("patient_delete", args=[str(self.slug)])
+    def delete_patient_url(self):
+        if self.user:
+            return reverse("patient_user_delete", args=[str(self.slug)])
+        else:
+            return reverse("patient_delete", args=[str(self.slug)])
 
     def update_url(self):
         return reverse("patient_update", args=[str(self.slug)])
