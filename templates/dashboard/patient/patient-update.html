@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Mettre à jour un patient{% endblock %}
 
 
 {% block content %}
@@ -10,62 +10,133 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h5 class="mb-3">Add Patient</h5>
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                <h5 class="mb-3">Mettre à jour un patient</h5>
+                <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ form.first_name|as_crispy_field }}
+                        {% if user_boolean %}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ user_form.first_name|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.last_name|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ user_form.last_name|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.reg_no|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.photo|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.date_of_birth|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.phone|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.gender|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.date_of_birth|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.age|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.country|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.phone|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.city|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.email|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.address|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.photo|as_crispy_field }}
-                            </div>
-                        </div>
 
-                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.gender|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.position|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.facebook|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.instagram|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.twitter|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.linked_in|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                        {% else %}
+
+                        <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.address|as_crispy_field }}
+                                {{ patient_form.first_name|as_crispy_field }}
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.last_name|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.phone|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.profession|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.gender|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.date_of_birth|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.country|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ patient_form.city|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-focus">
+                                {{ patient_form.address|as_crispy_field }}
+                            </div>
+                        </div>
+                        {% endif %}
+      
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Update</button>
+                    <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>
                 </form>
             </div>
         </div>

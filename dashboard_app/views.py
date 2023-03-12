@@ -664,9 +664,11 @@ def patient_view(request):
 @login_required
 def patient_add_view(request):
     if request.method == 'POST':
-        form = PatientForm(request.POST, request.FILES)
+        form = PatientForm(request.POST)
         if form.is_valid():
-            form.save()
+            patient = form.save(commit=False)
+            patient.reg_no = random_string(10)
+            patient.save()
             messages.success(request, _("Patient créé avec succès."))
             return redirect('patient')
     else:
@@ -686,20 +688,37 @@ def patient_add_view(request):
 
 @login_required
 def patient_update_view(request, slug=None):
+    user = None
+    user_boolean = False
     obj  = get_object_or_404(Patient, slug=slug)
+    if obj.user:
+        user_boolean = True
+        user = get_object_or_404(Profile, user=obj.user)
     if request.method == 'POST':
-        form = PatientForm(request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Patient updated successfully."))
+        profile_form = ProfileForm(request.POST, instance=user)
+        user_form = UserUpdateForm(request.POST, instance=obj.user)
+        patient_form = PatientForm(request.POST, request.FILES, instance=obj)
+        if not user_boolean and patient_form.is_valid():
+            patient_form.save()
+            messages.success(request, _("Patient modifié(e) avec succès."))
+            return redirect('patient')
+        else:
+            user_form.save()
+            messages.success(request, _("Patient modifié(e) avec succès."))
             return redirect('patient')
     else:
-        form = PatientForm(instance=obj)
-    context = { 
-        'form': form
+        user_form = UserUpdateForm(instance=obj.user)
+        profile_form = ProfileForm(request.POST, instance=user)
+        profile = PatientForm(instance=obj)
+    context  = {
+        'user_boolean': user_boolean,
+        'user_form': user_form,
+        'profile_form':profile_form,
+        'patient_form': profile,
     }
     template = "dashboard/patient/patient-update.html"
     return render(request, template, context)
+
 
 
 
@@ -713,6 +732,20 @@ def patient_update_view(request, slug=None):
 def patient_delete_view(request, slug=None):
     patient = get_object_or_404(Patient, slug=slug, active=True)
     patient.delete()
+    messages.success(request, _("Patient deleted successfully."))
+    return redirect('patient')
+
+
+
+
+@login_required
+def patient_user_delete_view(request, slug=None):
+    patient = get_object_or_404(Patient, id=id, active=True)
+    user = patient.suer.id
+    patient.delete()
+    patient.save()
+    user.delete()
+    user.save()
     messages.success(request, _("Patient deleted successfully."))
     return redirect('patient')
 

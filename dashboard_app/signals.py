@@ -205,7 +205,7 @@ pre_save.connect(presave_appoint_symt, sender=AppointmentSymptom)
 
 
 def create_patient_slug(instance, new_slug=None):
-    slug = slugify(instance.name)
+    slug = slugify(random_string(14))
     if new_slug is not None:
         slug = new_slug
     ourQuery = Patient.objects.filter(slug=slug)
@@ -219,7 +219,6 @@ def presave_patient(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_patient_slug(instance)
 pre_save.connect(presave_patient, sender=Patient)
-
 
 
 

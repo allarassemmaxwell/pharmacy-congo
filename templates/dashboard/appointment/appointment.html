@@ -38,7 +38,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Liste Rendez-Vous</h5>
+                                <h5 class="card-title">Rendez-Vous</h5>
                             </div>
                         </div>
                     </div>
@@ -47,12 +47,11 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Nom & Prenom</th>
-                                        <th>Phone</th>
+                                        <th>Nom & Prénom</th>
+                                        <th>Téléphone</th>
                                         <th>Sujet</th>
-                                        <th>Genre</th>
-                                        <th>Date</th>
-                                        <th>Heure</th>
+                                        <th>Sexe</th>
+                                        <th>Date & Heure</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -70,8 +69,7 @@
                                         <td>{{ appointment.phone }}</td>
                                         <td>{{ appointment.subject|safe|truncatechars:40 }}</td>
                                         <td>{{ appointment.gender }}</td>
-                                        <td>{{ appointment.date }}</td>
-                                        <td>{{ appointment.hour }}</td>
+                                        <td class="text-warning">{{ appointment.date }} à {{ appointment.hour }}</td>
                                         <td class="text-end">
                                             <div class="actions">
                                                 <a href="{{ appointment.update_url }}"  class="text-black">

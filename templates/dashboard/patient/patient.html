@@ -51,7 +51,7 @@
                                         <th>Numéro d'enregistrement</th>
                                         <th>Téléphone</th>
                                         <th>Sexe</th>
-                                        <th>Âge</th>
+                                        <th>Date de Naissance</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -70,14 +70,15 @@
                                                     {% endif %}
                                                 </a>
                                                 <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ patient.first_name|title }}</span>
+                                                    data-bs-target="#editModal">
+                                                    <span>{{ patient.get_name }}</span>
                                                 </a>
                                             </h2>
                                         </td>
                                         <td>{{ patient.reg_no }}</td>
-                                        <td>{{ patient.phone }}</td>
-                                        <td>{{ patient.gender }}</td>
-                                        <td>{{ patient.age }}</td>
+                                        <td>{{ patient.get_phone }}</td>
+                                        <td>{{ patient.get_gender }}</td>
+                                        <td>{{ patient.get_date_of_birth }}</td>
                                         <td>{{ patient.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">
