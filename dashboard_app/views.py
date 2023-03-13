@@ -1754,3 +1754,63 @@ def transaction_view(request):
     # }
     template = "dashboard/report/transaction.html"
     return render(request, template)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Page de Notification
+
+# NOTIFICATION   FUNCTION
+
+@login_required
+def notification_view(request):
+    notifications = Notification.objects.filter(active=True)
+    context  = {'notifications': notifications}
+    template = "notification.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# Page de Notification detail
+
+@login_required
+def notification_detail_view(request, slug=None):
+    data  = get_object_or_404(Notification, slug=slug, active=True)
+    data.read = True
+    data.save()
+    context  = {'data':data}
+    template = "notification-detail.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# Variable Global pour la Notification
+
+# GLOBAL  NOTIFICATION FUNCTION
+def global_notification_view(request):
+    return {'global_notifications': Notification.objects.filter(active=True, read=False)}
+
+
