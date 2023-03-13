@@ -122,6 +122,13 @@ urlpatterns = [
     path('user-report/', user_report_view, name="user_report"),
     
     path('transaction/', transaction_view, name="transaction"),
+    
+    
+    
+    # Liens d'acces a la Notification,  add, detail, mise a jour et suppression
+    
+    path('notification/', notification_view, name="notification"),
+    path('notification/detail/<slug:slug>/', notification_detail_view, name="notification_detail"),
 ]
 
 

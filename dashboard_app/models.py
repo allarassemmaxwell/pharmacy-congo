@@ -602,33 +602,54 @@ class AppointmentPrescription(models.Model):
 
 
 
-# NOTIFICATION MODEL
+
+# NOTIFICATION MODELS
 class Notification(models.Model):
-    name   = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="patient_name")
-    photo  = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    description = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=False, blank=False, related_name="appointment_description")
-    pharmacist = models.ForeignKey(Pharmacist, on_delete=models.CASCADE, null=False, blank=False, related_name="pharmacist_name")
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    
+    name             = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="patient_name")
+    sender           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="notification_sender")
+    user             = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="notification_user")
+    photo            = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
+    pharmacist       = models.ForeignKey(Pharmacist, on_delete=models.CASCADE, null=False, blank=False, related_name="pharmacist_name")
+    description      = models.TextField(_("Description"), null=False, blank=False)
+    read             = models.TextField(_("Lu"), null=False, blank=False, default=False)
+    active           = models.BooleanField(_("Est actif"), default=True)
+    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return self.first_name
     
     
     def delete_url(self):
-        return reverse("notification_delete", args=[str(self.id)])
+        return reverse("notification_delete", args=[str(self.slug)])
     def update_url(self):
-        return reverse("notification_update", args=[str(self.id)])
-
+        return reverse("notification_update", args=[str(self.slug)])
+    
     class Meta:
-        ordering = ('-timestamp',)
+        ordering = ("-timestamp",)
 
 
 
 
 
+
+# CREATE NOTIFICATION SLUG        
+def create_notification_slug(instance, new_slug=None):
+    slug = random_string(15)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Notification.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_notification_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_notification(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_notification_slug(instance)
+pre_save.connect(presave_notification, sender=Notification)
 
 
 
