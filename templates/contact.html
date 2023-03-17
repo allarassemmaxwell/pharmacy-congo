@@ -1,7 +1,7 @@
 {% extends "landing/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Contactez{% endblock %}
 
 
 {% block content %}
@@ -14,11 +14,11 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Accueil</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Contact Us
+                            Contactez-nous
                         </li>
                     </ol>
                 </nav>
-                <h2 class="breadcrumb-title">Contact Us</h2>
+                <h2 class="breadcrumb-title">Contactez-nous</h2>
             </div>
         </div>
     </div>
@@ -29,12 +29,7 @@
         {% include 'message.html' %}
         <div class="row mb-5">
             <div class="col-md-12 text-center">
-                <h3 class="mb-4">Contact Us</h3>
-                <p>
-                    Great doctor if you need your family member to get effective
-                    immediate assistance, emergency treatment or a simple
-                    consultation.
-                </p>
+                <h3 class="mb-4">Contactez-nous</h3>
             </div>
         </div>
         <div class="row">
@@ -46,7 +41,7 @@
                         </div>
                     </div>
                     <div class="infor-details text-center">
-                        <label>Phone Number</label>
+                        <label>Numéro de téléphone</label>
                         <p>+152 534-468-854</p>
                     </div>
                 </div>
@@ -74,7 +69,7 @@
                         </div>
                     </div>
                     <div class="infor-details text-center">
-                        <label>Location</label>
+                        <label>Emplacement</label>
                         <p>Congo Brazza</p>
                     </div>
                 </div>
@@ -86,7 +81,7 @@
 <section class="contact-form">
     <div class="container">
         <div class="section-header text-center">
-            <h2>Get in touch!</h2>
+            <h2>Entrer en contact!</h2>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -94,30 +89,42 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Name <span>*</span></label>
-                                <input type="text" class="form-control" />
+                                {{ form.first_name|as_crispy_field }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Your Email <span>*</span></label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Subject</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Comments <span>*</span></label>
-                                <textarea class="form-control"> </textarea>
+                                {{ form.last_name|as_crispy_field }}
                             </div>
                         </div>
                     </div>
-                    <button class="btn bg-primary">Send Message</button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.subject|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form.message|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn bg-primary">Envoyer le message</button>
                 </form>
             </div>
         </div>

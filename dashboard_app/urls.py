@@ -20,9 +20,10 @@ urlpatterns = [
     
 
     path('contacts/', contact_view, name="contact"),
-    path('contacts/add/', contact_add_view, name="contact_add"),
     path('contacts/delete/<int:id>/', contact_delete_view, name="contact_delete"),
     path('contacts/update/<int:id>/', contact_update_view, name="contact_update"),
+    path('contacts/respond/<slug:slug>/', contact_responde_view, name="contact_respond"),
+    path('newsletters/response/', response_contact_view, name="response_contact"),
 
     path('newsletters/', newsletter_view, name="newsletter"),
     path('newsletters/add/', newsletter_add_view, name="newsletter_add"),
@@ -30,7 +31,8 @@ urlpatterns = [
     path('newsletters/update/<int:id>/', newsletter_update_view, name="newsletter_update"),
 
 
-    path('newsletters/email/', newsletter_email_view, name="newsletter_email"),
+    path('newsletters/list/', mail_newsletter_view, name="mail_newsletter"),
+    path('newsletters/list/add/', mail_newsletter_add_view, name="mail_add_newsletter"),
 
     path('partner/', partner_view, name="partner"),
     path('partner/add/', partner_add_view, name="partner_add"),

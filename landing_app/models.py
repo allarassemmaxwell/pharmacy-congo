@@ -67,6 +67,9 @@ class Contact(models.Model):
 
     def update_url(self):
         return reverse("contact_update", args=[str(self.id)])
+    
+    def respond_url(self):
+        return reverse("contact_respond", args=[str(self.slug)])
 
     class Meta:
         ordering = ("-timestamp",)
@@ -121,7 +124,7 @@ class ContactResponse(models.Model):
 
 
 
-def create_contact_slug(instance, new_slug=None):
+def create_contact_response_slug(instance, new_slug=None):
     slug = slugify(random_string(14))
     if new_slug is not None:
         slug = new_slug
@@ -129,13 +132,13 @@ def create_contact_slug(instance, new_slug=None):
     exists = ourQuery.exists()
     if exists:
         new_slug = "%s-%s" % (slug, ourQuery.first().id)
-        return create_contact_slug(instance, new_slug=new_slug)
+        return create_contact_response_slug(instance, new_slug=new_slug)
     return slug
 
-def presave_contact(sender, instance, *args, **kwargs):
+def presave_contact_response(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = create_contact_slug(instance)
-pre_save.connect(presave_contact, sender=ContactResponse)
+        instance.slug = create_contact_response_slug(instance)
+pre_save.connect(presave_contact_response, sender=ContactResponse)
 
 
 
@@ -179,7 +182,7 @@ class Subscriber(models.Model):
 
 # SUBSCRIBER MODEL
 class EmailSubscriber(models.Model):
-    name        = models.CharField(_("Titre"), max_length=255, null=False, blank=False)
+    name        = models.CharField(_("Sujet"), max_length=255, null=False, blank=False)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Active"), default=True)
     timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)

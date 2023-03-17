@@ -1,0 +1,60 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Répondre au message{% endblock %}
+
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon bg-primary">
+                                <i class="feather-user-plus"></i>
+                            </span>
+                            <div class="dash-count">
+                                <h5 class="dash-title">{{ contact.first_name}} {{ contact.last_name}}</h5>
+                                <div class="dash-counts">
+                                    <p>{{ contact.email}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <p class="text-primary">{{ contact.subject}}</p>
+                            <p>{{ contact.message|safe}}</p>
+                        </div>
+                        <p class="trade-level mb-0">
+                            {{ contact.timestamp|date:"d M Y"  }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                {% include 'message.html' %}
+                <h5 class="mb-3">Répondre au message</h5>
+                <form class="custom-validation" method="POST">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group form-focus">
+                                {{ form.response|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary save-btn">Répondre</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
