@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Ajouter Abonné(e){% endblock %}
+{% block title %}Ajouter Email(e){% endblock %}
 
 
 {% block content %}
@@ -16,17 +16,16 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group form-focus">
-                                {{ form.subscriber.email|as_crispy_field }}
+                                {{ form.email|as_crispy_field }}
                             </div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="form-group form-focus">
-                                {{ form.subject|as_crispy_field }}
-                            </div>
-                            <div class="form-group form-focus">
-                                {{ form.message|as_crispy_field }}
+                                {{ form.active|as_crispy_field }}
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Envoyer</button>
+                    <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
                 </form>
             </div>
         </div>

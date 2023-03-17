@@ -61,18 +61,16 @@ def pharmacy_view(request):
 # CONTACT VIEW 
 def contact_view(request):
     if request.method =='POST':
-        form = ContactForm(request.POST)
+        form = ContactForme(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Votre message a été envoyé avec succés")
             return redirect(request.META['HTTP_REFERER'])
     else:
-        form = ContactForm()
-    context  = {
-        'form':form
-    }
+        form = ContactForme()
+    context  = {'form':form}
     template ="contact.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 

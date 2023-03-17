@@ -299,11 +299,29 @@ class NewsletterForm(forms.ModelForm):
         model  = Subscriber
         fields = [
             "email",
+            "active"
         ]
         widgets = {
            'email':    forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
+
+
+
+
+# NEWSLETTER FORM
+class EmailSubscriberForm(forms.ModelForm):
+    class Meta:
+        model  = EmailSubscriber
+        fields = [
+            "name",
+            "description",
+        ]
+        widgets = {
+           'name':    forms.TextInput(attrs={'class': 'form-control'}),
+           'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
 
 
 
@@ -349,6 +367,24 @@ class ServiceForm(forms.ModelForm):
         }
 
 
+
+
+
+
+
+
+
+
+# CONTACT FORM
+class ContactResponseForm(forms.ModelForm):
+    class Meta:
+        model  = ContactResponse
+        fields = [
+            "response",
+        ]
+        widgets = {
+            'response': forms.Textarea(attrs={'class': 'form-control', 'rows':10}),
+        }
 
 
 

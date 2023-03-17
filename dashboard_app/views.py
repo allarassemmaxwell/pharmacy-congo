@@ -266,26 +266,6 @@ def contact_view(request):
 
 
 
-# CONTACT  ADD VIEW 
-@login_required
-def contact_add_view(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Contact créé avec succès."))
-            return redirect('contact')
-    else:
-        form = ContactForm()
-
-    context = {'form': form}
-    template = "dashboard/contact-add.html"
-    return render(request, template, context)
-
-
-
-
-
 
 
 
@@ -330,6 +310,60 @@ def contact_delete_view(request, id):
 
 
 
+# CONTACT  ADD VIEW 
+@login_required
+def contact_responde_view(request, slug=None):
+    contact = get_object_or_404(Contact, slug=slug)
+    contact.read = True
+    contact.save()
+    if request.method == 'POST':
+        form = ContactResponseForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            subject = form.cleaned_data.get("subject")
+            message = form.cleaned_data.get("message")
+            send_mail(
+                subject, message,
+                'from@example.com', [email],
+                fail_silently=False,
+            )
+            form.save()
+            messages.success(request, _("Contact repondu avec succès."))
+            return redirect('contact')
+    else:
+        form = ContactResponseForm()
+
+    context = {
+        'form': form,
+        'contact': contact
+    }
+    template = "dashboard/contact-response-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# CONTACT  VIEW 
+@login_required
+def response_contact_view(request):
+    responses    = ContactResponse.objects.all()
+    context = {'responses': responses}
+    template = "dashboard/contact-response.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -352,7 +386,7 @@ def newsletter_add_view(request):
         form = NewsletterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Newsletter créé avec succès."))
+            messages.success(request, _("Email ajouté avec succès."))
             return redirect('newsletter')
     else:
         form = NewsletterForm()
@@ -420,7 +454,19 @@ def newsletter_delete_view(request, id):
 @login_required
 def newsletter_email_view(request):
     emails    = EmailSubscriber.objects.all()
-    context = {'emails': emails}
+    context   = {'emails': emails}
+    template  = "dashboard/newsletter/email-subscriber.html"
+    return render(request, template, context)
+
+
+
+
+
+# BLOG NEWSLETTER ADD VIEW 
+@login_required
+def mail_newsletter_view(request):
+    mails    = EmailSubscriber.objects.all()
+    context   = {'mails': mails}
     template = "dashboard/newsletter/email-subscriber.html"
     return render(request, template, context)
 
@@ -429,53 +475,29 @@ def newsletter_email_view(request):
 
 
 
-# SEND EMAIL 👉 check this code if it's correct
+# BLOG NEWSLETTER ADD VIEW 
 @login_required
-def send_email(request):
+def mail_newsletter_add_view(request):
     if request.method == 'POST':
-        subject = request.POST['subject']
-        message = request.POST['message']
-        subscribers = request.POST.getlist('subscriber')
-        
-        recipient_list = [subscriber.email for subscriber in Subscriber.objects.filter(id__in=subscribers)]
-        
-        send_mail(subject, message, 'admin@example.com', recipient_list)
-        
-        return redirect('success')
-    
-    subscribers = Subscriber.objects.all()
-    
-    return render(request, 'send_email.html', {'subscribers': subscribers})
+        form = EmailSubscriberForm(request.POST, request.FILES)
+        if form.is_valid():
+            subject = form.cleaned_data.get("name")
+            description = form.cleaned_data.get("description")
+            form.save()
+            for subscriber in Subscriber.objects.filter(active=True):
+                send_mail(
+                    subject, description,
+                    'from@example.com', [subscriber.email],
+                    fail_silently=False,
+                )
+            messages.success(request, _("Email envoyé aux personnes avec succès."))
+            return redirect('mail_newsletter')
+    else:
+        form = EmailSubscriberForm()
 
-
-
-
-
-
-
-
-
-
-# SEND EMAIL TO CONTACT 👉 check the code
-@login_required 
-def contact_subscriber(request): 
-    if request.method == 'POST': 
-        form = ContactForm(request.POST) 
-        if form.is_valid(): 
-            subject = request.POST['subject'] 
-            message = request.POST['message'] 
-            from_email = request.POST['from_email'] 
-            to = request.POST['to'] 
-            try: 
-                send_mail(subject, message, from_email, [to]) 
-            except BadHeaderError: 
-                return HttpResponse('Invalid header found.') 
-            return redirect('home') 
-    else: 
-        form = ContactForm() 
-    return render(request, "contact.html", {'form': form})
-
-
+    context = {'form': form}
+    template = "dashboard/newsletter/email-add-newsletter.html"
+    return render(request, template, context)
 
 
 

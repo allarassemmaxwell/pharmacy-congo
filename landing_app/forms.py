@@ -10,7 +10,7 @@ from .models import *
 
 
 # CONTACT FORM
-class ContactForm(forms.ModelForm):
+class ContactForme(forms.ModelForm):
     class Meta:
         model  = Contact
         fields = [
@@ -29,7 +29,6 @@ class ContactForm(forms.ModelForm):
             'phone':   forms.TextInput(attrs={'class': 'form-control'}),
             'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':1, 'cols':30}),
         }
-
 
 
 

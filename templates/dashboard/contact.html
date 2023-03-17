@@ -17,9 +17,6 @@
                             <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
                             
                         </ul>
-                    </div>
-                    <div class="col-md-3 text-md-end">
-                        <a href="{% url 'contact_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Contact</a>
                     </div> 
                     
                 </div>
@@ -85,16 +82,13 @@
                                         </td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a class="avatar-pos" href="#">{{ contact.timestamp|date:"d M Y"  }}</a>
+                                                <a class="avatar-pos" href="#">{{ contact.timestamp|date:"d M Y" }}</a>
                                             </h2>
                                         </td>
                                         <td class="text-end">
                                             <div class="actions">
-                                                <a href="{{ contact.update_url }}" class="text-black">
-                                                    <i class="feather-edit-3 me-1"></i> Lire
-                                                </a>
-                                                <a href="" class="text-black">
-                                                    <i class="feather-edit-3 me-1"></i> Repondre
+                                                <a href="{{ contact.respond_url }}" class="text-black">
+                                                    <i class="feather-edit-3 me-1"></i> Lire/ Repondre
                                                 </a>
                                                 <a class="text-danger" href="#" data-bs-toggle="modal"
                                                     data-bs-target="#contactDeleteModal-{{ forloop.counter }}">
