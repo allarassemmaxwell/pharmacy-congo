@@ -18,7 +18,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
 from django.core.paginator import Paginator
-
+from dashboard_app.models import *
 
 
 
@@ -58,19 +58,21 @@ def pharmacy_view(request):
 
 
 
-# CONTACT VIEW 
+	# CONTACT VIEW 
 def contact_view(request):
-    if request.method =='POST':
-        form = ContactForme(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Votre message a été envoyé avec succés")
-            return redirect(request.META['HTTP_REFERER'])
-    else:
-        form = ContactForme()
-    context  = {'form':form}
-    template ="contact.html"
-    return render(request, template, context)
+	if request.method =='POST':
+		form = ContactForme(request.POST)
+		if form.is_valid():
+			contact = form.save()
+			subject = "Nouveau contact envoyé"
+			Notification.objects.create(contact=contact, subject=subject)
+			messages.success(request, "Votre message a été envoyé avec succés")
+			return redirect(request.META['HTTP_REFERER'])
+	else:
+		form = ContactForme()
+	context  = {'form':form}
+	template ="contact.html"
+	return render(request, template, context)
 
 
 

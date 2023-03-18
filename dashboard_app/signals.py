@@ -225,3 +225,25 @@ pre_save.connect(presave_patient, sender=Patient)
 
 
 
+
+
+
+# CREATE NOTIFICATION SLUG        
+def create_notification_slug(instance, new_slug=None):
+    slug = random_string(15)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Notification.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_notification_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_notification(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_notification_slug(instance)
+pre_save.connect(presave_notification, sender=Notification)
+
+
+

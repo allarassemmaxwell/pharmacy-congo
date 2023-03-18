@@ -190,10 +190,10 @@ admin.site.register(AppointmentSymptom, AppointmentSymptomAdmin)
 #  APPOINTMENT SYMPTOM ADMIN
 class AppointmentAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['first_name','last_name', 'timestamp', 'updated']
-    list_display_links  = ['first_name',]
-    list_filter         = ['first_name']
-    search_fields       = ['first_name']
+    list_display        = ['patient', 'timestamp', 'updated']
+    list_display_links  = ['patient',]
+    list_filter         = ['patient']
+    search_fields       = ['patient']
     list_per_page       = 50
     class Meta:
         model = Appointment
