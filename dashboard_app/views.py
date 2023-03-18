@@ -1475,9 +1475,7 @@ def appointment_symptom_update_view(request, slug=None):
 @login_required
 def appointment_view(request):
     appointments    = Appointment.objects.all()
-    context = {
-        'appointments': appointments,
-    }
+    context = {'appointments': appointments}
     template = "dashboard/appointment/appointment.html"
     return render(request, template, context)
 
@@ -1494,9 +1492,13 @@ def appointment_view(request):
 @login_required
 def appointment_add_view(request):
     if request.method == 'POST':
-        form = AppointmentForm(request.POST, request.FILES)
+        form = AppointmentForm(request.POST)
         if form.is_valid():
-            form.save()
+            date = form.cleaned_data.get("date")
+            hour = form.cleaned_data.get("hour")
+            appointment = form.save()
+            subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
+            Notification.objects.create(appointment=appointment, subject=subject)
             messages.success(request, _("Rendez-Vous créé avec succès."))
             return redirect('appointment')
     else:
@@ -1549,6 +1551,17 @@ def appointment_delete_view(request, id=None):
 
 
 
+
+
+
+
+# APPOINTMENT VIEW 
+@login_required
+def appointment_detail_view(request, id):
+    appointment = get_object_or_404(Appointment, id=id)
+    context = {'appointment': appointment}
+    template = "dashboard/appointment/appointment-detail.html"
+    return render(request, template, context)
 
 
 
@@ -1722,116 +1735,15 @@ def sale_update_view(request, id):
 
 
 
-# APPOINTMENT REPORT VIEWS
-
-@login_required
-def appointment_report_view(request):
-    # sales    = Sale.objects.all()
-    # context = {
-    #     'sales': sales,
-    # }
-    template = "dashboard/report/appointment-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-
-# INCOME REPORT VIEWS
-
-@login_required
-def income_report_view(request):
-    # sales    = Sale.objects.all()
-    # context = {
-    #     'sales': sales,
-    # }
-    template = "dashboard/report/income-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-
-
-
-# INVOICE REPORT VIEWS
-
-@login_required
-def invoice_report_view(request):
-    # sales    = Sale.objects.all()
-    # context = {
-    #     'sales': sales,
-    # }
-    template = "dashboard/report/invoice-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-
-# USER REPORT VIEWS
-
-@login_required
-def user_report_view(request):
-    # sales    = Sale.objects.all()
-    # context = {
-    #     'sales': sales,
-    # }
-    template = "dashboard/report/user-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-# TRANSACTION  VIEWS
-
-@login_required
-def transaction_view(request):
-    # sales    = Sale.objects.all()
-    # context = {
-    #     'sales': sales,
-    # }
-    template = "dashboard/report/transaction.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Page de Notification
 
 # NOTIFICATION   FUNCTION
 
 @login_required
 def notification_view(request):
-    notifications = Notification.objects.filter(active=True)
+    notifications = Notification.objects.all()
     context  = {'notifications': notifications}
-    template = "notification.html"
+    template = "dashboard/notification/notification.html"
     return render(request, template, context)
 
 
@@ -1850,7 +1762,7 @@ def notification_detail_view(request, slug=None):
     data.read = True
     data.save()
     context  = {'data':data}
-    template = "notification-detail.html"
+    template = "dashboard/notification/notification-detail.html"
     return render(request, template, context)
 
 
@@ -1866,6 +1778,6 @@ def notification_detail_view(request, slug=None):
 
 # GLOBAL  NOTIFICATION FUNCTION
 def global_notification_view(request):
-    return {'global_notifications': Notification.objects.filter(active=True, read=False)}
+    return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
 
 

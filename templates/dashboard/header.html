@@ -35,7 +35,7 @@
     <ul class="nav nav-tabs user-menu">
 
         
-
+        {% if GLOBAL_NOTIFICATIONS %}
         <li class="nav-item dropdown noti-nav">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                 <i class="feather-bell"></i> <span class="badge"></span>
@@ -43,70 +43,34 @@
             <div class="dropdown-menu notifications">
                 <div class="topnav-dropdown-header">
                     <span class="notification-title">Notifications</span>
-                    <a href="javascript:void(0)" class="clear-noti"><i class="feather-more-vertical"></i></a>
+                    <a href="{% url 'notification' %}" class="clear-noti">Voir tout</a>
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <span class="avatar">
-                                        <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-02.jpg' %}">
-                                    </span>
-                                    <div class="media-body">
-                                        <h6>Travis Tremble <span class="notification-time">18.30 PM</span></h6>
-                                        <p class="noti-details">Sent a amount of $210 for his Appointment <span
-                                                class="noti-title">Dr.Ruby perin </span></p>
+                        {% for notification in GLOBAL_NOTIFICATIONS %}
+                            <li class="notification-message">
+                                <a href="{{ notification.read_url }}">
+                                    <div class="media d-flex">
+                                        <span class="avatar">
+                                            <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-02.jpg' %}">
+                                        </span>
+                                        <div class="media-body">
+                                            {% if notification.contact %}
+                                                <h6>{{ notification.contact }} <span class="notification-time">{{ notification.timestamp|date:"d M Y" }}</span></h6>
+                                            {% elif notification.appointment %}
+                                                <h6>{{ notification.appointment.patient }} <span class="notification-time">{{ notification.timestamp|date:"d M Y" }}</span></h6>
+                                            {% endif %}
+                                            <p class="noti-details">{{ notification.subject|safe }}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <span class="avatar">
-                                        <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-05.jpg' %}">
-                                    </span>
-                                    <div class="media-body">
-                                        <h6>Travis Tremble <span class="notification-time">12 Min Ago</span>
-                                        </h6>
-                                        <p class="noti-details"> has booked her appointment to <span
-                                                class="noti-title">Dr. Hendry Watt</span></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <div class="avatar">
-                                        <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-03.jpg' %}">
-                                    </div>
-                                    <div class="media-body">
-                                        <h6>Travis Tremble <span class="notification-time">6 Min Ago</span></h6>
-                                        <p class="noti-details"> Sent a amount $210 for his Appointment <span
-                                                class="noti-title">Dr.Maria Dyen</span></p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="notification-message">
-                            <a href="#">
-                                <div class="media d-flex">
-                                    <div class="avatar avatar-sm">
-                                        <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-06.jpg' %}">
-                                    </div>
-                                    <div class="media-body">
-                                        <h6>Travis Tremble <span class="notification-time">8.30 AM</span></h6>
-                                        <p class="noti-details"> Send a message to his doctor</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
         </li>
+        {% endif %}
 
 
         <li class="nav-item dropdown main-drop">

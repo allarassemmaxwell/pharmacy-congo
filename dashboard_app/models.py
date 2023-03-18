@@ -7,11 +7,7 @@ from django.conf import settings
 import uuid
 from django.db import models
 from django.db.models.fields import DateField
-from django.db.models.signals import pre_save, post_save
-from django.dispatch import receiver
 
-from django.utils.safestring import mark_safe
-from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -19,7 +15,7 @@ from django.contrib.auth.models import PermissionsMixin
 
 from django.core import validators
 
-
+from landing_app.models import *
 from django.urls import reverse
 
 import random   
@@ -27,13 +23,7 @@ import string
 import secrets 
 
 from django.core.exceptions import ValidationError
-from django.core.files.images import get_image_dimensions
-
-from mimetypes import guess_type
 from django_countries.fields import CountryField
-
-from django.shortcuts import redirect, get_object_or_404
-
 from django.contrib import messages
 
 
@@ -135,7 +125,7 @@ class Profile(models.Model):
         ('Masculin', 'Masculin'),
         ('Feminin', 'Feminin'),
     )
-    user 	      = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    user 	      = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="user_profile")
     photo         = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
     phone         = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
     date_of_birth = models.DateField(_("Date de Naissance"), blank=True, null=True)
@@ -353,7 +343,7 @@ class Patient(models.Model):
     profession     = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
     gender         = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
     date_of_birth  = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    phone          = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True)
+    phone          = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True, unique=True)
     country        = CountryField(_("Pays"), max_length=255, null=True, blank=True)
     city           = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address        = models.CharField(_("Address"), max_length=255, null=True, blank=True)
@@ -373,18 +363,21 @@ class Patient(models.Model):
             return str(self.user.first_name)+" "+str(self.user.last_name)
         else:
             return str(self.first_name)+" "+str(self.last_name)
+        
+    def get_gender(self):
+        if self.gender:
+            return self.gender
+        else:
+            if self.user.user_profile.gender:
+                return self.user.user_profile.gender
+            else:
+                return "Option de sexe est vide"
 
     def get_phone(self):
         if self.user:
             return self.user.profile.phone
         else:
             return self.phone
-
-    def get_gender(self):
-        if self.user:
-            return self.user.profile.gender
-        else:
-            return self.gender
 
     def get_date_of_birth(self):
         if self.user:
@@ -402,45 +395,6 @@ class Patient(models.Model):
         return reverse("patient_update", args=[str(self.slug)])
     class Meta:
         ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-
-# PHARMACIST MODEL
-class Pharmacist(models.Model):
-    STATUS_CHOICES=(
-        ('Masculin','Masculin'),
-        ('Feminin','Feminin'),
-    )
-    admin       = models.OneToOneField(User,null=True, on_delete = models.CASCADE)
-    emp_no      =models.CharField(_("Numero de Service(Travail)"),max_length=30,null=True,blank=True,unique=True)
-    age         = models.IntegerField(_("Age"),default='0', blank=True, null=True)
-    gender      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-    phone       = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    address     = models.CharField(_("Address Patient"), max_length=255,null=True,blank=True)
-    photo       = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-    active      = models.BooleanField(_("Est actif"), default=True)
-    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    # objects = models.Manager()
-    
-    def __str__(self):
-        return str(self.admin)
-
-    class Meta:
-        ordering = ('-timestamp',)
-
-
-
 
 
 
@@ -523,29 +477,24 @@ class Appointment(models.Model):
         ('Feminin', 'Feminin'),
     )
     id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    first_name  = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-    last_name   = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
-    email       = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    phone       = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    subject     = models.CharField(_("Sujet"), max_length=255, null=False, blank=False, unique=True)
-    gender      = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=False, blank=False)
-    age         = models.IntegerField(_("Age"),default='0', blank=True, null=True)
-    hour        = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
+    patient     = models.ForeignKey(Patient, on_delete=models.CASCADE, blank=False, null=True)
+    subject     = models.CharField(_("Sujet"), max_length=255, null=False, blank=False)
     date        = models.DateField(_("Date de RV"), blank=False, null=False)
+    hour        = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Est actif"), default=True)
     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
-    
     def __str__(self):
-        return self.first_name
+        return self.patient
 
     class Meta:
         ordering = ('-timestamp',)
 
     def delete_url(self):
         return reverse("appointment_delete", args=[str(self.id)])
+    
     def update_url(self):
         return reverse("appointment_update", args=[str(self.id)])
 
@@ -592,64 +541,6 @@ class AppointmentPrescription(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-
-# NOTIFICATION MODELS
-class Notification(models.Model):
-    name             = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="patient_name")
-    sender           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="notification_sender")
-    user             = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="notification_user")
-    photo            = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    pharmacist       = models.ForeignKey(Pharmacist, on_delete=models.CASCADE, null=False, blank=False, related_name="pharmacist_name")
-    description      = models.TextField(_("Description"), null=False, blank=False)
-    read             = models.TextField(_("Lu"), null=False, blank=False, default=False)
-    active           = models.BooleanField(_("Est actif"), default=True)
-    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    
-    def __str__(self):
-        return self.first_name
-    
-    
-    def delete_url(self):
-        return reverse("notification_delete", args=[str(self.slug)])
-    def update_url(self):
-        return reverse("notification_update", args=[str(self.slug)])
-    
-    class Meta:
-        ordering = ("-timestamp",)
-
-
-
-
-
-
-# CREATE NOTIFICATION SLUG        
-def create_notification_slug(instance, new_slug=None):
-    slug = random_string(15)
-    if new_slug is not None:
-        slug = new_slug
-    ourQuery = Notification.objects.filter(slug=slug)
-    exists = ourQuery.exists()
-    if exists:
-        new_slug = "%s-%s" % (slug, ourQuery.first().id)
-        return create_notification_slug(instance, new_slug=new_slug)
-    return slug
-
-def presave_notification(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_notification_slug(instance)
-pre_save.connect(presave_notification, sender=Notification)
 
 
 
@@ -729,75 +620,28 @@ class Service(models.Model):
 
 
 
-
-# TRANSACTION  MODEL
-class Transaction(models.Model):
-    STATUS_CHOICES=(
-        ('Payé','Payé'),
-        ('Impayé','Impayé'),
-        ('En Attente','En Attente'),
-    )
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    inv_num = models.CharField(_("Numero Transaction"),max_length=30,null=True,blank=True,unique=True)
-    name        = models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
-    photo       = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    date        = models.DateField(_("Date de Transaction"), blank=False, null=False)
-    amount      = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-    status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-    active      = models.BooleanField(_("Est actif"), default=True)
-    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-
-
-    
-    def __str__(self):
-        return self.name
-    
-    
-    def delete_url(self):
-        return reverse("transaction_delete", args=[str(self.id)])
-    def update_url(self):
-        return reverse("transaction_update", args=[str(self.id)])
-
-    class Meta:
-        ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-
-
-# INVOICE REPORT MODEL
-class InvoiceReport(models.Model):
-    STATUS_CHOICES=(
-        ('Payé','Payé'),
-        ('Impayé','Impayé'),
-        ('En Attente','En Attente'),
-    )
-    
-    inv_no      = models.CharField(_("Numero de Facture"),max_length=30,null=True,blank=True,unique=True)
-    prod_name   = models.CharField(_("Nom de Produit"),max_length=30,null=True,blank=True,unique=True)
-    prod_photo  = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
-    status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
+# NOTIFICATION MODELS
+class Notification(models.Model):
+    contact     = models.ForeignKey(Contact, on_delete=models.CASCADE, null=True, blank=True, related_name="notification_contact")
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True, related_name="notification_appointment")
+    subject     = models.CharField(_("Sujet"), max_length=255, null=True, blank=False)
+    read        = models.BooleanField(_("Lu"), default=False)
     active      = models.BooleanField(_("Est actif"), default=True)
     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
-    
     def __str__(self):
-        return str(self.prod_name)
-
+        return self.first_name
+    
+    def read_url(self):
+        if self.contact:
+            return reverse("contact_respond", args=[str(self.contact.slug)])
+        elif self.appointment:
+            return reverse("appointment_detail", args=[str(self.appointment.id)])
+    
     class Meta:
-        ordering = ('-timestamp',)
+        ordering = ("-timestamp",)
 
 
 
@@ -807,121 +651,3 @@ class InvoiceReport(models.Model):
 
 
 
-
-
-# INCOME REPORT MODEL
-class IncomeReport(models.Model):
-    id                 = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    doctor_name        = models.CharField(_("Nom Medecin"),max_length=30,null=True,blank=True,unique=True)
-    speciality         = models.CharField(_("Specialité Medecin"),max_length=30,null=True,blank=True,unique=True)
-    date_integration   = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    num_of_appointment = models.PositiveIntegerField(_("Nombre RV"), null=True, blank=True, default=1)
-    total_income       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-    account_status     = models.BooleanField(_("Status du Compte"), default=False)
-    created_at         = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-    active             = models.BooleanField(_("Est actif"), default=True)
-    timestamp          = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated            = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug               = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    
-    
-    def __str__(self):
-        return str(self.doctor_name)
-
-    class Meta:
-        ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-
-
-# APPOINTMENT REPORT MODEL
-class AppointmentReport(models.Model):
-    id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    patient     =  models.ForeignKey(Patient, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
-    # doctor    = models.ForeignKey(Doctor, on_delete=models.SET_NULL, blank=True, null=True, related_name="doctor") 👉  doctor to create after
-    disease     = models.CharField(_("Nom Maladie"),max_length=30,null=True,blank=True,unique=True)
-    amount      = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-    created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-    active      = models.BooleanField(_("Est actif"), default=True)
-    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    
-    
-    def __str__(self):
-        return str(self.patient)
-
-    class Meta:
-        ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-# TRANSACTION REPORT MODEL 👉 model to check 🔥
-
-# class TransactionReport(models.Model):
-#     STATUS_CHOICES=(
-#         ('Payé','Payé'),
-#         ('Impayé','Impayé'),
-#         ('En Attente','En Attente'),
-#     )
-#     id          = models.UUIDField(primary_key=True, default=uuid.uuid4)
-#     inv_no      = models.ForeignKey(InvoiceReport, on_delete=models.SET_NULL, null=True, related_name="invoice_report") 
-#     patient     = models.ForeignKey(Patients, on_delete=models.SET_NULL, null=True, related_name="patient")
-#     birth_date  = models.DateField(_("Date de Naissance"), null=True)
-#     total       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=9, null=False, blank=False)
-#     status      = models.CharField(_("Options"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
-#     created_at  = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-#     active      = models.BooleanField(_("Est actif"), default=True)
-#     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-#     updated     = models.DateTimeField(_("Modifié le"), auto_now=True)
-#     slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, unique=False)
-    
-#     def __str__(self):
-#         return str(self.patient)
-
-#     class Meta:
-#         ordering = ('-timestamp',)
-
-
-
-
-
-
-
-
-
-
-
-
-# USER REPORT MODEL 👉 model to check 🔥
-
-# class PatientReport(models.Model):
-#     id                 = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-#     patient            =  models.ForeignKey(Patients, on_delete=models.SET_NULL, blank=True, null=True, related_name="patient") 
-#     # doctor    = models.ForeignKey(Doctor, on_delete=models.SET_NULL, blank=True, null=True, related_name="doctor") 👉  doctor to create after
-#     num_of_appointment = models.PositiveIntegerField(_("Nombre RV"), null=True, blank=True, default=1)
-#     total              = models.DecimalField(_("Montant Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-#     created_at         = models.DateTimeField(_("Date de Creation"),auto_now_add=True)
-#     active             = models.BooleanField(_("Est actif"), default=True)
-#     timestamp          = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-#     updated            = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-#     slug               = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
-    
-    
-#     def __str__(self):
-#         return str(self.patient)

@@ -46,11 +46,11 @@ def random_string(num):
 
 # CONTACT MODEL
 class Contact(models.Model):
-    first_name = models.CharField(_("First Name"), max_length=255, null=False, blank=False)
-    last_name  = models.CharField(_("Last Name"), max_length=255, null=False, blank=False)
+    first_name = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
+    last_name  = models.CharField(_("Prénom"), max_length=255, null=False, blank=False)
     email      = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    subject    = models.CharField(_("Subject"), max_length=255, null=False, blank=False)
-    phone      = models.CharField(_("Phone"), max_length=255, null=False, blank=False)
+    subject    = models.CharField(_("Suject"), max_length=255, null=False, blank=False)
+    phone      = models.CharField(_("Téléphone"), max_length=255, null=False, blank=False)
     message    = models.TextField(_("Message"), null=False, blank=False)
     read       = models.BooleanField(_("Lu"), default=False)
     active     = models.BooleanField(_("Active"), default=True)

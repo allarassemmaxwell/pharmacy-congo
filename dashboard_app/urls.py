@@ -98,6 +98,7 @@ urlpatterns = [
     path('appointment/add', appointment_add_view, name="appointment_add"),
     path('appointment/delete/<str:id>/', appointment_delete_view, name="appointment_delete"),
     path('appointment/update/<str:id>/', appointment_update_view, name="appointment_update"),
+    path('appointment/detail/<str:id>/', appointment_detail_view, name="appointment_detail"),
 
 
     path('appointment/prescription/', appointment_prescription_view, name="appointment_prescription"),
@@ -116,15 +117,6 @@ urlpatterns = [
     path('sale/add/', sale_add_view, name="sale_add"),
     path('sale/delete/<str:id>/', sale_delete_view, name="sale_delete"),
     path('sale/update/<str:id>/', sale_update_view, name="sale_update"),
-    
-    # url for report
-    path('appointment-report/', appointment_report_view, name="appointment_report"),
-    path('income-report/', income_report_view, name="income_report"),
-    path('invoice-report/', invoice_report_view, name="invoice_report"),
-    path('user-report/', user_report_view, name="user_report"),
-    
-    path('transaction/', transaction_view, name="transaction"),
-    
     
     
     # Liens d'acces a la Notification,  add, detail, mise a jour et suppression

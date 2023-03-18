@@ -47,8 +47,7 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Nom & Prénom</th>
-                                        <th>Téléphone</th>
+                                        <th>Patient</th>
                                         <th>Sujet</th>
                                         <th>Sexe</th>
                                         <th>Date & Heure</th>
@@ -62,13 +61,12 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ appointment.first_name }} {{ appointment.last_name }}</span>
+                                                    data-bs-target="#editModal"><span>{{ appointment.patient }} {{ appointment.last_name }}</span>
                                                 </a>
                                             </h2>
                                         </td>
-                                        <td>{{ appointment.phone }}</td>
                                         <td>{{ appointment.subject|safe|truncatechars:40 }}</td>
-                                        <td>{{ appointment.gender }}</td>
+                                        <td>{{ appointment.patient.get_gender }}</td>
                                         <td class="text-warning">{{ appointment.date }} à {{ appointment.hour }}</td>
                                         <td class="text-end">
                                             <div class="actions">
