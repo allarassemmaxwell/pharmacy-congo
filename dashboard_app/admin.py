@@ -170,10 +170,10 @@ admin.site.register(Supplier, SupplierAdmin)
 #  APPOINTMENT SYMPTOM ADMIN
 class AppointmentSymptomAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['name', 'timestamp', 'updated']
-    list_display_links  = ['name',]
-    list_filter         = ['name']
-    search_fields       = ['name']
+    list_display        = ['id', 'timestamp', 'updated']
+    list_display_links  = ['id',]
+    list_filter         = ['id']
+    search_fields       = ['id']
     list_per_page       = 50
     class Meta:
         model = AppointmentSymptom
@@ -233,9 +233,9 @@ admin.site.register(Patient, PatientAdmin)
 #  SALE ADMIN
 class SaleAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['reference', 'product', 'quantity', 'total', 'timestamp', 'updated']
+    list_display        = ['product', 'quantity', 'total', 'timestamp', 'updated']
     list_display_links  = ['product',]
-    list_filter         = ['reference', 'product']
+    list_filter         = ['product']
     search_fields       = ['product']
     list_per_page       = 50
     class Meta:

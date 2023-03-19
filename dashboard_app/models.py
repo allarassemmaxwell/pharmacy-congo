@@ -336,21 +336,21 @@ class Patient(models.Model):
         ('Masculin','Masculin'),
         ('Feminin','Feminin'),
     )
-    user           = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.SET_NULL, null=True, blank=True)
-    first_name     = models.CharField(_("Nom"), max_length=255, null=True, blank=True)
-    last_name      = models.CharField(_("Prénom"), max_length=255, null=True, blank=True)
-    reg_no         = models.CharField(_("Numero de Registration"),max_length=30, null=True, blank=True, unique=True)
-    profession     = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
-    gender         = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
-    date_of_birth  = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    phone          = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True, unique=True)
-    country        = CountryField(_("Pays"), max_length=255, null=True, blank=True)
-    city           = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
-    address        = models.CharField(_("Address"), max_length=255, null=True, blank=True)
-    active         = models.BooleanField(_("Est actif"), default=True)
-    timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    user          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.SET_NULL, null=True, blank=True)
+    first_name    = models.CharField(_("Nom"), max_length=255, null=True, blank=True)
+    last_name     = models.CharField(_("Prénom"), max_length=255, null=True, blank=True)
+    reg_no        = models.CharField(_("Numero de Registration"),max_length=30, null=True, blank=True, unique=True)
+    profession    = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
+    gender        = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
+    date_of_birth = models.DateField(_("Date de Naissance"), blank=True, null=True)
+    phone         = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True, unique=True)
+    country       = CountryField(_("Pays"), max_length=255, null=True, blank=True)
+    city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
+    address       = models.CharField(_("Address"), max_length=255, null=True, blank=True)
+    active        = models.BooleanField(_("Est actif"), default=True)
+    timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated       = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug          = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
         if self.user:
@@ -371,19 +371,31 @@ class Patient(models.Model):
             if self.user.user_profile.gender:
                 return self.user.user_profile.gender
             else:
-                return "Option de sexe est vide"
+                return "Sexe est vide"
 
     def get_phone(self):
         if self.user:
-            return self.user.profile.phone
+            if self.user.user_profile.phone:
+                return self.user.user_profile.phone
+            else:
+                return "Le téléphone est manquant"
         else:
-            return self.phone
+            if self.phone:
+                return self.phone
+            else:
+                return "Le téléphone est manquant"
 
     def get_date_of_birth(self):
         if self.user:
-            return self.user.profile.date_of_birth
+            if self.user.user_profile.date_of_birth:
+                return self.user.user_profile.date_of_birth
+            else:
+                return "La date de naissance est manquante"
         else:
-            return self.date_of_birth
+            if self.date_of_birth:
+                return self.date_of_birth
+            else:
+                return "La date de naissance est manquante"
     
     def delete_patient_url(self):
         if self.user:
@@ -403,17 +415,15 @@ class Patient(models.Model):
 
 
 # SALE MODEL
-
 class Sale(models.Model):
-    reference  = models.CharField(_("Reference"), max_length=255, null=False, blank=False, unique=True)
-    product    = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True, related_name="product")
-    quantity   = models.DecimalField(_("Quantité"), decimal_places=2, max_digits=15, null=False, blank=False)
-    total      = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=False, blank=False)
-    recu       = models.FileField(_("Fichier(pdf,image)"), upload_to="Recu/%Y/%m/%d/", null=False, blank=False)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    
+    product     = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
+    quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
+    unity_price = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=False)
+    total       = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
+    recu        = models.FileField(_("Fichier(pdf,image)"), upload_to="Recu/%Y/%m/%d/", null=False, blank=False)
+    active      = models.BooleanField(_("Est actif"), default=True)
+    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
         return self.reference
@@ -470,7 +480,6 @@ class AppointmentSymptom(models.Model):
 
 
 # APPOINTMENT MODEL
-
 class Appointment(models.Model):
     STATUS_CHOICES = (
         ('Masculin', 'Masculin'),
@@ -487,7 +496,7 @@ class Appointment(models.Model):
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
-        return self.patient
+        return str(self.updated)
 
     class Meta:
         ordering = ('-timestamp',)
@@ -504,34 +513,25 @@ class Appointment(models.Model):
 
 
 
-# APPOINTMENT PRESCRIPTION MODEL
 
+
+
+
+# APPOINTMENT PRESCRIPTION MODEL
 class AppointmentPrescription(models.Model):
-    product_name        = models.CharField(_("Nom du Produit"), max_length=255, null=False, blank=False, unique=True)
-    quantity            = models.DecimalField(_("Quantité"), decimal_places=2, max_digits=15, null=False, blank=False)
-    heart_rate          = models.DecimalField(_("Pression Cardiac"), decimal_places=2, max_digits=15, null=False, blank=False)
-    weight              = models.DecimalField(_("Poids"), decimal_places=2, max_digits=15, null=False, blank=False)
-    blood_rate          = models.DecimalField(_("Taux Sanguin"), decimal_places=2, max_digits=15, null=False, blank=False)
-    body_temperature    = models.DecimalField(_("Temperature Corporelle"), decimal_places=2, max_digits=15, null=False, blank=False)
-    glucose_level       = models.DecimalField(_("Taux de Glucose"), decimal_places=2, max_digits=15, null=False, blank=False)
-    blood_pressure      = models.DecimalField(_("Pression Sanguine"), decimal_places=2, max_digits=15, null=False, blank=False)
-    day                 = models.DateField(_("Jour de RV"), blank=False, null=False)
-    appointment_symptom = models.ForeignKey(AppointmentSymptom, on_delete=models.SET_NULL, blank=True, null=True)
-    morning_times       = models.BooleanField(_("Matin"), default=False)
-    afternoon_times     = models.BooleanField(_("Apres Midi"), default=False)
-    evening_times       = models.BooleanField(_("Soir"), default=True)
-    night_times         = models.BooleanField(_("Nuit"), default=True)
-    appointment         = models.ForeignKey(Appointment, on_delete=models.SET_NULL, blank=True, null=True, related_name="product")
-    price               = models.DecimalField(_("Prix"), decimal_places=2, max_digits=15, null=False, blank=False)
-    by                  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
-    description         = models.TextField(_("Description"), null=True, blank=False)
-    active              = models.BooleanField(_("Est actif"), default=True)
-    timestamp           = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated             = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    
+    appointment      = models.OneToOneField(Appointment, on_delete=models.CASCADE, blank=False, null=True, related_name="prescription_appointment")
+    weight           = models.DecimalField(_("Poids"), decimal_places=2, max_digits=5, null=False, blank=False)
+    body_temperature = models.DecimalField(_("Température Corporelle"), decimal_places=2, max_digits=5, null=False, blank=False)
+    symptoms         = models.ManyToManyField(AppointmentSymptom, blank=True)
+    price            = models.DecimalField(_("Prix payé"), decimal_places=2, max_digits=15, null=False, blank=False)
+    received_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    description      = models.TextField(_("Description"), null=True, blank=False)
+    active           = models.BooleanField(_("Est actif"), default=True)
+    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
-        return self.name
+        return str(self.id)
     
     
     def delete_url(self):

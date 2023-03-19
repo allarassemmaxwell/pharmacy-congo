@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h5 class="mb-3">Add Appointment</h5>
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                <form class="custom-validation" method="POST">{% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group form-focus">
@@ -21,34 +21,11 @@
 
                         <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.product_name|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ form.appointment_symptom|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.quantity|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.heart_rate|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
                                 {{ form.weight|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.blood_rate|as_crispy_field }}
-                            </div>
-                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group form-focus">
                                 {{ form.body_temperature|as_crispy_field }}
@@ -56,20 +33,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.glucose_level|as_crispy_field }}
+                                {{ form.symptoms|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.blood_pressure|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.day|as_crispy_field }}
-                            </div>
-                        </div>
-                        
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group form-focus">
                                 {{ form.price|as_crispy_field }}
@@ -77,34 +45,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.by|as_crispy_field }}
+                                {{ form.received_by|as_crispy_field }}
                             </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group form-focus">
-                                {{ form.morning_times|as_crispy_field }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group form-focus">
-                                {{ form.afternoon_times|as_crispy_field }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group form-focus">
-                                {{ form.evening_times|as_crispy_field }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group form-focus">
-                                {{ form.night_times|as_crispy_field }}
-                            </div>
-                        </div>
-
+                    </div>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="form-group form-focus">
                                 {{ form.description|as_crispy_field }}

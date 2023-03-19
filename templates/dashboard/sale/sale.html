@@ -47,25 +47,24 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Reference</th>
                                         <th>Produit</th>
+                                        <th>Prix unitaire</th>
                                         <th>Quantite</th>
                                         <th>Total</th>
                                         <th>Recu</th>
                                         <th>Date</th>
                                         <th>Action</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for sale in sales %}
                                     {% include 'dashboard/modal/sale-delete.html' with sale=sale %}
                                     <tr>
-                                        <td>{{ sale.reference }}</td>
                                         <td>{{ sale.product }}</td>
-                                        <td>{{ sale.quantity }}</td>
+                                        <td>{{ sale.unity_price }}f cfa</td>
+                                        <td>{{ sale.quantity }}f cfa</td>
                                         <td>{{ sale.total }}</td>
-                                        <td>{{ sale.recu }}</td>
+                                        <td><a href="">Voir le fichier</a></td>
                                        
                                         <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         

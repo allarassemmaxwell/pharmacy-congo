@@ -4,12 +4,21 @@
 <div class="header">
 
     <div class="header-left">
-        <a href="{% url 'dashboard' %}" class="logo">
-            <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
-        </a>
-        <a href="{% url 'dashboard' %}" class="logo logo-small">
-            <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
-        </a>
+        {% if request.user.role == 'Admin' or request.user.role == 'Docteur' %}
+            <a href="{% url 'dashboard' %}" class="logo">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+            </a>
+            <a href="{% url 'dashboard' %}" class="logo logo-small">
+                <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+            </a>
+        {% elif request.user.role == 'Patient'  %}
+            <a href="{% url 'patient:home' %}" class="logo">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+            </a>
+            <a href="{% url 'patient:home' %}" class="logo logo-small">
+                <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+            </a>
+        {% endif %}
         <a href="javascript:void(0);" id="toggle_btn">
             <i class="feather-chevrons-left"></i>
         </a>
@@ -18,8 +27,7 @@
 
     <div class="top-nav-search">
         <div class="main">
-            <form class="search" method="post"
-                action="">
+            <form class="search" method="post" action="">
                 <div class="s-icon"><i class="fas fa-search"></i></div>
                 <input type="text" class="form-control" placeholder="Start typing your Search..." />
             </form>
