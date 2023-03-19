@@ -3,7 +3,7 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                {% if request.user.role == 'Admin' %}
+                {% if request.user.role == 'Admin' or request.user.role == 'Docteur'  %}
                     <li class="">
                         <a href="{% url 'dashboard' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
                     </li>
@@ -135,16 +135,16 @@
 
                 {% if request.user.role == 'Patient' %}
                     <li class="">
-                        <a href=""><i class="feather-grid"></i> <span>Tableau de bord</span></a>
+                        <a href="{% url 'patient:home' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
                     </li>
                     <li class="">
-                        <a href=""><i class="feather-grid"></i> <span>Rendez-vous </span></a>
+                        <a href="{% url 'patient:appointment' %}"><i class="feather-grid"></i> <span>Rendez-vous </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Symptôme </span></a>
+                        <a href="{% url 'patient:symptom' %}"><i class="feather-grid"></i> <span>Symptôme </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Ordonnance </span></a>
+                        <a href="{% url 'patient:prescription' %}"><i class="feather-grid"></i> <span>Ordonnance </span></a>
                     </li>
                 {% endif %}
                 

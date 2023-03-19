@@ -515,44 +515,21 @@ class AppointmentPrescriptionForm(forms.ModelForm):
     class Meta:
         model  = AppointmentPrescription
         fields = [
-            "product_name",
-            "quantity",
-            "heart_rate",
-            "weight",
-            "blood_rate",
-            "body_temperature",
-            "glucose_level",
-            "blood_pressure",
-            "day",
-            "appointment_symptom",
-            "morning_times",
-            "afternoon_times",
-            "evening_times",
-            "night_times",
             "appointment",
+            "weight",
+            "body_temperature",
+            "symptoms",
             "price",
-            "by",
+            "received_by",
             "description"
         ]
         widgets = {
-            'product_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'heart_rate': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'weight': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'blood_rate': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'body_temperature': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'glucose_level': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'blood_pressure': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'day': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
-            'appointment_symptom': forms.Select(attrs={'class': 'form-control'}),
-            # 'morning_times': forms.CheckboxInput(attrs={'class': 'form-control checkbox'}),
-            # 'afternoon_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            # 'evening_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            # 'night_times': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'appointment': forms.Select(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            'by': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'appointment':      forms.Select(attrs={'class': 'form-control'}),
+            'weight':           forms.NumberInput(attrs={'class': 'form-control'}),
+            'body_temperature': forms.NumberInput(attrs={'class': 'form-control'}),
+            'price':            forms.NumberInput(attrs={'class': 'form-control'}),
+            'received_by':      forms.Select(attrs={'class': 'form-control'}),
+            'description':      forms.Textarea(attrs={'class': 'form-control', 'rows':7}),
         }
 
 
@@ -652,18 +629,15 @@ class SaleForm(forms.ModelForm):
     class Meta:
         model  = Sale
         fields = [
-            "reference",
             "product",
             "quantity",
-            "total",
+            "unity_price",
             "recu"
         ]
         widgets = {
-            'reference':  forms.TextInput(attrs={'class': 'form-control'}),
             'product':   forms.Select(attrs={'class': 'form-control'}),
             'quantity':  forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'total':  forms.NumberInput(attrs={'class': 'form-control'}),
-            # 'recu': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+            'unity_price':  forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
         }
 
 
