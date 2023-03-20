@@ -25,6 +25,7 @@ import secrets
 from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 from django.contrib import messages
+from decimal import Decimal
 
 
 
@@ -647,6 +648,64 @@ class Notification(models.Model):
 
 
 
+
+
+
+
+
+
+
+
+
+
+# REPORT  SALE MODELS
+class ReportSale(models.Model):
+    product_sale       = models.ForeignKey(Sale, on_delete=models.SET_NULL, blank=True, null=True, related_name="business_sale_shop")
+    total_amount     = models.DecimalField(_("Montant total"), decimal_places=2, max_digits=15, null=False, blank=False)
+    expense          = models.DecimalField(_("Dépenses"), decimal_places=2, max_digits=15, null=False, blank=False)
+    remaining_amount = models.DecimalField(_("Montant Restant"), decimal_places=2, max_digits=15, null=False, blank=False)
+    date             = models.DateField(_("Date de vente"), blank=False, null=False)
+    description      = models.TextField(_("Description"), null=False, blank=False)
+    receipt          = models.FileField(_("Reçu(pdf,image)"), upload_to="Recu/%Y/%m/%d/", null=False, blank=False)
+    active           = models.BooleanField(_("Est actif"), default=True)
+    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    created_by       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="business_sale_created_by")
+
+    def __str__(self):
+        return self.product_sale.name
+
+    def save(self, *args, **kwargs):
+        total_amount = self.total_amount
+        expense = self.expense
+        self.remaining_amount = Decimal(total_amount) - Decimal(expense)
+        super(Sale, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+    def get_total_price(self):
+    # return sum(Decimal(item['price']) * item['quantity'] for item += item in self.remaining_amount.values())
+        return sum([item.remaining_amount for item in self.item_set.all()])
+
+
+# CREATE BUSINESS SALE SLUG
+def create_sale_slug(instance, new_slug=None):
+    slug = slugify(instance.order_shop.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = Sale.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_sale_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_sale(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_sale_slug(instance)
+pre_save.connect(presave_sale, sender=Sale)
 
 
 
