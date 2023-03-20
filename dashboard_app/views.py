@@ -1712,12 +1712,12 @@ def sale_update_view(request, id):
 
 # NOTIFICATION   FUNCTION
 
-@login_required
-def notification_view(request):
-    notifications = Notification.objects.all()
-    context  = {'notifications': notifications}
-    template = "dashboard/notification/notification.html"
-    return render(request, template, context)
+# @login_required
+# def notification_view(request):
+#     notifications = Notification.objects.all()
+#     context  = {'notifications': notifications}
+#     template = "dashboard/notification/notification.html"
+#     return render(request, template, context)
 
 
 
@@ -1729,14 +1729,14 @@ def notification_view(request):
 
 # Page de Notification detail
 
-@login_required
-def notification_detail_view(request, slug=None):
-    data  = get_object_or_404(Notification, slug=slug, active=True)
-    data.read = True
-    data.save()
-    context  = {'data':data}
-    template = "dashboard/notification/notification-detail.html"
-    return render(request, template, context)
+# @login_required
+# def notification_detail_view(request, slug=None):
+#     data  = get_object_or_404(Notification, slug=slug, active=True)
+#     data.read = True
+#     data.save()
+#     context  = {'data':data}
+#     template = "dashboard/notification/notification-detail.html"
+#     return render(request, template, context)
 
 
 
@@ -1750,7 +1750,7 @@ def notification_detail_view(request, slug=None):
 # Variable Global pour la Notification
 
 # GLOBAL  NOTIFICATION FUNCTION
-def global_notification_view(request):
-    return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
+# def global_notification_view(request):
+#     return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
 
 
