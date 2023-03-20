@@ -243,3 +243,23 @@ class SaleAdmin(admin.ModelAdmin):
 admin.site.register(Sale, SaleAdmin)
 
 
+
+
+
+
+
+
+
+
+#  NOTIFICATION ADMIN
+class NotificationAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['contact', 'appointment', 'subject', 'timestamp', 'updated']
+    list_display_links  = ['contact',]
+    list_filter         = ['active']
+    search_fields       = ['contact', 'appointment']
+    list_per_page       = 50
+    class Meta:
+        model = Notification
+admin.site.register(Notification, NotificationAdmin)
+
