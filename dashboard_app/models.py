@@ -633,7 +633,8 @@ class Notification(models.Model):
     slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
-        return self.contact.first_name if self.contact else ""
+        return self.contact
+        
     
     def read_url(self):
         if self.contact:
