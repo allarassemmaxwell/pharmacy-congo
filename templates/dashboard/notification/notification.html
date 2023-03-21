@@ -126,11 +126,11 @@
                             <img class="avatar avatar-img" src="{% static 'assets/img/profiles/avatar-07.jpg' %}" alt="User Image">
                           </a>-->
                           <a href="patient-list.html#" data-bs-target="#patientlist" data-bs-toggle="modal">
-                            <!--{% if notification.contact %}-->
-                                <!--<span class="user-name">{{ notification.contact.first_name }} {{ notification.contact.last_name }}</span>-->
-                            <!--{% else %}-->
+                            {% if notification.contact %}
+                                <span class="user-name">{{ notification.contact.first_name }} {{ notification.contact.last_name }}</span>
+                            {% else %}
                                 <span class="user-name">Narcis Franck</span>
-                            <!--{% endif %}-->
+                            {% endif %}-->
                             <span class="text-muted">Male, 40 Years Old</span>
                           </a>
                         </h2>
