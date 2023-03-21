@@ -1754,3 +1754,91 @@ def global_notification_view(request):
     return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
 
 
+
+
+
+
+
+
+
+# APPOINTMENT REPORT FUNCTION
+
+@login_required
+def appointment_report_view(request):
+    
+    template = "dashboard/report/appointment-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# INCOME REPORT FUNCTION
+
+@login_required
+def income_report_view(request):
+    
+    template = "dashboard/report/income-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+# INCOME REPORT FUNCTION
+
+@login_required
+def income_report_view(request):
+    
+    template = "dashboard/report/income-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# INVOICE  REPORT FUNCTION
+
+@login_required
+def invoice_report_view(request):
+    
+    template = "dashboard/report/invoice-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# USER  REPORT FUNCTION
+
+@login_required
+def user_report_view(request):
+    
+    template = "dashboard/report/user-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# TRANSACTION  REPORT FUNCTION
+
+@login_required
+def transaction_view(request):
+    
+    template = "dashboard/report/transaction.html"
+    return render(request, template)

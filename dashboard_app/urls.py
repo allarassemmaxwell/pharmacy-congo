@@ -123,6 +123,14 @@ urlpatterns = [
     
     path('notification/', notification_view, name="notification"),
     path('notification/detail/<slug:slug>/', notification_detail_view, name="notification_detail"),
+    
+    
+    # URL for report
+    path('appointment-report/', appointment_report_view, name="appointment_report"),
+    path('income-report/', income_report_view, name="income_report"),
+    path('invoice-report/', invoice_report_view, name="invoice_report"),
+    path('user-report/', user_report_view, name="user_report"),
+    path('transaction/', transaction_view, name="transaction"),
 ]
 
 
