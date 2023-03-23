@@ -118,27 +118,37 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for notification in notifications %}
                     <tr>
-                     
                       <td>
                         <h2 class="table-avatar">
-                          <a href="patient-list.html#" data-bs-target="#patientlist" data-bs-toggle="modal">
+                          <!--<a href="patient-list.html#" data-bs-target="#patientlist" data-bs-toggle="modal">
                             <img class="avatar avatar-img" src="{% static 'assets/img/profiles/avatar-07.jpg' %}" alt="User Image">
-                          </a>
+                          </a>-->
                           <a href="patient-list.html#" data-bs-target="#patientlist" data-bs-toggle="modal">
-                            <span class="user-name">Bess Twishes</span>
+                            {% if notification.contact %}
+                                <span class="user-name">{{ notification.contact.first_name }} {{ notification.contact.last_name }}</span>
+                            {% else %}
+                                <span class="user-name">Narcis Franck</span>
+                            {% endif %}-->
                             <span class="text-muted">Male, 40 Years Old</span>
                           </a>
                         </h2>
                       </td>
                       <td>
-                        <span class="user-name">26 November 2022 </span>
-                        <span class="d-block">12/20/2022</span>
+                        <span class="user-name">{{notification.appointment.date}} </span>
+                        <span class="d-block">{{notification.appointment.hour}}</span>
                       </td>
-                      <td>AB+</td>
-                      <td>$300.00</td>
-                      
+                      <td>{{notification.subject}}</td>
+                      <td>
+                        {% if notification.read %}
+                            <span class="badge bg-badge-grey text-success"><i class="fas fa-circle me-1"></i> Lu</span>
+                        {% else %}
+                            <span class="badge bg-badge-grey text-danger"><i class="fas fa-circle me-1"></i> Non lu</span>
+                        {% endif %}
+                    </td>
                     </tr>
+                    {% endfor %}
                     
                     
                     
@@ -153,6 +163,7 @@
       </div>
     </div>
   </div>
+  {% for notification in notifications %}
   <div class="modal fade contentmodal" id="patientlist" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content doctor-profile">
@@ -219,6 +230,7 @@
       </div>
     </div>
   </div>
+  {% endfor %}
   <div class="modal fade contentmodal" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content doctor-profile">

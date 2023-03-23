@@ -660,3 +660,26 @@ class SubscriberResponseForm(forms.ModelForm):
             'subject':   forms.TextInput(attrs={'class': 'form-control'}),
             'message':   forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
         }
+
+
+
+
+
+
+
+
+
+# NOTIFICATION FORM
+class NotificationForm(forms.ModelForm):
+    class Meta:
+        model  = Notification
+        fields = [
+            "contact",
+            "appointment",
+            "subject",
+        ]
+        widgets = {
+           'contact':    forms.Select(attrs={'class': 'form-control'}),
+           'appointment':    forms.Select(attrs={'class': 'form-control'}),
+           'subject':    forms.TextInput(attrs={'class': 'form-control'}),
+        }

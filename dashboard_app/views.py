@@ -1712,12 +1712,12 @@ def sale_update_view(request, id):
 
 # NOTIFICATION   FUNCTION
 
-# @login_required
-# def notification_view(request):
-#     notifications = Notification.objects.all()
-#     context  = {'notifications': notifications}
-#     template = "dashboard/notification/notification.html"
-#     return render(request, template, context)
+@login_required
+def notification_view(request):
+    notifications = Notification.objects.all()
+    context  = {'notifications': notifications}
+    template = "dashboard/notification/notification.html"
+    return render(request, template, context)
 
 
 
@@ -1729,14 +1729,14 @@ def sale_update_view(request, id):
 
 # Page de Notification detail
 
-# @login_required
-# def notification_detail_view(request, slug=None):
-#     data  = get_object_or_404(Notification, slug=slug, active=True)
-#     data.read = True
-#     data.save()
-#     context  = {'data':data}
-#     template = "dashboard/notification/notification-detail.html"
-#     return render(request, template, context)
+@login_required
+def notification_detail_view(request, slug=None):
+    data  = get_object_or_404(Notification, slug=slug, active=True)
+    data.read = True
+    data.save()
+    context  = {'data':data}
+    template = "dashboard/notification/notification-detail.html"
+    return render(request, template, context)
 
 
 
@@ -1750,7 +1750,95 @@ def sale_update_view(request, id):
 # Variable Global pour la Notification
 
 # GLOBAL  NOTIFICATION FUNCTION
-# def global_notification_view(request):
-#     return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
+def global_notification_view(request):
+    return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
 
 
+
+
+
+
+
+
+
+# APPOINTMENT REPORT FUNCTION
+
+@login_required
+def appointment_report_view(request):
+    
+    template = "dashboard/report/appointment-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# INCOME REPORT FUNCTION
+
+@login_required
+def income_report_view(request):
+    
+    template = "dashboard/report/income-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+# INCOME REPORT FUNCTION
+
+@login_required
+def income_report_view(request):
+    
+    template = "dashboard/report/income-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# INVOICE  REPORT FUNCTION
+
+@login_required
+def invoice_report_view(request):
+    
+    template = "dashboard/report/invoice-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# USER  REPORT FUNCTION
+
+@login_required
+def user_report_view(request):
+    
+    template = "dashboard/report/user-report.html"
+    return render(request, template)
+
+
+
+
+
+
+
+
+# TRANSACTION  REPORT FUNCTION
+
+@login_required
+def transaction_view(request):
+    
+    template = "dashboard/report/transaction.html"
+    return render(request, template)
