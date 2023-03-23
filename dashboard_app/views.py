@@ -1629,9 +1629,7 @@ def appointment_prescription_delete_view(request, id):
 @login_required
 def sale_view(request):
     sales    = Sale.objects.all()
-    context = {
-        'sales': sales,
-    }
+    context = {'sales': sales}
     template = "dashboard/sale/sale.html"
     return render(request, template, context)
 
@@ -1646,12 +1644,13 @@ def sale_add_view(request):
     if request.method == 'POST':
         form = SaleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.total = obj.unity_price * obj.quantity
+            obj.save()
             messages.success(request, _("Vente créé avec succès."))
             return redirect('sale')
     else:
         form = SaleForm()
-
     context = {'form': form}
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
@@ -1687,7 +1686,9 @@ def sale_update_view(request, id):
     if request.method == 'POST':
         form = SaleForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.total = obj.unity_price * obj.quantity
+            obj.save()
             messages.success(request, _("Sale updated successfully."))
             return redirect('sale')
     else:

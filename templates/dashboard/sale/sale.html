@@ -63,8 +63,8 @@
                                         <td>{{ sale.product }}</td>
                                         <td>{{ sale.unity_price }}f cfa</td>
                                         <td>{{ sale.quantity }}f cfa</td>
-                                        <td>{{ sale.total }}</td>
-                                        <td><a href="">Voir le fichier</a></td>
+                                        <td>{{ sale.total }}f cfa</td>
+                                        <td><a href="{{ sale.recu.url }}" target="_blank">Voir le fichier</a></td>
                                        
                                         <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         
