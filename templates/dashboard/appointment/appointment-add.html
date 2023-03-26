@@ -7,7 +7,16 @@
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
-
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/appointment/">Rendez-Vous</a></div>
+                </div>
+            </div>
+        </div>
+        
         <div class="row">
             <div class="col-md-12">
                 <h5 class="mb-3">Ajouter un rendez-vous</h5>
@@ -49,5 +58,9 @@
     </div>
 </div>
 
-
+<style type="text/css">
+    .error {
+        color: red;
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="modal fade contentmodal" id="patientlist-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Description</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="feather-x-circle"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="member-wrapper">
+                    <div class="media d-flex align-items-center justify-content-between">
+                        <div>
+                            <p>{{ mail.description|safe }}</p>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mem-info">
+                                <h6>Sujet</h6>
+                                <h6>{{ mail.name|title }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>
+
+

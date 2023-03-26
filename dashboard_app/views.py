@@ -12,9 +12,9 @@ from django.urls import reverse_lazy
 from landing_app.models import *
 
 from landing_app.models import *
-
+from patient_app.forms import *
 from .forms import *
-
+from django.core.mail import send_mail, BadHeaderError
 
 
 
@@ -30,10 +30,31 @@ class PasswordChangeView(PasswordChangeView):
 # DASHBOARD VIEW 
 @login_required
 def dashboard_view(request):
+    this_year = datetime.datetime.now().year
+    this_month = datetime.datetime.now().month
     if request.user.role == "Patient":
        return redirect('patient:home')
     else:
-        context = {}
+        doctor_count  = User.objects.filter(role="Docteur").count()
+        patient_count = Patient.objects.filter(active=True).count()
+        patients = Patient.objects.filter(active=True)[:10]
+        doctors  = User.objects.filter(role="Docteur")[:10]
+        prescriptions = AppointmentPrescription.objects.filter(active=True)[:10]
+        appointment_count = Appointment.objects.filter(active=True).count()
+        month_s_appointments = Appointment.objects.filter(date__year=this_year, date__month=this_month, active=True)
+        revenu_count = 0
+        for sale in Sale.objects.all():
+            revenu_count += sale.total
+        context = {
+            'doctor_count': doctor_count,
+            'patient_count': patient_count,
+            'appointment_count': appointment_count,
+            'revenu_count': revenu_count,
+            'month_s_appointments': month_s_appointments,
+            'patients': patients,
+            'doctors': doctors,
+            'prescriptions': prescriptions
+        }
         template = "dashboard/index.html"
         return render(request,template,context)
         
@@ -45,7 +66,27 @@ def dashboard_view(request):
 
 @login_required
 def profile_view(request):
-    context  = {}
+    obj  = get_object_or_404(Profile, user=request.user.id)
+    if obj.photo:
+        profile_photo = obj.photo.url
+    else:
+        profile_photo = ""
+    if request.method == 'POST':
+        profile_form  = PatientProfileForm(request.POST, request.FILES, instance=obj)
+        user_form     = PatientUserUpdateForm(request.POST, instance=obj.user)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, _("Profile modifié avec succès."))
+            return redirect('profile')
+    else:
+        user_form    = PatientUserUpdateForm(instance=obj.user)
+        profile_form = PatientProfileForm(instance=obj)
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'profile_photo': profile_photo
+    }
     template = "dashboard/profile/profile.html"
     return render(request, template, context)
 
@@ -57,7 +98,7 @@ def profile_view(request):
 @login_required
 def blog_view(request):
     blogs    = Blog.objects.all()
-    context = {'blogs': blogs}
+    context  = {'blogs': blogs}
     template = "dashboard/blog/blog.html"
     return render(request, template, context)
 
@@ -69,19 +110,18 @@ def blog_view(request):
 # BLOG ADD VIEW 
 @login_required
 def blog_add_view(request):
+    user = User.objects.get(id=request.user.id)
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
-            # organization = BlogCategory.objects.get(user=request.user)
-            # obj = form.save(commit=False)
-            # obj.organization = organization
-            form.save()
-            messages.success(request, _("Blog créé avec succès."))
+            obj = form.save(commit=False)
+            obj.user = user
+            obj.save()
+            messages.success(request, _("Blogue créé avec succès."))
             return redirect('blog')
     else:
         form = BlogForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/blog/blog-add.html"
     return render(request, template, context)
 
@@ -101,13 +141,11 @@ def blog_update_view(request, slug=None):
         form = BlogForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Blog mis a jour avec succès.."))
+            messages.success(request, _("Blogue mis à jour avec succès.."))
             return redirect('blog')
     else:
         form = BlogForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/blog/blog-update.html"
     return render(request, template, context)
 
@@ -125,7 +163,7 @@ def blog_update_view(request, slug=None):
 def blog_delete_view(request, slug=None):
     blog = get_object_or_404(Blog, slug=slug, active=True)
     blog.delete()
-    messages.success(request, _("Blog  deleted successfully."))
+    messages.success(request, _("Blogue supprimé avec succès."))
     return redirect('blog')
 
 
@@ -140,14 +178,8 @@ def blog_delete_view(request, slug=None):
 @login_required
 def blog_category_view(request):
     categories = BlogCategory.objects.all()
-
-    # PAGINATION 
-    # paginator = Paginator(blogs, 9)
-    # page_number = request.GET.get('page')
-    # page_obj = paginator.get_page(page_number)
-
-    context = {'categories': categories}
-    template = "dashboard/blog/category.html"
+    context    = {'categories': categories}
+    template   = "dashboard/blog/category.html"
     return render(request, template, context)
 
 
@@ -160,12 +192,11 @@ def blog_category_add_view(request):
         form = BlogCategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Blog Catégorie créé avec succès."))
+            messages.success(request, _("Catégorie créée avec succès."))
             return redirect('blog_category')
     else:
         form = BlogCategoryForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/blog/category-add.html"
     return render(request, template, context)
 
@@ -186,13 +217,11 @@ def blog_category_update_view(request, slug=None):
         form = BlogCategoryForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Categories mis a jour avec succès.."))
+            messages.success(request, _("Catégorie mise à jour avec succès"))
             return redirect('blog_category')
     else:
         form = BlogCategoryForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/blog/category-update.html"
     return render(request, template, context)
 
@@ -212,7 +241,7 @@ def blog_category_update_view(request, slug=None):
 def blog_category_delete_view(request, slug=None):
     category = get_object_or_404(BlogCategory, slug=slug, active=True)
     category.delete()
-    messages.success(request, _("Blog Category deleted successfully."))
+    messages.success(request, _("Catégorie supprimée avec succès."))
     return redirect('blog_category')
 
 
@@ -225,8 +254,8 @@ def blog_category_delete_view(request, slug=None):
 # CONTACT  VIEW 
 @login_required
 def contact_view(request):
-    contacts    = Contact.objects.all()
-    context = {'contacts': contacts}
+    contacts = Contact.objects.all()
+    context  = {'contacts': contacts}
     template = "dashboard/contact.html"
     return render(request, template, context)
 
@@ -236,28 +265,6 @@ def contact_view(request):
 
 
 
-
-
-
-
-# CONTACT UPDATE VIEW
-
-@login_required
-def contact_update_view(request, id):
-    obj  = get_object_or_404(Contact, id=id)
-    if request.method == 'POST':
-        form = ContactForm(request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Contact mis a jour avec succès.."))
-            return redirect('contact')
-    else:
-        form = ContactForm(instance=obj)
-    context = { 
-        'form': form
-    }
-    template = "dashboard/contact-update.html"
-    return render(request, template, context)
 
 
 
@@ -272,7 +279,7 @@ def contact_update_view(request, id):
 def contact_delete_view(request, id):
     contact = get_object_or_404(Contact, id=id, active=True)
     contact.delete()
-    messages.success(request, _("Contact deleted successfully."))
+    messages.success(request, _("Contact supprimé avec succès."))
     return redirect('contact')
 
 
@@ -290,6 +297,8 @@ def contact_responde_view(request, slug=None):
     if request.method == 'POST':
         form = ContactResponseForm(request.POST)
         if form.is_valid():
+            obj = form.save(commit=False)
+            obj.contact = contact
             email = form.cleaned_data.get("email")
             subject = form.cleaned_data.get("subject")
             message = form.cleaned_data.get("message")
@@ -298,13 +307,12 @@ def contact_responde_view(request, slug=None):
                 'from@example.com', [email],
                 fail_silently=False,
             )
-            form.save()
+            obj.save()
             messages.success(request, _("Contact repondu avec succès."))
             return redirect('contact')
     else:
         form = ContactResponseForm()
-
-    context = {
+    context  = {
         'form': form,
         'contact': contact
     }
@@ -322,9 +330,9 @@ def contact_responde_view(request, slug=None):
 # CONTACT  VIEW 
 @login_required
 def response_contact_view(request):
-    responses    = ContactResponse.objects.all()
-    context = {'responses': responses}
-    template = "dashboard/contact-response.html"
+    responses = ContactResponse.objects.all()
+    context   = {'responses': responses}
+    template  = "dashboard/contact-response.html"
     return render(request, template, context)
 
 
@@ -341,9 +349,9 @@ def response_contact_view(request):
 # BLOG VIEW 
 @login_required
 def newsletter_view(request):
-    newsletters    = Subscriber.objects.all()
-    context = {'newsletters': newsletters}
-    template = "dashboard/newsletter/newsletter.html"
+    newsletters = Subscriber.objects.all()
+    context     = {'newsletters': newsletters}
+    template    = "dashboard/newsletter/newsletter.html"
     return render(request, template, context)
 
 
@@ -361,8 +369,7 @@ def newsletter_add_view(request):
             return redirect('newsletter')
     else:
         form = NewsletterForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/newsletter/newsletter-add.html"
     return render(request, template, context)
 
@@ -386,13 +393,11 @@ def newsletter_update_view(request, id=None):
         form = NewsletterForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Abonné(e) mis a jour avec succès.."))
+            messages.success(request, _("Abonné(e) mis à jour avec succès.."))
             return redirect('newsletter')
     else:
         form = NewsletterForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/newsletter/newsletter-update.html"
     return render(request, template, context)
 
@@ -408,9 +413,9 @@ def newsletter_update_view(request, id=None):
 
 @login_required
 def newsletter_delete_view(request, id):
-    newsletter = get_object_or_404(Subscriber, id=id, active=True)
+    newsletter = get_object_or_404(Subscriber, id=id)
     newsletter.delete()
-    messages.success(request, _("Subscriber deleted successfully."))
+    messages.success(request, _("Abonné(e) supprimé(e) avec succès."))
     return redirect('newsletter')
 
 
@@ -424,9 +429,9 @@ def newsletter_delete_view(request, id):
 # NEWSLETTER VIEW 
 @login_required
 def newsletter_email_view(request):
-    emails    = EmailSubscriber.objects.all()
-    context   = {'emails': emails}
-    template  = "dashboard/newsletter/email-subscriber.html"
+    emails   = EmailSubscriber.objects.all()
+    context  = {'emails': emails}
+    template = "dashboard/newsletter/email-subscriber.html"
     return render(request, template, context)
 
 
@@ -437,7 +442,7 @@ def newsletter_email_view(request):
 @login_required
 def mail_newsletter_view(request):
     mails    = EmailSubscriber.objects.all()
-    context   = {'mails': mails}
+    context  = {'mails': mails}
     template = "dashboard/newsletter/email-subscriber.html"
     return render(request, template, context)
 
@@ -465,9 +470,8 @@ def mail_newsletter_add_view(request):
             return redirect('mail_newsletter')
     else:
         form = EmailSubscriberForm()
-
-    context = {'form': form}
-    template = "dashboard/newsletter/email-add-newsletter.html"
+    context  = {'form': form}
+    template = "dashboard/newsletter/email-subscriber-add.html"
     return render(request, template, context)
 
 
@@ -482,8 +486,8 @@ def mail_newsletter_add_view(request):
 # BLOG PARTNER VIEW 
 @login_required
 def partner_view(request):
-    partners    = Partner.objects.all()
-    context = {'partners': partners}
+    partners = Partner.objects.all()
+    context  = {'partners': partners}
     template = "dashboard/partner/partner.html"
     return render(request, template, context)
 
@@ -498,12 +502,11 @@ def partner_add_view(request):
         form = PartnerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Partenaire créé avec succès."))
+            messages.success(request, _("Partenaire créé(e) avec succès."))
             return redirect('partner')
     else:
         form = PartnerForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/partner/partner-add.html"
     return render(request, template, context)
 
@@ -524,13 +527,11 @@ def partner_update_view(request, slug=None):
         form = PartnerForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Partenaire mis a jour avec succès.."))
+            messages.success(request, _("Partenaire mis(e) a jour avec succès.."))
             return redirect('partner')
     else:
         form = PartnerForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/partner/partner-update.html"
     return render(request, template, context)
 
@@ -548,7 +549,7 @@ def partner_update_view(request, slug=None):
 def partner_delete_view(request, slug=None):
     partner = get_object_or_404(Partner, slug=slug, active=True)
     partner.delete()
-    messages.success(request, _("Partner deleted successfully."))
+    messages.success(request, _("Partenaire supprimé(e) avec succès."))
     return redirect('partner')
 
 
@@ -559,9 +560,9 @@ def partner_delete_view(request, slug=None):
 # BLOG TESTIMONY VIEW 
 @login_required
 def testimony_view(request):
-    testimonies    = Testimony.objects.all()
-    context = {'testimonies': testimonies}
-    template = "dashboard/testimony/testimony.html"
+    testimonies = Testimony.objects.all()
+    context     = {'testimonies': testimonies}
+    template    = "dashboard/testimony/testimony.html"
     return render(request, template, context)
 
 
@@ -581,8 +582,7 @@ def testimony_add_view(request):
             return redirect('testimony')
     else:
         form = TestimonyForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/testimony/testimony-add.html"
     return render(request, template, context)
 
@@ -603,13 +603,11 @@ def testimony_update_view(request, id=None):
         form = TestimonyForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Témoignage mis a jour avec succès.."))
+            messages.success(request, _("Témoignage mis à jour avec succès.."))
             return redirect('testimony')
     else:
         form = TestimonyForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/testimony/testimony-update.html"
     return render(request, template, context)
 
@@ -641,8 +639,8 @@ def testimony_delete_view(request, id):
 # PATIENT  VIEW 
 @login_required
 def patient_view(request):
-    patients    = Patient.objects.all()
-    context = {'patients': patients}
+    patients = Patient.objects.all()
+    context  = {'patients': patients}
     template = "dashboard/patient/patient.html"
     return render(request, template, context)
 
@@ -666,8 +664,7 @@ def patient_add_view(request):
             return redirect('patient')
     else:
         form = PatientForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/patient/patient-add.html"
     return render(request, template, context)
 
@@ -700,9 +697,9 @@ def patient_update_view(request, slug=None):
             messages.success(request, _("Patient modifié(e) avec succès."))
             return redirect('patient')
     else:
-        user_form = UserUpdateForm(instance=obj.user)
+        user_form    = UserUpdateForm(instance=obj.user)
         profile_form = ProfileForm(request.POST, instance=user)
-        profile = PatientForm(instance=obj)
+        profile      = PatientForm(instance=obj)
     context  = {
         'user_boolean': user_boolean,
         'user_form': user_form,
@@ -725,7 +722,7 @@ def patient_update_view(request, slug=None):
 def patient_delete_view(request, slug=None):
     patient = get_object_or_404(Patient, slug=slug, active=True)
     patient.delete()
-    messages.success(request, _("Patient deleted successfully."))
+    messages.success(request, _("Patient(e) supprimé(e) avec succès."))
     return redirect('patient')
 
 
@@ -734,12 +731,12 @@ def patient_delete_view(request, slug=None):
 @login_required
 def patient_user_delete_view(request, slug=None):
     patient = get_object_or_404(Patient, id=id, active=True)
-    user = patient.suer.id
+    user    = patient.suer.id
     patient.delete()
     patient.save()
     user.delete()
     user.save()
-    messages.success(request, _("Patient deleted successfully."))
+    messages.success(request, _("Patient(e) supprimé(e) avec succès."))
     return redirect('patient')
 
 
@@ -755,7 +752,7 @@ def patient_user_delete_view(request, slug=None):
 @login_required
 def user_view(request):
     users    = User.objects.all()
-    context = {'users': users}
+    context  = {'users': users}
     template = "dashboard/user/user.html"
     return render(request, template, context)
 
@@ -774,17 +771,29 @@ def user_add_view(request):
         profile = ProfileForm(request.POST, request.FILES)
         if form.is_valid() and profile.is_valid():
             user = form.save(commit=False)
-            user.set_password="Log Support@#!1"
+            password   = "Log Support@#!1"
+            user.set_password=password
+            
             profile = profile.save(commit=False)
+
             profile.user = user
             user.save()
             profile.save()
+
+            # email      = request.data['email']
+            # subject    = "Enregistrement d'un compte"
+            # message    = "Veuillez trouver ci-dessous votre mot de passe pour pouvoir accéder au compte.\nMot de passe: "+password
+            email_to   = [user.email]
+            # email_from = settings.EMAIL_HOST_USER
+            # send_mail(subject, message, email_from, email_to, fail_silently=False,)
+
+
             messages.success(request, _("Utilisateur/Utilisatrice créé(e) avec succès."))
             return redirect('user')
     else:
-        form = UserForm()
+        form    = UserForm()
         profile = ProfileForm()
-    context  = {
+    context     = {
         'form': form,
         'profile': profile
     }
@@ -817,9 +826,9 @@ def user_update_view(request, id=None):
             messages.success(request, _("Utilisateur/Utilisatrice modifié(e) avec succès."))
             return redirect('user')
     else:
-        form = UserUpdateForm(instance=obj.user)
+        form    = UserUpdateForm(instance=obj.user)
         profile = ProfileForm(instance=obj)
-    context  = {
+    context     = {
         'form': form,
         'profile': profile,
         'photo': obj.photo
@@ -853,10 +862,8 @@ def user_delete_view(request, id=None):
 # SERVICE VIEW 
 @login_required
 def service_view(request):
-    services    = Service.objects.all()
-    context = {
-        'services': services,
-    }
+    services = Service.objects.all()
+    context  = {'services': services}
     template = "dashboard/service/service.html"
     return render(request, template, context)
 
@@ -874,8 +881,7 @@ def service_add_view(request):
             return redirect('service')
     else:
         form = ServiceForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/service/service-add.html"
     return render(request, template, context)
 
@@ -891,7 +897,7 @@ def service_add_view(request):
 def service_delete_view(request, slug=None):
     service = get_object_or_404(Service, slug=slug, active=True)
     service.delete()
-    messages.success(request, _("Service deleted successfully."))
+    messages.success(request, _("Service supprimé avec succès."))
     return redirect('service')
 
 
@@ -907,13 +913,11 @@ def service_update_view(request, slug=None):
         form = ServiceForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Service updated successfully."))
+            messages.success(request, _("Service mis à jour avec succès."))
             return redirect('service')
     else:
         form = ServiceForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/service/sercvice-update.html"
     return render(request, template, context)
 
@@ -935,11 +939,11 @@ def service_category_view(request):
         form = ServiceCategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Category créé avec succès."))
+            messages.success(request, _("Catégorie créée avec succès."))
             return redirect('service_category')
     else:
         form = ServiceCategoryForm()
-    context = {
+    context  = {
         'categories': categories,
         'form': form
     }
@@ -956,7 +960,7 @@ def service_category_view(request):
 def service_category_delete_view(request, slug=None):
     category = get_object_or_404(ServiceCategory, slug=slug, active=True)
     category.delete()
-    messages.success(request, _("Category deleted successfully."))
+    messages.success(request, _("Catégorie supprimée avec succès."))
     return redirect('service_category')
 
 
@@ -971,13 +975,11 @@ def service_category_update_view(request, slug=None):
         form = ServiceCategoryForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Category updated successfully."))
+            messages.success(request, _("Catégorie mise à jour avec succès"))
             return redirect('service_category')
     else:
         form = ServiceCategoryForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/service/category-update.html"
     return render(request, template, context)
 
@@ -998,7 +1000,7 @@ def product_image_view(request):
             return redirect('product_image')
     else:
         form = ProductImageForm()
-    context = {
+    context  = {
         'images': images,
         'form': form
     }
@@ -1014,7 +1016,7 @@ def product_image_view(request):
 def product_image_delete_view(request, slug=None):
     image = get_object_or_404(ProductImage, slug=slug, active=True)
     image.delete()
-    messages.success(request, _("Image deleted successfully."))
+    messages.success(request, _("Image supprimée avec succès."))
     return redirect('product_image')
 
 
@@ -1032,8 +1034,8 @@ def product_image_update_view(request, slug=None):
             return redirect('product_image')
     else:
         form = ProductImageForm(instance=obj)
-    image = obj.file
-    context = { 
+    image    = obj.file
+    context  = { 
         'form': form,
         'image': image
     }
@@ -1050,10 +1052,8 @@ def product_image_update_view(request, slug=None):
 # PRODUCT VIEW 
 @login_required
 def product_view(request):
-    products    = Product.objects.all()
-    context = {
-        'products': products,
-    }
+    products = Product.objects.all()
+    context  = {'products': products}
     template = "dashboard/product/product.html"
     return render(request, template, context)
 
@@ -1073,8 +1073,7 @@ def product_add_view(request):
             return redirect('product')
     else:
         form = ProductForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/product/product-add.html"
     return render(request, template, context)
 
@@ -1089,7 +1088,7 @@ def product_add_view(request):
 def product_delete_view(request, slug=None):
     caregory = get_object_or_404(Product, slug=slug, active=True)
     caregory.delete()
-    messages.success(request, _("Category deleted successfully."))
+    messages.success(request, _("Produit supprimé avec succès."))
     return redirect('product')
 
 
@@ -1114,8 +1113,8 @@ def product_update_view(request, slug=None):
             return redirect('product')
     else:
         form = ProductForm(instance=obj)
-    # image = obj.product_image.file
-    context = { 
+    # image  = obj.product_image.file
+    context  = { 
         'form': form,
         # 'image': image
     }
@@ -1139,11 +1138,11 @@ def product_category_view(request):
         form = ProductCategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Category créé avec succès."))
+            messages.success(request, _("Catégorie créée avec succès."))
             return redirect('product_category')
     else:
         form = ProductCategoryForm()
-    context = {
+    context  = {
         'categories': categories,
         'form': form
     }
@@ -1162,7 +1161,7 @@ def product_category_view(request):
 def product_category_delete_view(request, slug=None):
     caregory = get_object_or_404(ProductCategory, slug=slug, active=True)
     caregory.delete()
-    messages.success(request, _("Category deleted successfully."))
+    messages.success(request, _("Catégorie supprimée avec succès."))
     return redirect('product_category')
 
 
@@ -1185,11 +1184,9 @@ def product_category_update_view(request, slug=None):
     form = ProductCategoryForm(request.POST or None, instance=obj)
     if form.is_valid():
         form.save()
-        messages.success(request, _("Category updated successfully."))
+        messages.success(request, _("Catégorie mise à jour avec succès."))
         return redirect('product_category')
-    context = { 
-        'form': form
-    }
+    context = {'form': form}
     template = "dashboard/product/category-update.html"
     return render(request, template, context)
 
@@ -1203,11 +1200,9 @@ def product_category_update_view(request, slug=None):
 # SUPPLIER VIEW 
 @login_required
 def supplier_view(request):
-    suppliers    = Supplier.objects.all()
-    context = {
-        'suppliers': suppliers,
-    }
-    template = "dashboard/supplier/supplier.html"
+    suppliers = Supplier.objects.all()
+    context   = {'suppliers': suppliers}
+    template  = "dashboard/supplier/supplier.html"
     return render(request, template, context)
 
 
@@ -1231,8 +1226,7 @@ def supplier_add_view(request):
             return redirect('supplier')
     else:
         form = SupplierForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/supplier/supplier-add.html"
     return render(request, template, context)
 
@@ -1250,7 +1244,7 @@ def supplier_add_view(request):
 def supplier_delete_view(request, slug=None):
     supplier = get_object_or_404(Supplier, slug=slug)
     supplier.delete()
-    messages.success(request, _("Supplier deleted successfully."))
+    messages.success(request, _("Fournisseur supprimé avec succès."))
     return redirect('supplier')
 
 
@@ -1269,13 +1263,11 @@ def supplier_update_view(request, slug=None):
         form = SupplierForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Fournisseur updated successfully."))
+            messages.success(request, _("Fournisseur mis à jour avec succès."))
             return redirect('supplier')
     else:
         form = SupplierForm(instance=obj)
-    context = { 
-        'form': form,
-    }
+    context  = {'form': form}
     template = "dashboard/supplier/supplier-update.html"
     return render(request, template, context)
 
@@ -1290,10 +1282,8 @@ def supplier_update_view(request, slug=None):
 # STOCK VIEW 
 @login_required
 def stock_view(request):
-    stocks    = Stock.objects.all()
-    context = {
-        'stocks': stocks,
-    }
+    stocks  = Stock.objects.all()
+    context = {'stocks': stocks}
     template = "dashboard/stock/stock.html"
     return render(request, template, context)
 
@@ -1317,8 +1307,7 @@ def stock_add_view(request):
             return redirect('stock')
     else:
         form = StockForm()
-
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/stock/stock-add.html"
     return render(request, template, context)
 
@@ -1334,7 +1323,7 @@ def stock_add_view(request):
 def stock_delete_view(request, id=None):
     stock = get_object_or_404(Stock, id=id)
     stock.delete()
-    messages.success(request, _("Stock deleted successfully."))
+    messages.success(request, _("Stock supprimé avec succès."))
     return redirect('stock')
 
 
@@ -1353,13 +1342,11 @@ def stock_update_view(request, id=None):
         form = StockForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Stock updated successfully."))
+            messages.success(request, _("Stock mis à jour avec succès."))
             return redirect('stock')
     else:
         form = StockForm(instance=obj)
-    context = { 
-        'form': form,
-    }
+    context  = {'form': form}
     template = "dashboard/stock/stock-update.html"
     return render(request, template, context)
 
@@ -1383,7 +1370,7 @@ def appointment_symptom_view(request):
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm()
-    context = {
+    context  = {
         'appointmentSymptoms': appointmentSymptoms,
         'form': form
     }
@@ -1404,7 +1391,7 @@ def appointment_symptom_view(request):
 def appointment_symptom_delete_view(request, slug=None):
     appointmentSymptom = get_object_or_404(AppointmentSymptom, slug=slug)
     appointmentSymptom.delete()
-    messages.success(request, _("Appointment Symptom deleted successfully."))
+    messages.success(request, _("Symptôme supprimé avec succès."))
     return redirect('appointment_symptom')
 
 
@@ -1424,13 +1411,11 @@ def appointment_symptom_update_view(request, slug=None):
         form = AppointmentSymptomForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Appointment Symptom updated successfully."))
+            messages.success(request, _("Symptôme mis à jour avec succès."))
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm(instance=obj)
-    context = { 
-        'form': form,
-    }
+    context  = {'form': form}
     template = "dashboard/appointment/appointment-symptom-update.html"
     return render(request, template, context)
 
@@ -1445,9 +1430,9 @@ def appointment_symptom_update_view(request, slug=None):
 # APPOINTMENT VIEW 
 @login_required
 def appointment_view(request):
-    appointments    = Appointment.objects.all()
-    context = {'appointments': appointments}
-    template = "dashboard/appointment/appointment.html"
+    appointments = Appointment.objects.all()
+    context      = {'appointments': appointments}
+    template     = "dashboard/appointment/appointment.html"
     return render(request, template, context)
 
 
@@ -1474,8 +1459,10 @@ def appointment_add_view(request):
             return redirect('appointment')
     else:
         form = AppointmentForm()
-
-    context = {'form': form}
+    context  = {
+        'form': form,
+        'today': datetime.date.today()
+    }
     template = "dashboard/appointment/appointment-add.html"
     return render(request, template, context)
 
@@ -1497,9 +1484,7 @@ def appointment_update_view(request, id):
             return redirect('appointment')
     else:
         form = AppointmentForm(instance=obj)
-    context = { 
-        'form': form,
-    }
+    context  = {'form': form}
     template = "dashboard/appointment/appointment-update.html"
     return render(request, template, context)
 
@@ -1517,7 +1502,7 @@ def appointment_update_view(request, id):
 def appointment_delete_view(request, id=None):
     appointment = get_object_or_404(Appointment, id=id)
     appointment.delete()
-    messages.success(request, _("Appointment deleted successfully."))
+    messages.success(request, _("Rendez-vous supprimé avec succès."))
     if request.user.role == "Patient":
        return redirect('patient:appointment')
     else:
@@ -1533,7 +1518,9 @@ def appointment_delete_view(request, id=None):
 @login_required
 def appointment_detail_view(request, id):
     appointment = get_object_or_404(Appointment, id=id)
-    context = {'appointment': appointment}
+    appointment.read = True
+    appointment.save()
+    context  = {'appointment': appointment}
     template = "dashboard/appointment/appointment-detail.html"
     return render(request, template, context)
 
@@ -1547,9 +1534,7 @@ def appointment_detail_view(request, id):
 @login_required
 def appointment_prescription_view(request):
     appointmentPrescriptions    = AppointmentPrescription.objects.all()
-    context = {
-        'appointmentPrescriptions': appointmentPrescriptions,
-    }
+    context  = {'appointmentPrescriptions': appointmentPrescriptions}
     template = "dashboard/appointment/appointment-prescription.html"
     return render(request, template, context)
 
@@ -1568,11 +1553,11 @@ def appointment_prescription_add_view(request):
         form = AppointmentPrescriptionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Prescription Rendez-Vous créé avec succès."))
+            messages.success(request, _("Prescription créé avec succès."))
             return redirect('appointment_prescription')
     else:
         form = AppointmentPrescriptionForm()
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/appointment/appointment-prescription-add.html"
     return render(request, template, context)
 
@@ -1589,13 +1574,11 @@ def appointment_prescription_update_view(request, id):
         form = AppointmentPrescriptionForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Appointment Prescription updated successfully."))
+            messages.success(request, _("Prescription mise à jour avec succès."))
             return redirect('appointment_prescription')
     else:
         form = AppointmentPrescriptionForm(instance=obj)
-    context = { 
-        'form': form,
-    }
+    context  = {'form': form}
     template = "dashboard/appointment/appointment-prescription-update.html"
     return render(request, template, context)
 
@@ -1612,7 +1595,7 @@ def appointment_prescription_update_view(request, id):
 def appointment_prescription_delete_view(request, id):
     appointment = get_object_or_404(AppointmentPrescription, id=id, active=True)
     appointment.delete()
-    messages.success(request, _("Appointment  Prescription  deleted successfully."))
+    messages.success(request, _("Prescription supprimée avec succès."))
     return redirect('appointment_prescription')
 
 
@@ -1629,7 +1612,7 @@ def appointment_prescription_delete_view(request, id):
 @login_required
 def sale_view(request):
     sales    = Sale.objects.all()
-    context = {'sales': sales}
+    context  = {'sales': sales}
     template = "dashboard/sale/sale.html"
     return render(request, template, context)
 
@@ -1651,7 +1634,7 @@ def sale_add_view(request):
             return redirect('sale')
     else:
         form = SaleForm()
-    context = {'form': form}
+    context  = {'form': form}
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
 
@@ -1693,9 +1676,7 @@ def sale_update_view(request, id):
             return redirect('sale')
     else:
         form = SaleForm(instance=obj)
-    context = { 
-        'form': form
-    }
+    context  = {'form': form}
     template = "dashboard/sale/sale-update.html"
     return render(request, template, context)
 
@@ -1708,14 +1689,10 @@ def sale_update_view(request, id):
 
 
 
-
-# Page de Notification
-
 # NOTIFICATION   FUNCTION
-
 @login_required
 def notification_view(request):
-    notifications = Notification.objects.all()
+    notifications = Notification.objects.filter(active=True)
     context  = {'notifications': notifications}
     template = "dashboard/notification/notification.html"
     return render(request, template, context)
@@ -1728,118 +1705,16 @@ def notification_view(request):
 
 
 
-# Page de Notification detail
-
-@login_required
-def notification_detail_view(request, slug=None):
-    data  = get_object_or_404(Notification, slug=slug, active=True)
-    data.read = True
-    data.save()
-    context  = {'data':data}
-    template = "dashboard/notification/notification-detail.html"
-    return render(request, template, context)
-
-
-
-
-
-
-
-
-
-
-# Variable Global pour la Notification
 
 # GLOBAL  NOTIFICATION FUNCTION
 def global_notification_view(request):
-    return {'GLOBAL_NOTIFICATIONS': Notification.objects.filter(active=True, read=False)}
+    notifications=[]
+    for notification in Notification.objects.all():
+        if notification.contact and notification.contact.read == False or notification.appointment and notification.appointment.read == False:
+            notifications.append(notification)
+    return {'GLOBAL_NOTIFICATIONS': notifications}
 
 
 
 
 
-
-
-
-
-# APPOINTMENT REPORT FUNCTION
-
-@login_required
-def appointment_report_view(request):
-    
-    template = "dashboard/report/appointment-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-# INCOME REPORT FUNCTION
-
-@login_required
-def income_report_view(request):
-    
-    template = "dashboard/report/income-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-# INCOME REPORT FUNCTION
-
-@login_required
-def income_report_view(request):
-    
-    template = "dashboard/report/income-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-# INVOICE  REPORT FUNCTION
-
-@login_required
-def invoice_report_view(request):
-    
-    template = "dashboard/report/invoice-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-# USER  REPORT FUNCTION
-
-@login_required
-def user_report_view(request):
-    
-    template = "dashboard/report/user-report.html"
-    return render(request, template)
-
-
-
-
-
-
-
-
-# TRANSACTION  REPORT FUNCTION
-
-@login_required
-def transaction_view(request):
-    
-    template = "dashboard/report/transaction.html"
-    return render(request, template)

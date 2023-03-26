@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Prescription{% endblock %}
 
 
 {% block extra_css %}
@@ -17,18 +17,20 @@
 {% block content %}
 
 <div class="page-wrapper">
-
     <div class="content container-fluid">
 
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'appointment_prescription_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter Prescription
+                        <i class="feather-plus-square me-1"></i> Ajouter une Prescription
                     </a>
                 </div>
             </div>
         </div>
+
 
 
         <div class="row">
@@ -38,7 +40,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Liste Prescription Rendez-Vous</h5>
+                                <h5 class="card-title">Prescription</h5>
                             </div>
                         </div>
                     </div>
@@ -59,7 +61,7 @@
                                 </thead>
                                 <tbody>
                                     {% for prescription in appointmentPrescriptions %}
-                                    {% include 'dashboard/modal/appointment-prescription-delete.html' with appointmentPrescription=appointmentPrescription %}
+                                    {% include 'dashboard/modal/appointment-prescription-delete.html' with prescription=prescription %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">

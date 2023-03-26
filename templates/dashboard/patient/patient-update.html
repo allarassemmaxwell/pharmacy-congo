@@ -7,6 +7,15 @@
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/patient/">Patients</a></div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -88,51 +97,51 @@
                             
                         {% else %}
 
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.first_name|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.first_name|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.last_name|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.last_name|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.phone|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.phone|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.profession|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.profession|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.gender|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.gender|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.date_of_birth|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.date_of_birth|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.country|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.country|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ patient_form.city|as_crispy_field }}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.city|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ patient_form.address|as_crispy_field }}
+                            <div class="col-md-12">
+                                <div class="form-group form-focus">
+                                    {{ patient_form.address|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
       
                     </div>

@@ -10,20 +10,11 @@
 
         <div class="page-header">
             <div class="row align-items-center">
-                <div class="row">
-                    <div class="col-md-9">
-                        <ul class="list-links mb-4">
-                            <li class="active"><a href="/">Accueil</a></li>
-                            <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
-                            
-                        </ul>
-                    </div>
-
-                    <div class="col-md-3 text-md-end">
-                        <a href="{% url 'user_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Utilisateur</a>
-                    </div>
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'user_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter un Utilisateur</a>
                 </div>
-                
             </div>
         </div>
 
@@ -35,7 +26,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Utilisateur(trice)</h5>
+                                <h5 class="card-title">Utilisateurs</h5>
                             </div>
                             <div class="col-auto d-flex">
                                 
@@ -61,12 +52,12 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#">
-                                                    {% if user.profile.photo %}
-                                                        <img class="avatar avatar-img" src="{{ user.profile.photo.url }}" alt="{{ user.get_full_name }}">
+                                                    {% if user.user_profile.photo %}
+                                                        <img class="avatar avatar-img" src="{{ user.user_profile.photo.url }}" alt="{{ user.get_full_name }}">
                                                     {% else %}
                                                         <img class="avatar avatar-img"
-                                                        src="{% static 'admin/img/products/product1.jpg' %}"
-                                                        alt="{{ user.get_full_name }}">
+                                                        src="{% static 'admin/img/person.svg' %}"
+                                                        alt="Photo">
                                                     {% endif %}
                                                 </a>
                                                 {% if user.first_name %}
@@ -92,7 +83,7 @@
                                         </td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a class="avatar-pos" href="#">{{ user.profile.timestamp|date:"d M Y" }}</a>
+                                                <a class="avatar-pos" href="#">{{ user.user_profile.timestamp|date:"d M Y" }}</a>
                                             </h2>
                                         </td>
                                         <td class="text-end">

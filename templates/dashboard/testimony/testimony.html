@@ -10,22 +10,14 @@
 
         <div class="page-header">
             <div class="row align-items-center">
-                <div class="row">
-                    <div class="col-md-9">
-                        <ul class="list-links mb-4">
-                            <li class="active"><a href="/">Accueil</a></li>
-                            <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
-                            
-                        </ul>
-                    </div>
-
-                    <div class="col-md-3 text-md-end">
-                        <a href="{% url 'testimony_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter Témoignage</a>
-                    </div>
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'testimony_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter un Témoignage</a>
                 </div>
-                
             </div>
         </div>
+
 
 
         <div class="row">
@@ -63,7 +55,7 @@
                                                     {% if testimony.image %}
                                                         <img class="avatar avatar-img" src="{{ testimony.image.url }}" alt="{{ testimony.full_name|title }}">
                                                     {% else %}
-                                                        <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ testimony.full_name|title }}">
+                                                        <img class="avatar avatar-img" src="{% static 'admin/img/person.svg' %}" alt="{{ testimony.full_name|title }}">
                                                     {% endif %}
                                                 </a>
                                                 <a href="#"><span class="user-name">{{ testimony.full_name|title }}</span></a>

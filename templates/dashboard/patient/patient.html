@@ -17,12 +17,13 @@
 {% block content %}
 
 <div class="page-wrapper">
-
     <div class="content container-fluid">
 
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'patient_add' %}" class="btn btn-primary btn-add">
                         <i class="feather-plus-square me-1"></i> Ajouter Patient
                     </a>
@@ -63,11 +64,7 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#editModal">
-                                                    {% if patient.photo.file %}
-                                                        <img class="avatar avatar-img" src="{{ patient.photo.file.url }}" alt="{{ patient.photo.first_name|title }}">
-                                                    {% else %}
-                                                        <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ patient.photo.first_name|title }}">
-                                                    {% endif %}
+                                                    <img class="avatar avatar-img" src="{% static 'admin/img/person.svg' %}" alt="{{ patient.photo.first_name|title }}">
                                                 </a>
                                                 <a href="#" data-bs-toggle="modal"
                                                     data-bs-target="#editModal">
@@ -98,7 +95,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="tablepagination" class="dataTables_wrapper"></div>
             </div>
         </div>
 

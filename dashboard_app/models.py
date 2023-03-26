@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff   = models.BooleanField(default=False)
     is_active  = models.BooleanField(default=True)
     i_agree    = models.BooleanField(_("Terms and conditions"), blank=True, null=True, default=False)
-    role       = models.CharField(_("Role"), max_length=100, choices=ROLE, null=True, blank=True)
+    role       = models.CharField(_("Rôle"), max_length=100, choices=ROLE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     objects = UserManager()
@@ -135,10 +135,10 @@ class Profile(models.Model):
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
     position      = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
-    facebook      = models.URLField(_("Facebook Link"), max_length=255, null=True, blank=True)
-    instagram     = models.URLField(_("Instagram Link"), max_length=255, null=True, blank=True)
-    twitter       = models.URLField(_("Twitter Link"), max_length=255, null=True, blank=True)
-    linked_in     = models.URLField(_("Linked In Link"), max_length=255, null=True, blank=True)
+    facebook      = models.URLField(_("Lien de Facebook"), max_length=255, null=True, blank=True)
+    instagram     = models.URLField(_("Lien de Instagram"), max_length=255, null=True, blank=True)
+    twitter       = models.URLField(_("Lien de Twitter"), max_length=255, null=True, blank=True)
+    linked_in     = models.URLField(_("Lien de LinkedIn"), max_length=255, null=True, blank=True)
     active        = models.BooleanField(_("Est actif"), default=True)
     timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated       = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
@@ -486,18 +486,40 @@ class Appointment(models.Model):
         ('Masculin', 'Masculin'),
         ('Feminin', 'Feminin'),
     )
+    HOUR_CHOICES = (
+        ('8h:00mn', '8h:00mn'),
+        ('8h:30mn', '8h:30mn'),
+        ('9h:00mn', '9h:00mn'),
+        ('9h:30mn', '9h:30mn'),
+        ('10h:00mn', '10h:00mn'),
+        ('10h:30mn', '10h:30mn'),
+        ('11h:00mn', '11h:00mn'),
+        ('11h:30mn', '11h:30mn'),
+        ('12h:00mn', '12h:00mn'),
+        ('12h:30mn', '12h:30mn'),
+        ('13h:00mn', '13h:00mn'),
+        ('13h:30mn', '13h:30mn'),
+        ('14h:00mn', '14h:00mn'),
+        ('14h:30mn', '14h:30mn'),
+        ('15h:00mn', '15h:00mn'),
+        ('15h:30mn', '15h:30mn'),
+        ('16h:00mn', '16h:00mn'),
+        ('16h:30mn', '16h:30mn'),
+        ('17h:00mn', '17h:00mn'),
+    )
     id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     patient     = models.ForeignKey(Patient, on_delete=models.CASCADE, blank=False, null=True)
     subject     = models.CharField(_("Sujet"), max_length=255, null=False, blank=False)
-    date        = models.DateField(_("Date de RV"), blank=False, null=False)
-    hour        = models.TimeField(_("Horaire Rv"), auto_now_add=False, auto_now=False)
+    date        = models.DateField(_("Date"), blank=False, null=False)
+    hour        = models.CharField(_("Horaire"), max_length=25, choices=HOUR_CHOICES, null=False, blank=False)
     description = models.TextField(_("Description"), null=False, blank=False)
+    read        = models.BooleanField(_("Lu"), default=False)
     active      = models.BooleanField(_("Est actif"), default=True)
     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
-        return str(self.updated)
+        return "%s le %s à %s"%(self.patient, self.date, self.hour)
 
     class Meta:
         ordering = ('-timestamp',)
@@ -520,12 +542,12 @@ class Appointment(models.Model):
 
 # APPOINTMENT PRESCRIPTION MODEL
 class AppointmentPrescription(models.Model):
-    appointment      = models.OneToOneField(Appointment, on_delete=models.CASCADE, blank=False, null=True, related_name="prescription_appointment")
+    appointment      = models.ForeignKey(Appointment, on_delete=models.CASCADE, blank=False, null=True, related_name="prescription_appointment")
     weight           = models.DecimalField(_("Poids"), decimal_places=2, max_digits=5, null=False, blank=False)
     body_temperature = models.DecimalField(_("Température Corporelle"), decimal_places=2, max_digits=5, null=False, blank=False)
     symptoms         = models.ManyToManyField(AppointmentSymptom, blank=True)
     price            = models.DecimalField(_("Prix payé"), decimal_places=2, max_digits=15, null=False, blank=False)
-    received_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    received_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="prescription_received_by")
     description      = models.TextField(_("Description"), null=True, blank=False)
     active           = models.BooleanField(_("Est actif"), default=True)
     timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
