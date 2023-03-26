@@ -21,7 +21,6 @@ urlpatterns = [
 
     path('contacts/', contact_view, name="contact"),
     path('contacts/delete/<int:id>/', contact_delete_view, name="contact_delete"),
-    path('contacts/update/<int:id>/', contact_update_view, name="contact_update"),
     path('contacts/respond/<slug:slug>/', contact_responde_view, name="contact_respond"),
     path('newsletters/response/', response_contact_view, name="response_contact"),
 
@@ -48,13 +47,12 @@ urlpatterns = [
     path('user/add/', user_add_view, name="user_add"),
     path('user/delete/<str:id>/', user_delete_view, name="user_delete"),
     path('user/update/<str:id>/', user_update_view, name="user_update"),
-    # path('testimony/add/', testimony_add_view, name="testimony_add"),
-
 
     
     path('service/category/', service_category_view, name="service_category"),
     path('service/category/delete/<slug:slug>/', service_category_delete_view, name="service_category_delete"),
     path('service/category/update/<slug:slug>/', service_category_update_view, name="service_category_update"),
+
 
     path('service/', service_view, name="service"),
     path('service/add/', service_add_view, name="service_add"),
@@ -67,10 +65,10 @@ urlpatterns = [
     path('product/delete/<slug:slug>/', product_delete_view, name="product_delete"),
     path('product/update/<slug:slug>/', product_update_view, name="product_update"),
 
+
     path('product/image/', product_image_view, name="product_image"),
     path('product/image/delete/<slug:slug>/', product_image_delete_view, name="product_image_delete"),
     path('product/image/update/<slug:slug>/', product_image_update_view, name="product_image_update"),
-
 
 
     path('product/category/', product_category_view, name="product_category"),
@@ -122,15 +120,8 @@ urlpatterns = [
     # Liens d'acces a la Notification,  add, detail, mise a jour et suppression
     
     path('notification/', notification_view, name="notification"),
-    path('notification/detail/<slug:slug>/', notification_detail_view, name="notification_detail"),
-    
-    
-    # URL for report
-    path('appointment-report/', appointment_report_view, name="appointment_report"),
-    path('income-report/', income_report_view, name="income_report"),
-    path('invoice-report/', invoice_report_view, name="invoice_report"),
-    path('user-report/', user_report_view, name="user_report"),
-    path('transaction/', transaction_view, name="transaction"),
+
+
 ]
 
 

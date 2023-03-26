@@ -27,10 +27,10 @@
 
     <div class="top-nav-search">
         <div class="main">
-            <form class="search" method="post" action="">
+            <!-- <form class="search" method="post" action="">
                 <div class="s-icon"><i class="fas fa-search"></i></div>
                 <input type="text" class="form-control" placeholder="Start typing your Search..." />
-            </form>
+            </form> -->
         </div>
     </div>
 
@@ -43,7 +43,7 @@
     <ul class="nav nav-tabs user-menu">
 
         
-        {% if GLOBAL_NOTIFICATIONS %}
+        {% if GLOBAL_NOTIFICATIONS and request.user.is_superuser %}
         <li class="nav-item dropdown noti-nav">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                 <i class="feather-bell"></i> <span class="badge"></span>
@@ -60,7 +60,7 @@
                                 <a href="{{ notification.read_url }}">
                                     <div class="media d-flex">
                                         <span class="avatar">
-                                            <img class="avatar-img" alt="" src="{% static 'admin/img/profiles/avatar-02.jpg' %}">
+                                            <img class="avatar-img" alt="" src="{% static 'admin/img/person.svg' %}">
                                         </span>
                                         <div class="media-body">
                                             {% if notification.contact %}
@@ -87,7 +87,7 @@
                     {% if user.profile.photo %}
                         <img src="{{ user.profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}">
                     {% else %}
-                        <img src="{% static 'admin/img/profiles/avatar-01.jpg' %}" alt="{{ user.first_name }} {{ user.first_name }}">
+                        <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{ user.first_name }}">
                     {% endif %}
                     <span class="status online"></span>
                 </span>
@@ -99,7 +99,7 @@
                         <img src="{{ user.profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}"
                             class="avatar-img rounded-circle">
                         {% else %}
-                            <img src="{% static 'admin/img/profiles/avatar-01.jpg' %}" alt="{{ user.first_name }} {{ user.first_name }}"
+                            <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{ user.first_name }}"
                             class="avatar-img rounded-circle">
                         {% endif %}
                     </div>
@@ -112,7 +112,11 @@
                         {% endif %}
                     </div>
                 </div>
-                <a class="dropdown-item" href="{% url 'profile' %}"><i class="feather-user me-1"></i> Profil</a>
+                {% if request.user.role == 'Patient'  %}
+                    <a class="dropdown-item" href="{% url 'patient:profile' %}"><i class="feather-user me-1"></i> Profil</a>
+                {% else %}
+                    <a class="dropdown-item" href="{% url 'profile' %}"><i class="feather-user me-1"></i> Profil</a>
+                {% endif %}
                 <a class="dropdown-item" href="{% url 'account_change_password' %}"><i class="feather-edit me-1"></i> Mot de passe</a>
                 <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="feather-log-out me-1"></i> Logout</a>
             </div>

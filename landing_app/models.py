@@ -52,7 +52,7 @@ class Contact(models.Model):
     subject    = models.CharField(_("Suject"), max_length=255, null=False, blank=False)
     phone      = models.CharField(_("Téléphone"), max_length=255, null=False, blank=False)
     message    = models.TextField(_("Message"), null=False, blank=False)
-    read       = models.BooleanField(_("Lu"), default=False)
+    read       = models.BooleanField(_("Lu"), default=False, null=True, blank=True)
     active     = models.BooleanField(_("Active"), default=True)
     timestamp  = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
     updated    = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
@@ -322,9 +322,9 @@ pre_save.connect(presave_blog_cat, sender=BlogCategory)
 
 # BLOG MODEL
 class Blog(models.Model):
-    # user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False)
+    user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=False)
     category    = models.ForeignKey(BlogCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="blog_category")
-    name        = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
     photo       = models.ImageField(_("Image"), upload_to="Blog/%Y/%m/%d/", null=False, blank=False)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Active"), default=True)
@@ -378,9 +378,9 @@ pre_save.connect(presave_blog, sender=Blog)
 # BLOG COMMENT MODEL
 class BlogComment(models.Model):
 	blog      = models.ForeignKey(Blog, on_delete=models.CASCADE, null=False, blank=False, related_name="comment_blog")
-	name      = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+	name      = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
 	email     = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-	comment   = models.TextField(_("Comment"), null=False, blank=False)
+	comment   = models.TextField(_("Commentaire"), null=False, blank=False)
 	active    = models.BooleanField(_("Active"), default=True)
 	timestamp = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
 	updated   = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
@@ -401,7 +401,7 @@ class BlogComment(models.Model):
 
 # TESTIMONY MODEL
 class Testimony(models.Model):
-    full_name   = models.CharField(_("Full Name"), max_length=255, null=False, blank=False)
+    full_name   = models.CharField(_("Nom et prénom"), max_length=255, null=False, blank=False)
     image 		= models.ImageField(_("Image"), upload_to='Testimony/%Y/%m/', null=True, blank=True)
     occupation  = models.CharField(_("Occupation"), max_length=255, null=False, blank=False)
     description = models.TextField(_("Description"), null=False, blank=False)
@@ -436,9 +436,9 @@ class Testimony(models.Model):
 
 # PARTNER MODEL
 class Partner(models.Model):
-    name 	     = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+    name 	     = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
     logo         = models.ImageField(_("Logo"), upload_to='Partner/%Y/%m/', null=False, blank=False)
-    website      = models.URLField(_("Website URL"), max_length=255, null=True, blank=True)
+    website      = models.URLField(_("Lien de Site Web"), max_length=255, null=True, blank=True)
     active 	     = models.BooleanField(_("Status"), default=True)
     timestamp    = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
     updated      = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)

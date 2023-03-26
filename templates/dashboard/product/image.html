@@ -23,8 +23,9 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <a href="#" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addModal"><i
-                            class="feather-plus-square me-1"></i> Ajouter Image</a>
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="#" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addModal"><i class="feather-plus-square me-1"></i> Ajouter Image</a>
                 </div>
             </div>
         </div>
@@ -37,7 +38,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Images du produit</h5>
+                                <h5 class="card-title">Images de produits</h5>
                             </div>
                             <div class="col-auto custom-list d-flex">
                                 <div class="form-custom me-2">
@@ -88,7 +89,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="tablepagination" class="dataTables_wrapper"></div>
             </div>
         </div>
 
@@ -100,12 +100,12 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content doctor-profile">
             <div class="modal-header">
-                <h3 class="mb-0">Ajouter Image</h3>
+                <h3 class="mb-0">Ajouter une Image</h3>
                 <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
                         class="feather-x-circle"></i></button>
             </div>
             <div class="modal-body">
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
+                <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
                     <div class="add-wrap">
                         <div class="form-group form-focus">
                             {{ form.name|as_crispy_field }}

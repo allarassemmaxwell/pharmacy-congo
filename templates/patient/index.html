@@ -1,14 +1,30 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
 
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid pb-0">
-        <h4 class="mb-3">Overview</h4>
+        <h4 class="mb-3">Aperçu</h4>
         <div class="row">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                        <div class="doc-badge me-3"><a href="/patient/">Tableau de bord</a></div>
+                    </div>
+                </div>
+            </div>
             <div class="col-xl-4 col-sm-6 col-12">
                 <div class="card">
                     <div class="card-body">
@@ -17,16 +33,12 @@
                                 <img src="{% static 'admin/img/icon/calendar.png' %}" alt="User Image">
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title">Rendez-vous</h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:appointment' %}">Rendez-vous</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ appointment_count }}</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="trade-level mb-0">
-                            <!-- <span class="text-success me-1">
-                                <i class="fas fa-caret-up me-1"></i>9.65%</span> last week -->
-                        </p>
                     </div>
                 </div>
             </div>
@@ -38,16 +50,12 @@
                                 <i class="feather-users"></i>
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title">Symptôme</h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:symptom' %}">Symptôme</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ symptoms_count }}</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="trade-level mb-0">
-                            <!-- <span class="text-success me-1">
-                                <i class="fas fa-caret-up me-1"></i>4.5%</span> last week -->
-                        </p>
                     </div>
                 </div>
             </div>
@@ -59,16 +67,63 @@
                                 <i class="feather-users"></i>
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title">Ordonnance</h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:prescription' %}">Ordonnance</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ prescription_count }}</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="trade-level mb-0">
-                            <!-- <span class="text-success me-1">
-                                <i class="fas fa-caret-up me-1"></i>4.5%</span> last week -->
-                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'message.html' %}
+                <div class="card">
+                    <div class="card-header border-bottom-0">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="card-title">Rendez-Vous</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="datatable table table-borderless hover-table" id="data-table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Sujet</th>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                    {% include 'dashboard/modal/appointment-delete.html' with appointment=appointment %}
+                                    <tr>
+                                        <td>{{ appointment.subject|safe|truncatechars:40 }}</td>
+                                        <td class="text-warning">{{ appointment.date }}</td>
+                                        <td class="text-warning">{{ appointment.hour }}</td>
+                                        <td class="text-end">
+                                            <div class="actions">
+                                                {% if appointment.date >= today %} 
+                                                <a href="{% url 'patient:appointment_update' appointment.id %}"  class="text-black">
+                                                    <i class="feather-edit-3 me-1"></i> Edit
+                                                </a>
+                                                <a class="text-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#appointmentDeleteModal-{{ forloop.counter }}">
+                                                    <i class="feather-trash-2 me-1"></i> Delete
+                                                </a>
+                                                {% endif %} 
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,4 +132,17 @@
 </div>
 
 
+{% endblock %}
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
 {% endblock %}

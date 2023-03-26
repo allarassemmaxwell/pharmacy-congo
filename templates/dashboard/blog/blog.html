@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}About{% endblock %}
+{% block title %}Blogues{% endblock %}
 
 
 {% block content %}
@@ -10,17 +10,17 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
 
-        <div class="row">
-            <div class="col-md-9">
-                <ul class="list-links mb-4">
-                    <li class="active"><a href="/">Accueil</a></li>
-                    <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
-                </ul>
-            </div>
-            <div class="col-md-3 text-md-end">
-                <a href="{% url 'blog_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter un blogue</a>
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'blog_add' %}" class="btn btn-primary btn-blog mb-3">Ajouter un blogue</a>
+                </div>
             </div>
         </div>
+
+
         <div class="row">
             {% include 'message.html' %}
             {% for blog in blogs %}
@@ -37,9 +37,9 @@
                             <li>
                                 <div class="post-author">
                                     <a href="{{ blog.update_url }}">
-                                        <img src="{% static 'admin/img/profiles/avatar-02.jpg' %}" alt="{{ blog.name|title }}">
+                                        <img src="{% static 'admin/img/person.svg' %}" alt="{{ blog.name|title }}">
                                         <span>
-                                            <span class="post-title">Dr. Ruby Perrin</span>
+                                            <span class="post-title">{% if blog.user %}{{ blog.user.first_name }} {{ blog.user.last_name }}{% endif %}</span>
                                             <span class="post-date"><i class="far fa-clock"></i> {{ blog.timestamp|date:"d M Y" }}</span>
                                         </span>
                                     </a>

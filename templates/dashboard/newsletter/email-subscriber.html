@@ -7,21 +7,19 @@
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
+        
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'mail_add_newsletter' %}" class="btn btn-primary btn-blog mb-3">Email des personnes</a>
+                </div>
+            </div>
+        </div>
 
         <div class="page-header">
             <div class="row align-items-center">
-                <div class="row">
-                    <div class="col-md-9">
-                        <ul class="list-links mb-4">
-                            <li class="active"><a href="/">Accueil</a></li>
-                            <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
-                            
-                        </ul>
-                    </div>
-                    
-                    <div class="col-md-3 text-md-end">
-                        <a href="{% url 'mail_add_newsletter' %}" class="btn btn-primary btn-blog mb-3">Email des personnes</a>
-                    </div>
 
                     <div class="row">
                         <div class="col-sm-12">
@@ -49,10 +47,11 @@
                                             </thead>
                                             <tbody>
                                                 {% for mail in mails %}
+                                                {% include 'dashboard/newsletter/email-subscriber-detail.html' with mail=mail %}
                                                     <tr>
                                                         <td>
                                                             <h2 class="table-avatar">
-                                                                <a href="#">{{ mail.name|title }}</a>
+                                                                <a href="#">{{ mail.name|title|truncatechars:35 }}</a>
                                                             </h2>
                                                         </td>
                                                         <td>
@@ -62,7 +61,7 @@
                                                         </td>
                                                         <td class="text-end">
                                                             <div class="actions">
-                                                                <a href="" class="text-black">
+                                                                <a href="patient-list.html#" data-bs-target="#patientlist-{{ forloop.counter }}" data-bs-toggle="modal">
                                                                     <i class="feather-edit-3 me-1"></i> Voir
                                                                 </a>
                                                             </div>

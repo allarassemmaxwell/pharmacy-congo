@@ -30,11 +30,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="page-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                                <div class="doc-badge me-3"><a href="/patient/">Tableau de bord</a></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
+                                        <th>Reçu par</th>
                                         <th>Poids</th>
                                         <th>Température</th>
                                         <th>Prix payé</th>
@@ -43,7 +53,18 @@
                                 </thead>
                                 <tbody>
                                     {% for prescription in prescriptions %}
+                                    {% include 'patient/prescription-detail.html' with prescription=prescription %}
                                         <tr>
+                                            <td>
+                                                {% if prescription.received_by.first_name or prescription.received_by.last_name %}
+                                                    <a href="patient-list.html#" data-bs-target="#patientlist-{{ forloop.counter }}"
+                                                    data-bs-toggle="modal">{{ prescription.received_by.first_name }} {{ prescription.received_by.last_name }}
+                                                    </a>
+                                                {% else %}
+                                                    <a href="patient-list.html#" data-bs-target="#patientlist-{{ forloop.counter }}"
+                                                    data-bs-toggle="modal">Manqué</a>
+                                                {% endif %}
+                                            </td>
                                             <td>{{ prescription.weight }}kg</td>
                                             <td>{{ prescription.body_temperature }} %c</td>
                                             <td>{{ prescription.price }}f cfa</td>
@@ -55,72 +76,11 @@
                         </div>
                     </div>
                 </div>
-                <div id="tablepagination" class="dataTables_wrapper"></div>
             </div>
         </div>
 
     </div>
 </div>
-
-
-
-
-
-<div class="modal fade contentmodal" id="editModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content doctor-profile">
-            <div class="modal-header">
-                <h3 class="mb-0">Edit Appointment</h3>
-                <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
-                        class="feather-x-circle"></i></button>
-            </div>
-            <div class="modal-body">
-                <form class="custom-validation" method="POST"  enctype="multipart/form-data">{% csrf_token %}
-                    <div class="add-wrap">
-                        <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" value="Community pharmacy">
-                            <label class="focus-label">Pharmacy Name<span class="text-danger">*</span></label>
-                        </div>
-                        <div class="form-group">
-                            <select class="select">
-                                <option>Select Category*</option>
-                                <option selected>Pharmacy</option>
-                                <option>Hospital</option>
-                            </select>
-                        </div>
-                        <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" value="96 Red Hawk Road Cyrus, MN 56323">
-                            <label class="focus-label">Pharmacy Address <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="change-photo-btn">
-                            <div><i class="feather-upload"></i>
-                                <p>Upload File</p>
-                            </div>
-                            <input type="file" class="upload">
-                            <span class="file-upload-text"></span>
-                        </div>
-                        <p class="file-name text-success">Product image.jpg <a href="#" class="text-danger"><i
-                                    class="feather-x"></i></a></p>
-                        <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" value="Patinson">
-                            <label class="focus-label">Administrator Name <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" value="8789904950">
-                            <label class="focus-label">Phone Name <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="submit-section">
-                            <button type="submit" class="btn btn-primary btn-save">Save Changes</button>
-                        </div>
-                    </div>
-                </form>
-                
-                
-            </div>
-        </div>
-    </div>
-</div>
-
 
 {% endblock %}
 

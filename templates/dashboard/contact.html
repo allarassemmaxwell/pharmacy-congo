@@ -7,20 +7,12 @@
 {% block content %}
 <div class="page-wrapper">
     <div class="content container-fluid">
-
         <div class="page-header">
             <div class="row align-items-center">
-                <div class="row">
-                    <div class="col-md-9">
-                        <ul class="list-links mb-4">
-                            <li class="active"><a href="/">Accueil</a></li>
-                            <li><a href="{% url 'dashboard' %}">Tableau de bord</a></li>
-                            
-                        </ul>
-                    </div> 
-                    
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                 </div>
-                
             </div>
         </div>
 
@@ -44,7 +36,6 @@
                             <table class="datatable table table-borderless hover-table" id="data-tables">
                                 <thead class="thead-light">
                                     <tr>
-                                        {% comment %} <th>ID</th> {% endcomment %}
                                         <th>Nom</th>
                                         <th>Prénom</th>
                                         <th>Email</th>

@@ -4,9 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail, BadHeaderError
 from django.utils.translation import activate, gettext_lazy as _
 from .forms import *
-# from dashboard.forms import *
 from .models import *
-# from dashboard.models import *
 from django.contrib import messages
 
 from datetime import date, timedelta
@@ -34,8 +32,7 @@ from dashboard_app.models import *
 
 # LANDING FUNCTION
 def home_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/index.html"
 	return render(request, template, context)
 
@@ -47,8 +44,7 @@ def home_view(request):
 
 # LANDING PHARMACY FUNCTION
 def pharmacy_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/pharmacy.html"
 	return render(request, template, context)
 
@@ -149,7 +145,7 @@ def blog_detail_view(request, slug=None):
 # ABOUT VIEW  
 def about_view(request):
     testimonies = Testimony.objects.filter(active=True) 
-    context = {'testimonies':testimonies}
+    context  = {'testimonies':testimonies}
     template = "about.html"
     return render(request,template,context)
 
@@ -187,10 +183,10 @@ def product_view(request):
         products = Product.objects.filter(category__slug=category_slug, active=True)
 
     # PAGINATION 
-    paginator = Paginator(products, 9)
+    paginator   = Paginator(products, 9)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
+    page_obj    = paginator.get_page(page_number)
+    context     = {
 		'products': page_obj,
 		'names': names,
 		'product_categories': product_categories,
@@ -208,8 +204,7 @@ def product_view(request):
 
 #  PRODUCT FUNCTION
 def product_list_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/product-list.html"
 	return render(request, template, context)
 
@@ -219,8 +214,7 @@ def product_list_view(request):
 
 #  PRODUCT DETAILS FUNCTION
 def product_detail_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/product-detail.html"
 	return render(request, template, context)
 
@@ -232,8 +226,7 @@ def product_detail_view(request):
 
 #  PHARMACY REGISTER FUNCTION
 def pharmacy_register_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/pharmacy-register.html"
 	return render(request, template, context)
 
@@ -248,8 +241,7 @@ def pharmacy_register_view(request):
 
 #  PHARMACY LOGIN FUNCTION
 def pharmacy_login_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/pharmacy-login.html"
 	return render(request, template, context)
 
@@ -262,8 +254,7 @@ def pharmacy_login_view(request):
 
 #  PHARMACY SEARCH FUNCTION
 def pharmacy_search_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/pharmacy-search.html"
 	return render(request, template, context)
 
@@ -278,8 +269,7 @@ def pharmacy_search_view(request):
 
 #  PHARMACY DETAIL FUNCTION
 def pharmacy_detail_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/pharmacy-detail.html"
 	return render(request, template, context)
 
@@ -301,8 +291,7 @@ def pharmacy_detail_view(request):
 
 # PHARMACIST DASHBOARD FUNCTION
 def pharmacist_dashboard_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/index.html"
 	return render(request, template, context)
 
@@ -314,8 +303,7 @@ def pharmacist_dashboard_view(request):
 
 # PHARMACIST ADD PROFILE FUNCTION
 def phcist_add_profile_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-add-profile.html"
 	return render(request, template, context)
 
@@ -328,8 +316,7 @@ def phcist_add_profile_view(request):
 
 # PHARMACIST APPOINTMENT FUNCTION
 def phcist_appointment_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-appointment.html"
 	return render(request, template, context)
 
@@ -343,8 +330,7 @@ def phcist_appointment_view(request):
 
 # PHARMACIST PATIENT FUNCTION
 def phcist_patient_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/my-patient.html"
 	return render(request, template, context)
 
@@ -358,8 +344,7 @@ def phcist_patient_view(request):
 
 # PHARMACIST PATIENT PROFILE FUNCTION
 def phcist_patient_profile_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-patient-profile.html"
 	return render(request, template, context)
 
@@ -371,8 +356,7 @@ def phcist_patient_profile_view(request):
 
 # PHARMACIST ADD PRESCRIPTION FUNCTION
 def add_prescription_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/add-prescription.html"
 	return render(request, template, context)
 
@@ -383,8 +367,7 @@ def add_prescription_view(request):
 
 # PHARMACIST ADD MEDICAL RECORD FUNCTION
 def add_billing_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/add-billing.html"
 	return render(request, template, context)
 
@@ -396,8 +379,7 @@ def add_billing_view(request):
 
 # PHARMACIST INVOICES FUNCTION
 def phcist_invoice_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-invoice.html"
 	return render(request, template, context)
 
@@ -409,8 +391,7 @@ def phcist_invoice_view(request):
 
 # PHARMACIST SHOW INVOICES VIEW FUNCTION
 def phcist_show_invoice_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-show-invoice.html"
 	return render(request, template, context)
 
@@ -422,8 +403,7 @@ def phcist_show_invoice_view(request):
 
 # PHARMACIST REGISTER VIEW FUNCTION
 def phcist_register_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-register.html"
 	return render(request, template, context)
 
@@ -436,8 +416,7 @@ def phcist_register_view(request):
 
 # PHARMACIST LOGIN VIEW FUNCTION
 def phcist_login_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-login.html"
 	return render(request, template, context)
 
@@ -448,8 +427,7 @@ def phcist_login_view(request):
 
 # PHARMACIST ADD BLOG VIEW FUNCTION
 def phcist_add_blog_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/pharmacist/phcist-add-blog.html"
 	return render(request, template, context)
 
@@ -461,8 +439,7 @@ def phcist_add_blog_view(request):
 
 # PATIENT DASHBOARD FUNCTION
 def patient_dashboard_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/index.html"
 	return render(request, template, context)
 
@@ -475,8 +452,7 @@ def patient_dashboard_view(request):
 
 # PATIENT SEARCH PHARMACIST FUNCTION
 def search_pharmacist_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/search-pharmacist.html"
 	return render(request, template, context)
 
@@ -487,8 +463,7 @@ def search_pharmacist_view(request):
 
 # PATIENT  PHARMACIST PROFILE FUNCTION
 def phcist_profile_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/phcist-profile.html"
 	return render(request, template, context)
 
@@ -500,8 +475,7 @@ def phcist_profile_view(request):
 
 # PATIENT  CHECKOUT FUNCTION
 def checkout_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/checkout.html"
 	return render(request, template, context)
 
@@ -513,8 +487,7 @@ def checkout_view(request):
 
 # PATIENT  BOOKING FUNCTION
 def booking_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/booking.html"
 	return render(request, template, context)
 
@@ -528,8 +501,7 @@ def booking_view(request):
 
 # PATIENT  FAVORITES FUNCTION
 def favorite_pharmacist_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/favorite-pharmacist.html"
 	return render(request, template, context)
 
@@ -543,8 +515,7 @@ def favorite_pharmacist_view(request):
 
 # PATIENT  ADD PROFILE FUNCTION
 def patient_add_profile_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/patient-add-profile.html"
 	return render(request, template, context)
 
@@ -557,8 +528,7 @@ def patient_add_profile_view(request):
 
 # PATIENT  CHANGE PASSWORD FUNCTION
 def patient_change_password_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "dashboard/patient/patient-change-password.html"
 	return render(request, template, context)
 
@@ -570,8 +540,7 @@ def patient_change_password_view(request):
 
 # PATIENT  FORGOT PASSWORD FUNCTION
 def forgot_password_view(request):
-	context  = {
-	}
+	context  = {}
 	template = "landing/pharmacy/forgot-password.html"
 	return render(request, template, context)
 
@@ -582,8 +551,7 @@ def forgot_password_view(request):
 # ADMIN PHARMACY
 
 def pharmacy_admin_view(request):
-    context = {
-	}
+    context  = {}
     template = "dashboard/admin/pharmacy/index.html"
     return render(request,template, context)
 

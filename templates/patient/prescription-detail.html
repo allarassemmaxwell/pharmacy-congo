@@ -1,0 +1,60 @@
+{% load static %}
+
+<div class="modal fade contentmodal" id="patientlist-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Description</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="feather-x-circle"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="member-wrapper">
+                    <div class="media d-flex align-items-center justify-content-between">
+                    <div class="flex-shrink-0 d-flex align-items-center">
+                        <div>
+                            <p>{{ prescription.description|safe }}</p>
+                        </div>
+                    </div>
+                </div>
+                    <h5>Reçu le <small>{{ prescription.timestamp|date:"d M Y" }}</small></h5>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Par</h6>
+                                {% if prescription.received_by.first_name or prescription.received_by.last_name %}
+                                    <h6>{{ prescription.received_by.first_name }} {{ prescription.received_by.last_name }}</h6>
+                                {% else %}
+                                    <h6 class="text-danger">Manqué</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Numéro de téléphone</h6>
+                                {% if prescription.received_by.user_profile.phone %}
+                                    <p>{{ prescription.received_by.user_profile.phone }}</p>
+                                {% else %}
+                                    <p class="text-danger">Manqué</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Email</h6>
+                                <p>
+                                    <a href="#">{{ prescription.received_by.email }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
