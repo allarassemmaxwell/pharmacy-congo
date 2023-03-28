@@ -117,6 +117,29 @@ urlpatterns = [
     path('sale/update/<str:id>/', sale_update_view, name="sale_update"),
     
     
+    # fridge management
+    path('fridge/', fridge_view, name="fridge"),
+    path('fridge/add/', fridge_add_view, name="fridge_add"),
+    path('fridge/delete/<int:id>/', fridge_delete_view, name="fridge_delete"),
+    path('fridge/update/<int:id>/',fridge_update_view, name="fridge_update"),
+    
+    
+    # for chartjs
+    path('business/daily-chart/', business_daily_chart_view, name='business_daily_chart'),
+    path('business-chart-hebdo/', business_chart_hebdo_view, name='business-chart-hebdo'),
+    path('business/monthly-chart/', business_monthly_chart_view, name='business-chart-mensuel'),
+    path('business-chart-annuel/', business_chart_annuel_view, name='business-chart-annuel'),
+    
+    
+    
+    
+    # For Report  daily, weekly, monthly and annually
+    
+    path('rapport-quotidien/', rapport_quotidien_view, name="rapport_quotidien"), 
+    path('rapport-hebdomadaire/', rapport_hebdomadaire_view, name="rapport_hebdomadaire"), 
+    path('rapport-mensuel/', rapport_mensuel_view, name="rapport_mensuel"), 
+    path('rapport-annuel/', rapport_annuel_view, name="rapport_annuel"),
+    
     # Liens d'acces a la Notification,  add, detail, mise a jour et suppression
     
     path('notification/', notification_view, name="notification"),

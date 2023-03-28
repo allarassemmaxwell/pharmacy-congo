@@ -139,7 +139,7 @@ class ProfileForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# PRODUCT CATEGORY FORM
 class ProductCategoryForm(forms.ModelForm):
     class Meta:
         model  = ProductCategory
@@ -156,7 +156,7 @@ class ProductCategoryForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# SERVICE CATEGORY FORM
 class ServiceCategoryForm(forms.ModelForm):
     class Meta:
         model  = ServiceCategory
@@ -174,7 +174,7 @@ class ServiceCategoryForm(forms.ModelForm):
 
 
 
-# BRANCH FORM
+# PRODUCT FORM
 class ProductForm(forms.ModelForm):
     class Meta:
         model  = Product
@@ -710,4 +710,44 @@ class NotificationForm(forms.ModelForm):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+# FRIDGE FORM
+class FridgeForm(forms.ModelForm):
+    class Meta:
+        model  = Fridge
+        fields = [
+            "name",
+            "marque",
+            "code_pqs",
+            "date_acquisition",
+            "photo",
+            "price",
+            "state",
+            "fix_number",
+            "energy",
         
+        ]
+        widgets = {
+            'name':       forms.TextInput(attrs={'class': 'form-control'}),
+            'marque':     forms.TextInput(attrs={'class': 'form-control'}),
+            'code_pqs':   forms.TextInput(attrs={'class': 'form-control'}),
+            'date_acquisition': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'price':      forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'state':      forms.Select(attrs={'class': 'form-control'}),
+            'fix_number': forms.NumberInput(attrs={'step': 1, 'class': 'form-control'}),
+            'energy':     forms.Select(attrs={'class': 'form-control'}),
+            # 'photo':      forms.FileInput(attrs={'class': 'form-control'}),
+           
+        }
+
+       

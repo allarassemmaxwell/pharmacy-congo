@@ -1,4 +1,4 @@
-<div class="modal fade contentmodal" id="saleDeleteModal-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+<div class="modal fade contentmodal" id="fridgeDeleteModal-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content doctor-profile">
             <div class="modal-header border-bottom-0 justify-content-end">
@@ -9,10 +9,10 @@
                 <div class="delete-wrap text-center">
                     <div class="del-icon"><i class="feather-x-circle"></i></div>
                     <h2>Etes-vous sûr que vous voulez supprimer</h2>
-                    <p>“{{ sale.product }}”</p>
+                    <p>“{{ fridge.name }}”</p>
                     <div class="submit-section">
                         <a href="#" class="btn btn-danger" data-bs-dismiss="modal">Non</a>
-                        <a href="{{ sale.delete_url }}" class="btn btn-success me-2">Oui</a>
+                        <a href="{{ fridge.delete_url }}" class="btn btn-success me-2">Oui</a>
                     </div>
                 </div>
             </div>
