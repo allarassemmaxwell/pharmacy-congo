@@ -204,9 +204,27 @@ def product_view(request):
 
 #  PRODUCT FUNCTION
 def product_list_view(request):
-	context  = {}
-	template = "landing/pharmacy/product-list.html"
-	return render(request, template, context)
+    category = ''
+    products    = Product.objects.filter(active=True)
+    names   = Product.objects.filter(active=True)
+    product_categories = ProductCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        products = Product.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator   = Paginator(products, 9)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+    context     = {
+		'products': page_obj,
+		'names': names,
+		'product_categories': product_categories,
+		'category': category,
+	}
+    template = "landing/pharmacy/product-list.html"
+    return render(request, template, context)
 
 
 
@@ -214,9 +232,27 @@ def product_list_view(request):
 
 #  PRODUCT DETAILS FUNCTION
 def product_detail_view(request):
-	context  = {}
-	template = "landing/pharmacy/product-detail.html"
-	return render(request, template, context)
+    category = ''
+    products    = Product.objects.filter(active=True)
+    names   = Product.objects.filter(active=True)
+    product_categories = ProductCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        products = Product.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator   = Paginator(products, 9)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+    context     = {
+		'products': page_obj,
+		'names': names,
+		'product_categories': product_categories,
+		'category': category,
+	}
+    template = "landing/pharmacy/product-detail.html"
+    return render(request, template, context)
 
 
 
@@ -254,9 +290,27 @@ def pharmacy_login_view(request):
 
 #  PHARMACY SEARCH FUNCTION
 def pharmacy_search_view(request):
-	context  = {}
-	template = "landing/pharmacy/pharmacy-search.html"
-	return render(request, template, context)
+    category = ''
+    services    = Service.objects.filter(active=True)
+    names   = Service.objects.filter(active=True)
+    service_categories = ServiceCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        services = Service.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator   = Paginator(services, 9)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+    context     = {
+		'services': page_obj,
+		'names': names,
+		'service_categories': service_categories,
+		'category': category,
+	}
+    template = "landing/pharmacy/pharmacy-search.html"
+    return render(request, template, context)
 
 
 
@@ -269,9 +323,27 @@ def pharmacy_search_view(request):
 
 #  PHARMACY DETAIL FUNCTION
 def pharmacy_detail_view(request):
-	context  = {}
-	template = "landing/pharmacy/pharmacy-detail.html"
-	return render(request, template, context)
+    category = ''
+    services    = Service.objects.filter(active=True)
+    names   = Service.objects.filter(active=True)
+    service_categories = ServiceCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        services = Service.objects.filter(category__slug=category_slug, active=True)
+
+    # PAGINATION 
+    paginator   = Paginator(services, 9)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+    context     = {
+		'services': page_obj,
+		'names': names,
+		'service_categories': service_categories,
+		'category': category,
+	}
+    template = "landing/pharmacy/pharmacy-detail.html"
+    return render(request, template, context)
 
 
 
@@ -303,9 +375,16 @@ def pharmacist_dashboard_view(request):
 
 # PHARMACIST ADD PROFILE FUNCTION
 def phcist_add_profile_view(request):
-	context  = {}
-	template = "dashboard/pharmacist/phcist-add-profile.html"
-	return render(request, template, context)
+    patients = Patient.objects.all()
+    appointment = get_object_or_404(Appointment, id=id)
+    appointments = Appointment.objects.all()
+    context  = {
+        'patients': patients,
+        'appointment': appointment,
+        'appointments': appointments,
+        }
+    template = "dashboard/pharmacist/phcist-add-profile.html"
+    return render(request, template, context)
 
 
 

@@ -31,74 +31,18 @@
               <h4>Shop by Category</h4>
             </div>
             <div class="filter-widget">
+              {% if products %}
               <ul>
+                {% for cat in product_categories %}
                 <li>
-                  <a href="javascript:void(0);">Medicine <span>
+                  <a href="javascript:void(0);">{{ cat.name|title }} <span>
                       <i class="fas fa-angle-right"></i>
                     </span>
                   </a>
                 </li>
-                <li>
-                  <a href="javascript:void(0);">Mask <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Blood Pressure <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Hand Gloves <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Nutritions <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Safety Guard <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Pills <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Testing kit <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Pharmacies <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);javascript:void(0);">Vitamins <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Surgical Mask <span>
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-                </li>
+                {% endfor %}
               </ul>
+              {% endif %}
             </div>
           </div>
           <div class="filter-new">
@@ -123,185 +67,19 @@
               <h4>By Brands</h4>
             </div>
             <div class="filter-widget">
+              {% if products %}
               <ul>
+                {% for name in names%}
                 <li>
-                  <a href="javascript:void(0);">Aquare Pharma <span> (25)</span>
+                  <a href="javascript:void(0);">{{ name.name|title }} <span> (22)</span>
                   </a>
                 </li>
-                <li>
-                  <a href="javascript:void(0);">Med Care <span> (10)</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">Happy Life Bio Care <span> (08)</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);">MediMall Pharma <span> (06)</span>
-                  </a>
-                </li>
+                {% endfor %}
               </ul>
+              {% endif %}
             </div>
           </div>
-          <div class="filter-new">
-            <div class="filter-header">
-              <h4>By Rating</h4>
-            </div>
-            <div class="filter-widget">
-              <ul>
-                <li>
-                  <ul class="ratings">
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <span> (10)</span>
-                </li>
-                <li>
-                  <ul class="ratings">
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <span>(05)</span>
-                </li>
-                <li>
-                  <ul class="ratings">
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <span>(30)</span>
-                </li>
-                <li>
-                  <ul class="ratings">
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <span>(25)</span>
-                </li>
-                <li>
-                  <ul class="ratings">
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star filled"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0);">
-                        <i class="fas fa-star"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <span>(14)</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          
         </div>
         <div class="col-lg-9 col-xl-9">
           <div class="filter-info">
@@ -309,10 +87,10 @@
               <div class="col-md-7 col-12 d-md-block custom-short-by">
                 <div class="pharm-viewicon">
                   <div class="view-icons ">
-                    <a href="product-all.html" class="grid-view">
+                    <a href="{% url 'landing:product' %}" class="grid-view">
                       <i class="feather-grid"></i>
                     </a>
-                    <a href="{{ blog.get.product_list }}" class="list-view active">
+                    <a href="{% url 'landing:product_list' %}" class="list-view active">
                       <i class="feather-list"></i>
                     </a>
                   </div>
@@ -335,24 +113,26 @@
             </div>
           </div>
           <div class="pro-list">
+            {% if products %}
             <div class="row">
+              {% for product in products %}
               <div class="col-md-12">
                 <div class="prod-widget">
                   <div class="deal-pro-img">
                     <div class="deal-pro-tags">
-                      <span class="offer">-25% OFF</span>
+                      <span class="offer">{{ product.discount }}% OFF</span>
                     </div>
-                    <a href="product-description.html">
-                      <img src="{% static 'assets/img/products/product-06.jpg' %}" alt="" class="img-fluid">
+                    <a href="{% url 'landing:product_detail' %}">
+                      <img src="{{ product.product_image.file.url }}" style="width: 100%; height: 230px; object-fit: cover;" alt="" class="img-fluid">
                     </a>
                   </div>
                   <div class="deal-pro-detail">
-                    <h6>Vitamins, Health Chocolates</h6>
+                    <h6>{{ product.category }}</h6>
                     <h4>
-                      <a href="product-description.html">Protein Chocolate Flake</a>
+                      <a href="product-description.html">{{ product.name }}, {{ product.genetic_name }}</a>
                     </h4>
                     <ul class="brand-pro">
-                      <li>By <span>HealthKart</span>
+                      <li>Ou <span>{{ product.brand_name }}</span>
                       </li>
                       <li>
                         <ul class="ratings">
@@ -387,9 +167,9 @@
                         </ul>
                       </li>
                     </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+                    <p>{{ product.description }}</p>
                     <div class="pro-pricelist">
-                      <h2>$120 <span>$125.50</span>
+                      <h2>CFA {{product.unity_price }} <span>CFA {{product.unity_price }}</span>
                       </h2>
                       <a href="cart.html" class="btn book-btn">
                         <img src="{% static 'assets/img/icons/cart-icon.svg' %}" alt="" class="w-auto d-inline-block me-1"> Add to Cart </a>
@@ -414,270 +194,15 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12">
-                <div class="prod-widget">
-                  <div class="deal-pro-img">
-                    <div class="deal-pro-tags">
-                      <span class="offer">-15% OFF</span>
-                    </div>
-                    <a href="product-description.html">
-                      <img src="{% static 'assets/img/products/product-03.jpg' %}" alt="" class="img-fluid">
-                    </a>
-                  </div>
-                  <div class="deal-pro-detail">
-                    <h6>Vitamins, Health Chocolates</h6>
-                    <h4>
-                      <a href="product-description.html">Vit D3, 60 tablets, Unflavoured</a>
-                    </h4>
-                    <ul class="brand-pro">
-                      <li>By <span>Aenean </span>
-                      </li>
-                      <li>
-                        <ul class="ratings">
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <span>(150)</span>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                    <div class="pro-pricelist">
-                      <h2>$120 <span>$125.50</span>
-                      </h2>
-                      <a href="cart.html" class="btn book-btn">
-                        <img src="{% static 'assets/img/icons/cart-icon.svg' %}" alt="" class="w-auto d-inline-block me-1"> Add to Cart </a>
-                      <ul>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-eye"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-heart"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-shuffle"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="prod-widget">
-                  <div class="deal-pro-img">
-                    <div class="deal-pro-tags">
-                      <span class="offer">-25% OFF</span>
-                    </div>
-                    <a href="product-description.html">
-                      <img src="{% static 'assets/img/products/product-08.png' %}" alt="" class="img-fluid">
-                    </a>
-                  </div>
-                  <div class="deal-pro-detail">
-                    <h6>Equipments</h6>
-                    <h4>
-                      <a href="product-description.html">Eletric Toothbrush</a>
-                    </h4>
-                    <ul class="brand-pro">
-                      <li>By <span>Aenean </span>
-                      </li>
-                      <li>
-                        <ul class="ratings">
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <span>(256)</span>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                    <div class="pro-pricelist">
-                      <h2>$120 <span>$125.50</span>
-                      </h2>
-                      <a href="cart.html" class="btn book-btn">
-                        <img src="{% static 'assets/img/icons/cart-icon.svg' %}" alt="" class="w-auto d-inline-block me-1"> Add to Cart </a>
-                      <ul>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-eye"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-heart"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-shuffle"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="prod-widget">
-                  <div class="deal-pro-img">
-                    <div class="deal-pro-tags">
-                      <span class="offer">-25% OFF</span>
-                    </div>
-                    <a href="product-description.html">
-                      <img src="{% static 'assets/img/products/product-09.png' %}" alt="" class="img-fluid">
-                    </a>
-                  </div>
-                  <div class="deal-pro-detail">
-                    <h6>Safety Guard</h6>
-                    <h4>
-                      <a href="product-description.html">Safety Gloves</a>
-                    </h4>
-                    <ul class="brand-pro">
-                      <li>By <span>Med Care</span>
-                      </li>
-                      <li>
-                        <ul class="ratings">
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star filled"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <i class="fas fa-star"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <span>(256)</span>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-                    <div class="pro-pricelist">
-                      <h2>$20 <span>$25.50</span>
-                      </h2>
-                      <a href="cart.html" class="btn book-btn">
-                        <img src="{% static 'assets/img/icons/cart-icon.svg' %}" alt="" class="w-auto d-inline-block me-1"> Add to Cart </a>
-                      <ul>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-eye"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-heart"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <i class="feather-shuffle"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
+            {% endif %}
           </div>
-          <div class="col-md-12 text-center">
-            <div class="product-pagination">
-              <nav>
-                <ul class="pagination justify-content-end">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="javascript:void(0);" tabindex="-1">
-                      <i class="fas fa-angle-left"></i>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">1</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="javascript:void(0);">2 <span class="visually-hidden">(current)</span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="javascript:void(0);">
-                      <i class="fas fa-angle-right"></i>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          <!--Product Pagination -->
+
+          {% if products %}
+            {% include 'landing/pharmacy/product-pagination.html' %}
+          {% endif %}
         </div>
       </div>
     </div>

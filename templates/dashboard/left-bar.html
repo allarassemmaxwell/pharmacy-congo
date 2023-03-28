@@ -79,10 +79,10 @@
                         <a href="#"><i class="feather-file-text"></i> <span> Rapport</span> <span
                                 class="menu-arrow"></span></a>
                         <ul>
-                            <li><a href="">Quotidien</a></li>
-                            <li><a href="">Hebdomadaire</a></li>
-                            <li><a href="">Mensuel</a></li>
-                            <li><a href="">Annuellement</a></li>
+                            <li><a href="{% url 'rapport_quotidien' %}">Quotidien</a></li>
+                            <li><a href="{% url 'rapport_hebdomadaire' %}">Hebdomadaire</a></li>
+                            <li><a href="{% url 'rapport_mensuel' %}">Mensuel</a></li>
+                            <li><a href="{% url 'rapport_annuel' %}">Annuellement</a></li>
                         </ul>
                     </li>
 
@@ -123,6 +123,10 @@
 
                     <li class="menu-title">
                         <span></span>
+                    </li>
+
+                    <li class="">
+                        <a href="{% url 'fridge' %}"><i class="feather-grid"></i> <span>Gestion de Froid</span></a>
                     </li>
 
                     <li class="">

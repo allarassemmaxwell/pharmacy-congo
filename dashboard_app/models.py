@@ -672,3 +672,49 @@ class Notification(models.Model):
 
 
 
+
+
+
+
+
+
+# FRIDGE MODEL
+
+class Fridge(models.Model):
+    STATE_CHOICES=(
+        ('Normal','Normal'),
+        ('Probleme_Mineur','Probleme_Mineur'),
+        ('Probleme_Critique','Probleme_Critique'),
+    )
+    
+    ENERGY_CHOICES=(
+        ('Solaire','Solaire'),
+        ('Electrique','Electrique'),
+    )
+    name             = models.CharField(_("Nom du Frigo"), max_length=255, null=False, blank=False, unique=True)
+    marque           = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    code_pqs         = models.CharField(_("Code PQS"), max_length=255, null=False, blank=False, unique=True)
+    date_acquisition = models.DateField(_("Date Acquisition"), blank=True, null=True)
+    photo            = models.ImageField(_("Image"), upload_to="Service/%Y/%m/%d/", null=True, blank=True)
+    price            = models.DecimalField(_("Prix Frigidaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    state            = models.CharField(_("Etat du Frigidaire"), max_length=100, choices=STATE_CHOICES, null=True, blank=True)
+    fix_number       = models.PositiveIntegerField(_("Nombre de Reparation"), null=True, blank=False, default=1)
+    energy           = models.CharField(_("Energie Utilisée"), max_length=100, choices=ENERGY_CHOICES, null=True, blank=True)
+    active           = models.BooleanField(_("Est actif"), default=True)
+    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    # slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    def __str__(self):
+        return self.name
+
+    def delete_url(self):
+        return reverse("fridge_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("fridge_update", args=[str(self.id)])
+
+    class Meta:
+        ordering = ('-timestamp',)
+        
+

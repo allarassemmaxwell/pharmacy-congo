@@ -18,9 +18,43 @@ from django.core.mail import send_mail, BadHeaderError
 
 
 
+#for the charts
+
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
+
+from django.db.models import Sum
+from django.http import JsonResponse
+
+
+
 
 class PasswordChangeView(PasswordChangeView):
     success_url = reverse_lazy('profile')
+
+
+
+
+
+def get_current_day():
+    now = datetime.datetime.now()
+    return now.strftime("%d")
+
+def get_current_week():
+    now = datetime.datetime.now()
+    return now.strftime("%W")
+
+def get_current_month():
+    now = datetime.datetime.now()
+    return now.strftime("%m")
+
+def get_current_year():
+    now = datetime.datetime.now()
+    return now.strftime("%Y")
+
+
+
+
 
 
 
@@ -1696,6 +1730,426 @@ def notification_view(request):
     context  = {'notifications': notifications}
     template = "dashboard/notification/notification.html"
     return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# FRIDGE VIEW 
+@login_required
+def fridge_view(request):
+    fridges = Fridge.objects.all()
+    context  = {'fridges': fridges}
+    template = "dashboard/fridge/fridge.html"
+    return render(request, template, context)
+
+
+
+
+
+
+# FRIDGE ADD VIEW 
+@login_required
+def fridge_add_view(request):
+    if request.method == 'POST':
+        form = FridgeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Frigidaire créé avec succès."))
+            return redirect('fridge')
+    else:
+        form = FridgeForm()
+    context  = {'form': form}
+    template = "dashboard/fridge/fridge-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+# FRIDGE DELETE VIEW
+
+@login_required
+def fridge_delete_view(request, id):
+    marque = get_object_or_404(Fridge, id=id, active=True)
+    marque.delete()
+    messages.success(request, _("Frigidaire supprimé avec succès."))
+    return redirect('fridge')
+
+
+
+
+
+
+
+
+
+
+
+# FRIDGE UPDATE VIEW FUNCTION
+@login_required
+def fridge_update_view(request, id):
+    obj  = get_object_or_404(Fridge, id=id)
+    if request.method == 'POST':
+        form = FridgeForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Frigidaire updated successfully."))
+            return redirect('fridge')
+    else:
+        form = FridgeForm(instance=obj)
+    # image  = obj.product_image.file
+    context  = { 
+        'form': form,
+        # 'image': image
+    }
+    template = "dashboard/fridge/fridge-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Pages des Rapports de l'Entreprise
+
+# RAPPORT QUOTIDIEN
+
+# Page Rapport quotidien
+
+@login_required
+def rapport_quotidien_view(request):
+    year  = request.GET.get('year')
+    month = request.GET.get('month')
+    day   = request.GET.get('day')
+    chart_labels = []
+    chart_data = []
+    total_amount = 0
+    expense = 0
+    remaining_amount = 0
+
+    date = datetime.datetime.now()
+
+    if day:
+        day = request.GET.get('day')[:2]
+        month = request.GET.get('day')[3:5]
+        year  = request.GET.get('day')[7:11]
+    else:
+        day   = request.GET.get('day', get_current_day())
+        month = request.GET.get('day', get_current_month())
+        year  = request.GET.get('day', get_current_year())
+
+    business_quotidiens = Sale.objects.filter(date__year=year, date__month=month, date__day=day, active=True)
+    for business in business_quotidiens:
+        total_amount += business.total_amount
+        expense += business.expense
+        remaining_amount += business.remaining_amount
+
+    chart_queryset   = Sale.objects.filter(date__year=year, date__month=month, date__day=day, active=True).values('order_shop__name').annotate(data_set=Sum('remaining_amount')).order_by('order_shop__name')
+    for entry in chart_queryset:
+        chart_labels.append(entry['order_shop__name'])
+        chart_data.append(float(entry['data_set']))
+
+    context  = {
+        'business_quotidiens': business_quotidiens, 
+        'chart_labels': chart_labels, 
+        'chart_data': chart_data,
+        'chart_queryset': chart_queryset,
+        'total_amount': total_amount,
+        'expense': expense,
+        'remaining_amount': remaining_amount
+    }
+    template = "dashboard/report/quotidien.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# RAPPORT HEBDOMADAIRE
+
+# Page Rapport Hebdomadaire
+
+@login_required
+def rapport_hebdomadaire_view(request):
+    year = request.GET.get('year')
+    week = request.GET.get('week')
+    chart_labels = []
+    chart_data = []
+    total_amount = 0
+    expense = 0
+    remaining_amount = 0
+
+    date = datetime.datetime.now()
+
+    if week:
+        week = request.GET.get('week')[6:8]
+        year = request.GET.get('week')[:4]
+    else:
+        week = request.GET.get('week', get_current_week())
+        year  = request.GET.get('year', get_current_year())
+
+    business_hebdomadaires = Sale.objects.filter(date__year=year, date__week=week, active=True)
+    for business in business_hebdomadaires:
+        total_amount += business.total_amount
+        expense += business.expense
+        remaining_amount += business.remaining_amount
+
+    chart_queryset   = Sale.objects.filter(date__year=year, date__week=week, active=True).values('order_shop__name').annotate(data_set=Sum('remaining_amount')).order_by('order_shop__name')
+    for entry in chart_queryset:
+        chart_labels.append(entry['order_shop__name'])
+        chart_data.append(float(entry['data_set']))
+
+    context  = {
+        'business_hebdomadaires': business_hebdomadaires, 
+        'chart_labels': chart_labels, 
+        'chart_data': chart_data,
+        'chart_queryset': chart_queryset,
+        'total_amount': total_amount,
+        'expense': expense,
+        'remaining_amount': remaining_amount
+    }
+    template = "dashboard/report/hebdomadaire.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# RAPPORT MENSUEL
+
+# Page de Rapport Mensuel
+
+@login_required
+def rapport_mensuel_view(request):
+    year  = request.GET.get('year')
+    month = request.GET.get('month')
+    chart_labels = []
+    chart_data = []
+    total_amount = 0
+    expense = 0
+    remaining_amount = 0
+    date = datetime.datetime.now()
+
+    if month:
+        year  = request.GET.get('month')[3:7]
+        month = request.GET.get('month')[:2]
+    else:
+        year  = request.GET.get('year', get_current_year())
+        month = request.GET.get('month', get_current_month())
+
+    business_mensuels = Sale.objects.filter(date__year=year, date__month=month, active=True)
+    for business in business_mensuels:
+        total_amount += business.total_amount
+        expense += business.expense
+        remaining_amount += business.remaining_amount
+
+    chart_queryset   = Sale.objects.filter(date__year=year, date__month=month, active=True).values('order_shop__name').annotate(data_set=Sum('remaining_amount')).order_by('order_shop__name')
+    for entry in chart_queryset:
+        chart_labels.append(entry['order_shop__name'])
+        chart_data.append(float(entry['data_set']))
+
+    context  = {
+        'business_mensuels':business_mensuels,
+        'chart_labels': chart_labels, 
+        'chart_data': chart_data,
+        'chart_queryset': chart_queryset,
+        'total_amount': total_amount,
+        'expense': expense,
+        'remaining_amount': remaining_amount
+    }
+    template = "dashboard/report/mensuel.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# RAPPORT ANNUEL
+
+# Page de Rapport annuel
+
+@login_required
+def rapport_annuel_view(request):
+    year = request.GET.get('year')
+    chart_labels = []
+    chart_data = []
+    total_amount = 0
+    expense = 0
+    remaining_amount = 0
+    date = datetime.datetime.now()
+
+    # FILTER REPPORT 
+    if year:
+        if year > date.strftime("%Y"):
+            messages.warning(request, _("L'année doit être supérieure à l'année "+get_current_year()))
+        else:
+            year = request.GET.get('year')
+    else:
+        year = request.GET.get('year', get_current_year())
+
+
+    business_annuels = Sale.objects.filter(date__year=year, active=True)
+    for business in business_annuels:
+        total_amount += business.total_amount
+        expense += business.expense
+        remaining_amount += business.remaining_amount
+
+    chart_queryset   = Sale.objects.filter(date__year=year, active=True).values('order_shop__name').annotate(data_set=Sum('remaining_amount')).order_by('order_shop__name')
+    for entry in chart_queryset:
+        chart_labels.append(entry['order_shop__name'])
+        chart_data.append(float(entry['data_set']))
+
+ 
+
+    context  = {
+        'business_annuels':business_annuels,
+        'chart_labels': chart_labels, 
+        'chart_data': chart_data,
+        'chart_queryset': chart_queryset,
+        'total_amount': total_amount,
+        'expense': expense,
+        'remaining_amount': remaining_amount
+    }
+    template = "dashboard/report/annuel.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# Bar chart 
+def business_daily_chart_view(request):
+    labels = []
+    data   = []
+    this_month = datetime.datetime.now().month
+    # business_sales = BusinessSale.objects.filter(date__month=this_month, active=True)
+
+    queryset = Sale.objects.filter(date__month=this_month, active=True).values('date').annotate(total_amount=Sum('total_amount')).order_by('date')
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['total_amount'])
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+
+
+
+
+
+def business_chart_hebdo_view(request):
+    labels = []
+    data = []
+
+    queryset = Sale.objects.values('date').annotate(total_amount=Sum('total_amount')).order_by('total_amount')
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['total_amount'])
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+
+
+
+
+
+
+def business_monthly_chart_view(request):
+    labels = []
+    data = []
+    this_year = datetime.datetime.now().year
+    queryset = Sale.objects.filter(date__year=this_year, active=True).values('date').annotate(total_amount=Sum('total_amount')).order_by('date')
+    print("===== YEAR =====")
+    print(this_year)
+    print(queryset)
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['total_amount'])
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+    
+    
+    
+    
+
+
+
+def business_chart_annuel_view(request):
+    labels = []
+    data = []
+
+    queryset = Sale.objects.values('date').annotate(total_amount=Sum('total_amount')).order_by('total_amount')
+    for entry in queryset:
+        labels.append(entry['date'])
+        data.append(entry['total_amount'])
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+
+
+
+
+
 
 
 

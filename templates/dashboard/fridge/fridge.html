@@ -1,0 +1,130 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Fridges{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'fridge_add' %}" class="btn btn-primary btn-add">
+                        <i class="feather-plus-square me-1"></i> Ajouter Frigidaire
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'message.html' %}
+                <div class="card">
+                    <div class="card-header border-bottom-0">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="card-title">Frigidaires</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="datatable table table-borderless hover-table" id="data-table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Marque</th>
+                                        <th>Code PQS</th>
+                                        <th>Date D'acquisition</th>
+                                        <th>Etat Frigo</th>
+                                        <th>Nombre Reparation</th>
+                                        <th>Energie</th>
+                                        <th>Prix</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fridge in fridges %}
+                                    {% include 'dashboard/modal/fridge-delete.html' with fridge=fridge %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal">
+                                                    {% if fridge.photo %}
+                                                        <img class="avatar avatar-img" src="{{ fridge.photo.url }}" alt="{{ fridge.photo.name|title }}">
+                                                    {% else %}
+                                                        <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ fridge.photo.name|title }}">
+                                                    {% endif %}
+                                                </a>
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#editModal"><span>{{ fridge.name|title }}</span>
+                                                </a>
+                                            </h2>
+                                        </td>
+                                        <td>{{ fridge.marque }}</td>
+                                        <td>{{ fridge.code_pqs }}</td>
+                                        <td>{{ fridge.date_acquisition }}</td>
+                                        <td>{{ fridge.state }}</td>
+                                        <td>{{ fridge.fix_number }}</td>
+                                        <td>{{ fridge.energy }}</td>
+                                        <td>{{ fridge.price }}f cfa</td>
+                                        <td>{{ fridge.timestamp|date:"d M Y" }}</td>
+                                        <td class="text-end">
+                                            <div class="actions">
+                                                <a href="{{ fridge.update_url }}" class="text-black">
+                                                    <i class="feather-edit-3 me-1"></i> Modifier
+                                                </a>
+                                                <a class="text-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#fridgeDeleteModal-{{ forloop.counter }}">
+                                                    <i class="feather-trash-2 me-1"></i> Supprimer
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="tablepagination" class="dataTables_wrapper"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}
