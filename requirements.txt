@@ -3,10 +3,12 @@ bleach==6.0.0
 certifi==2022.12.7
 cffi==1.15.1
 charset-normalizer==3.0.1
+chartjs==1.2
 cryptography==39.0.0
 defusedxml==0.7.1
 Django==4.1.5
 django-allauth==0.49.0
+django-chartjs==2.3.0
 django-countries==7.5
 django-crispy-forms==1.14.0
 django-preventconcurrentlogins==0.8.2

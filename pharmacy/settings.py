@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',   
     'django_summernote', # pip install django-summernote
+    'chartjs', # pip install django-chartjs
 
 
 ]
