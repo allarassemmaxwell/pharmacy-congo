@@ -1,10 +1,21 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import get_user_model
 from .models import *
+from allauth.account.forms import SignupForm
 
+from django.core.files.images import get_image_dimensions
+User = get_user_model()
 
+from django.forms.widgets import CheckboxInput
+from datetime import date
 
+import datetime
+
+from .models import *
+from dashboard_app.models import *
 
 
 
@@ -85,3 +96,40 @@ class PartnerForm(forms.ModelForm):
             'name':    forms.TextInput(attrs={'class': 'form-control'}),
             'website': forms.URLInput(attrs={'class': 'form-control'}),
         }
+
+
+
+
+
+
+
+
+
+# APPOINTMENT FORM
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model  = Appointment
+        fields = [
+            "patient",
+            "subject",
+            "date",
+            "hour",
+            "description"
+        ]
+        widgets = {
+            'subject':     forms.TextInput(attrs={'class': 'form-control'}),
+            'date':        forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':7}),
+        }
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        date  = cleaned_data.get('date')
+        hour  = cleaned_data.get('hour')
+        today = datetime.date.today()
+        if date < today:
+            self.add_error('date', "La date choisie doit être supérieure ou égale à la date d'aujourd'hui")
+        check = Appointment.objects.filter(date=date, hour=hour)
+        if check:
+            self.add_error('hour', "Un autre rendez-vous existe avec la même date et heure")
+        return cleaned_data
+
