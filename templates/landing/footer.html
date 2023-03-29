@@ -13,8 +13,10 @@
                             <img src="{% static 'assets/img/footer-logo.png' %}" alt="logo">
                         </div>
                         <div class="footer-about-content">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. </p>
+                            <p>Nous vous remercions d'avoir choisi Log Support. 
+                                Notre équipe dévouée s'engage à fournir des services 
+                                de la plus haute qualité. Nous nous réjouissons 
+                                de pouvoir vous servir à l'avenir.</p>
                             <div class="social-icon">
                                 <ul>
                                     <li>
@@ -46,13 +48,13 @@
                 <div class="col-lg-3 col-md-6">
 
                     <div class="footer-widget footer-menu">
-                        <h2 class="footer-title">For Patients</h2>
+                        <h2 class="footer-title">Pour Patients</h2>
                         <ul>
-                            <li><a href="search.html">Search for Doctors</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="register.html">Register</a></li>
-                            <li><a href="booking.html">Booking</a></li>
-                            <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+                            <li><a href="{% url 'landing:pharmacy_search' %}">Cherche Service</a></li>
+                            <li><a href="{% url 'account_login' %}">Connexion</a></li>
+                            <li><a href="{% url 'account_login' %}">S'enregistrer</a></li>
+                            <li><a href="{% url 'landing:phcist_appointment' %}">Rendez-Vous</a></li>
+                            <li><a href="patient-dashboard.html">Tableau de Board Patient</a></li>
                         </ul>
                     </div>
 
@@ -60,13 +62,11 @@
                 <div class="col-lg-3 col-md-6">
 
                     <div class="footer-widget footer-menu">
-                        <h2 class="footer-title">For Doctors</h2>
+                        <h2 class="footer-title">Pour Docteurs</h2>
                         <ul>
-                            <li><a href="appointments.html">Appointments</a></li>
-                            <li><a href="chat.html">Chat</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="doctor-register.html">Register</a></li>
-                            <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+                            <li><a href="{% url 'account_login' %}">Connexion</a></li>
+                            <li><a href="{% url 'account_login' %}">S'enregistrer</a></li>
+                            <li><a href="doctor-dashboard.html">Tableau de Board Docteur</a></li>
                         </ul>
                     </div>
 
@@ -106,15 +106,15 @@
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="copyright-text">
-                            <p class="mb-0">&copy; 2022 Doccure. All rights reserved.</p>
+                            <p class="mb-0">&copy; 2023 Log Support. Tous droits réservés.</p>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6">
 
                         <div class="copyright-menu">
                             <ul class="policy-menu">
-                                <li><a href="term-condition.html">Terms and Conditions</a></li>
-                                <li><a href="privacy-policy.html">Policy</a></li>
+                                <li><a href="term-condition.html">Conditions générales d'utilisation</a></li>
+                                <li><a href="privacy-policy.html">Politique</a></li>
                             </ul>
                         </div>
 

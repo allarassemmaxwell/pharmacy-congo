@@ -120,7 +120,7 @@ def blog_detail_view(request, slug=None):
 			obj = form.save(commit=False)
 			obj.blog = blog
 			form.save()
-			messages.success(request, _("Comment posted successfully"))
+			messages.success(request, _("Commentaire posté avec succès"))
 		return redirect(request.META['HTTP_REFERER'])
 	else:
 		form = BlogCommentForm()
@@ -158,11 +158,11 @@ def about_view(request):
 def newsletter_view(request):
     email = request.POST.get('email')
     if Subscriber.objects.filter(email=email).exists():
-        messages.error(request, _("You have already subscribed to our newsletter"))
+        messages.error(request, _("Vous vous êtes déjà inscrit(e) à notre lettre d'information"))
         return redirect(request.META['HTTP_REFERER'])
     else:
         Subscriber.objects.create(email=email)
-        messages.success(request, _("You have subscribed to our newsletter"))
+        messages.success(request, _("Vous vous êtes inscrit(e) à notre lettre d'information"))
         return redirect(request.META['HTTP_REFERER'])
 
 
@@ -231,7 +231,7 @@ def product_list_view(request):
 
 
 #  PRODUCT DETAILS FUNCTION
-def product_detail_view(request):
+def product_detail_view(request,slug=None):
     category = ''
     products    = Product.objects.filter(active=True)
     names   = Product.objects.filter(active=True)
@@ -395,9 +395,24 @@ def phcist_add_profile_view(request):
 
 # PHARMACIST APPOINTMENT FUNCTION
 def phcist_appointment_view(request):
-	context  = {}
-	template = "dashboard/pharmacist/phcist-appointment.html"
-	return render(request, template, context)
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            date = form.cleaned_data.get("date")
+            hour = form.cleaned_data.get("hour")
+            appointment = form.save()
+            subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
+            Notification.objects.create(appointment=appointment, subject=subject)
+            messages.success(request, _("Rendez-Vous créé avec succès."))
+            return redirect('appointment')
+    else:
+        form = AppointmentForm()
+    context  = {
+        'form': form,
+        'today': datetime.date.today()
+    }
+    template = "dashboard/pharmacist/phcist-appointment.html"
+    return render(request, template, context)
 
 
 
