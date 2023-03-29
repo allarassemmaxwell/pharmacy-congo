@@ -175,7 +175,7 @@ def blog_update_view(request, slug=None):
         form = BlogForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Blogue mis à jour avec succès.."))
+            messages.success(request, _("Blogue mis à jour avec succès..."))
             return redirect('blog')
     else:
         form = BlogForm(instance=obj)
@@ -637,7 +637,7 @@ def testimony_update_view(request, id=None):
         form = TestimonyForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Témoignage mis à jour avec succès.."))
+            messages.success(request, _("Témoignage mis à jour avec succès..."))
             return redirect('testimony')
     else:
         form = TestimonyForm(instance=obj)
@@ -1064,7 +1064,7 @@ def product_image_update_view(request, slug=None):
         form = ProductImageForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Image updated successfully."))
+            messages.success(request, _("Image mise à jour avec succès."))
             return redirect('product_image')
     else:
         form = ProductImageForm(instance=obj)
@@ -1143,7 +1143,7 @@ def product_update_view(request, slug=None):
         form = ProductForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Product updated successfully."))
+            messages.success(request, _("Produit mis à jour avec succès."))
             return redirect('product')
     else:
         form = ProductForm(instance=obj)
@@ -1514,7 +1514,7 @@ def appointment_update_view(request, id):
         form = AppointmentForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Appointment Symptom updated successfully."))
+            messages.success(request, _("Rendez-vous Symptôme mis à jour avec succès."))
             return redirect('appointment')
     else:
         form = AppointmentForm(instance=obj)
@@ -1684,7 +1684,7 @@ def sale_add_view(request):
 def sale_delete_view(request, id=None):
     sale = get_object_or_404(Sale, id=id)
     sale.delete()
-    messages.success(request, _("Sale deleted successfully."))
+    messages.success(request, _("Vente supprimée avec succès."))
     return redirect('sale')
 
 
@@ -1706,7 +1706,7 @@ def sale_update_view(request, id):
             obj = form.save(commit=False)
             obj.total = obj.unity_price * obj.quantity
             obj.save()
-            messages.success(request, _("Sale updated successfully."))
+            messages.success(request, _("Vente mise à jour avec succès."))
             return redirect('sale')
     else:
         form = SaleForm(instance=obj)
@@ -1806,7 +1806,7 @@ def fridge_update_view(request, id):
         form = FridgeForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Frigidaire updated successfully."))
+            messages.success(request, _("Frigidaire mis à jour avec succès."))
             return redirect('fridge')
     else:
         form = FridgeForm(instance=obj)
