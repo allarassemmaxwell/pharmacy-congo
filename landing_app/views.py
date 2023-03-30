@@ -231,7 +231,7 @@ def product_list_view(request):
 
 
 #  PRODUCT DETAILS FUNCTION
-def product_detail_view(request,slug=None):
+def product_detail_view(request):
     category = ''
     products    = Product.objects.filter(active=True)
     names   = Product.objects.filter(active=True)
@@ -395,6 +395,7 @@ def phcist_add_profile_view(request):
 
 # PHARMACIST APPOINTMENT FUNCTION
 def phcist_appointment_view(request):
+    patients = Patient.objects.all()
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
@@ -409,6 +410,7 @@ def phcist_appointment_view(request):
         form = AppointmentForm()
     context  = {
         'form': form,
+        'patients': patients,
         'today': datetime.date.today()
     }
     template = "dashboard/pharmacist/phcist-appointment.html"
