@@ -15,11 +15,21 @@
             <div class="col-md-12">
                 <form method="POST">{% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                              {{ form.patient|as_crispy_field }}
+                        {% if request.user.is_authenticated %}
+                            <!-- The user is logged in, show the form field for the patient information -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.patient|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- The user is not logged in, show a message asking the user to log in -->
+                            <div class="col-md-6">
+                                <p style="text-align:center">Veuillez vous connecter pour ajouter des informations sur le patient.</p>
+                                <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Log in</a></button>
+                            </div>
+                        {% endif %}
+
                         <div class="col-md-6">
                             <div class="form-group">
                               {{ form.date|as_crispy_field }}
