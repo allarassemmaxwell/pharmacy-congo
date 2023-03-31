@@ -125,10 +125,10 @@ urlpatterns = [
     
     
     # for chartjs
-    path('business/daily-chart/', business_daily_chart_view, name='business_daily_chart'),
-    path('business-chart-hebdo/', business_chart_hebdo_view, name='business-chart-hebdo'),
-    path('business/monthly-chart/', business_monthly_chart_view, name='business-chart-mensuel'),
-    path('business-chart-annuel/', business_chart_annuel_view, name='business-chart-annuel'),
+    # path('business/daily-chart/', business_daily_chart_view, name='business_daily_chart'),
+    # path('business-chart-hebdo/', business_chart_hebdo_view, name='business-chart-hebdo'),
+    # path('business/monthly-chart/', business_monthly_chart_view, name='business-chart-mensuel'),
+    # path('business-chart-annuel/', business_chart_annuel_view, name='business-chart-annuel'),
     
     
     
