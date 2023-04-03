@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from dashboard_app.models import *
 
+from dashboard_app.forms import *
 
 
 
@@ -173,10 +174,8 @@ def newsletter_view(request):
 
 #  PRODUCT FUNCTION
 def product_view(request):
-    category = ''
     products    = Product.objects.filter(active=True)
-    names   = Product.objects.filter(active=True)
-    product_categories = ProductCategory.objects.filter(active=True)
+    categories = ProductCategory.objects.filter(active=True)
     category_slug = request.GET.get('category')
 
     if category_slug:
@@ -188,12 +187,9 @@ def product_view(request):
     page_obj    = paginator.get_page(page_number)
     context     = {
 		'products': page_obj,
-		'names': names,
-		'product_categories': product_categories,
-		'category': category,
+		'categories': categories,
 	}
-    
-    template = "landing/pharmacy/product.html"
+    template = "landing/product/index.html"
     return render(request, template, context)
 
 
@@ -231,57 +227,17 @@ def product_list_view(request):
 
 
 #  PRODUCT DETAILS FUNCTION
-def product_detail_view(request):
-    category = ''
-    products    = Product.objects.filter(active=True)
-    names   = Product.objects.filter(active=True)
-    product_categories = ProductCategory.objects.filter(active=True)
-    category_slug = request.GET.get('category')
-
-    if category_slug:
-        products = Product.objects.filter(category__slug=category_slug, active=True)
-
-    # PAGINATION 
-    paginator   = Paginator(products, 9)
-    page_number = request.GET.get('page')
-    page_obj    = paginator.get_page(page_number)
-    context     = {
-		'products': page_obj,
-		'names': names,
-		'product_categories': product_categories,
-		'category': category,
+def product_detail_view(request, slug=None):
+	product       = get_object_or_404(Product, slug=slug, active=True)
+	categories    = ProductCategory.objects.filter(active=True)
+	products 	  = ProductCategory.objects.filter(active=True).exclude(slug=slug)
+	context       = {
+		'product': product,
+		'categories': categories,
+		'products': products
 	}
-    template = "landing/pharmacy/product-detail.html"
-    return render(request, template, context)
-
-
-
-
-
-
-
-#  PHARMACY REGISTER FUNCTION
-def pharmacy_register_view(request):
-	context  = {}
-	template = "landing/pharmacy/pharmacy-register.html"
+	template = "landing/product/detail.html"
 	return render(request, template, context)
-
-
-
-
-
-
-
-
-
-
-#  PHARMACY LOGIN FUNCTION
-def pharmacy_login_view(request):
-	context  = {}
-	template = "landing/pharmacy/pharmacy-login.html"
-	return render(request, template, context)
-
-
 
 
 
@@ -289,11 +245,9 @@ def pharmacy_login_view(request):
 
 
 #  PHARMACY SEARCH FUNCTION
-def pharmacy_search_view(request):
-    category = ''
+def service_view(request):
     services    = Service.objects.filter(active=True)
-    names   = Service.objects.filter(active=True)
-    service_categories = ServiceCategory.objects.filter(active=True)
+    categories = ServiceCategory.objects.filter(active=True)
     category_slug = request.GET.get('category')
 
     if category_slug:
@@ -304,12 +258,10 @@ def pharmacy_search_view(request):
     page_number = request.GET.get('page')
     page_obj    = paginator.get_page(page_number)
     context     = {
-		'services': page_obj,
-		'names': names,
-		'service_categories': service_categories,
-		'category': category,
+		'services':   page_obj,
+		'categories': categories,
 	}
-    template = "landing/pharmacy/pharmacy-search.html"
+    template = "landing/service/index.html"
     return render(request, template, context)
 
 
@@ -320,31 +272,18 @@ def pharmacy_search_view(request):
 
 
 
-
-#  PHARMACY DETAIL FUNCTION
-def pharmacy_detail_view(request):
-    category = ''
-    services    = Service.objects.filter(active=True)
-    names   = Service.objects.filter(active=True)
-    service_categories = ServiceCategory.objects.filter(active=True)
-    category_slug = request.GET.get('category')
-
-    if category_slug:
-        services = Service.objects.filter(category__slug=category_slug, active=True)
-
-    # PAGINATION 
-    paginator   = Paginator(services, 9)
-    page_number = request.GET.get('page')
-    page_obj    = paginator.get_page(page_number)
-    context     = {
-		'services': page_obj,
-		'names': names,
-		'service_categories': service_categories,
-		'category': category,
+#  PRODUCT DETAILS FUNCTION
+def service_detail_view(request, slug=None):
+	service    = get_object_or_404(Service, slug=slug, active=True)
+	categories = ServiceCategory.objects.filter(active=True)
+	services   = Service.objects.filter(active=True).exclude(slug=slug)
+	context    = {
+		'service': service,
+		'categories': categories,
+		'services': services
 	}
-    template = "landing/pharmacy/pharmacy-detail.html"
-    return render(request, template, context)
-
+	template = "landing/service/detail.html"
+	return render(request, template, context)
 
 
 
@@ -392,29 +331,31 @@ def phcist_add_profile_view(request):
 
 
 
-
 # PHARMACIST APPOINTMENT FUNCTION
-def phcist_appointment_view(request):
-    patients = Patient.objects.all()
-    if request.method == 'POST':
-        form = AppointmentForm(request.POST)
-        if form.is_valid():
-            date = form.cleaned_data.get("date")
-            hour = form.cleaned_data.get("hour")
-            appointment = form.save()
-            subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
-            Notification.objects.create(appointment=appointment, subject=subject)
-            messages.success(request, _("Rendez-Vous créé avec succès."))
-            return redirect('appointment')
-    else:
-        form = AppointmentForm()
-    context  = {
-        'form': form,
-        'patients': patients,
-        'today': datetime.date.today()
-    }
-    template = "dashboard/pharmacist/phcist-appointment.html"
-    return render(request, template, context)
+def appointment_view(request):
+	if request.method == 'POST':
+		appointment_form = Appointment2Form(request.POST)
+		patient_form     = Patient2Form(request.POST)
+		if patient_form.is_valid() or appointment_form.is_valid():
+			patient = patient_form.save(commit=False)
+			appointment = appointment_form.save(commit=False)
+			patient.reg_no = random_string(7)
+			patient.save()
+			appointment.patient = patient
+			appointment.save()
+			subject = "Nouveau rendez-vous le "+str(appointment.date)+" à "+str(appointment.hour)
+			Notification.objects.create(appointment=appointment, subject=subject)
+			messages.success(request, _("Rendez-Vous créé avec succès."))
+			return redirect('landing:appointment')
+	else:
+		patient_form = Patient2Form()
+		appointment_form = Appointment2Form()
+	context  = {
+		'patient_form': patient_form,
+		'appointment_form': appointment_form,
+	}
+	template = "landing/appointment/index.html"
+	return render(request, template, context)
 
 
 

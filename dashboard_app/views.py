@@ -1846,20 +1846,20 @@ def fridge_update_view(request, id):
 @login_required
 def rapport_quotidien_view(request):
     # Get the date from the request parameters or use the current date
-    year = request.GET.get('year', timezone.now().year)
+    year  = request.GET.get('year', timezone.now().year)
     month = request.GET.get('month', timezone.now().month)
-    day = request.GET.get('day', timezone.now().day)
+    day   = request.GET.get('day', timezone.now().day)
 
     # Filter the sales for the selected day
     sales = Sale.objects.filter(timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
 
     # Calculate the total amount and the sales for each product
-    total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
+    total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
     products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
 
     # Prepare the data for the chart
     chart_labels = [data['product__name'] for data in products_sales]
-    chart_data = [float(data['sales']) for data in products_sales]
+    chart_data   = [float(data['sales']) for data in products_sales]
 
     context = {
         'sales': sales,

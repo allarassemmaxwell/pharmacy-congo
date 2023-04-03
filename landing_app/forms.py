@@ -133,3 +133,81 @@ class AppointmentForm(forms.ModelForm):
             self.add_error('hour', "Un autre rendez-vous existe avec la même date et heure")
         return cleaned_data
 
+
+
+
+
+
+
+
+
+
+
+
+
+# PATIENTS FORM
+class Patient2Form(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(Patient2Form, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required    = True
+        self.fields['last_name'].required = True
+        self.fields['gender'].required = True
+    class Meta:
+        model = Patient
+        fields = [
+            "first_name",
+            "last_name",
+            "profession",
+            "gender",
+            "date_of_birth",
+            "phone",
+            "country",
+            "city",
+            "address",        ]
+        widgets = {
+            'first_name':    forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name':     forms.TextInput(attrs={'class': 'form-control'}),
+            'profession':    forms.TextInput(attrs={'class': 'form-control'}),
+            'gender':        forms.Select(attrs={'class': 'form-control'}),
+            'country':       forms.Select(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'phone':         forms.TextInput(attrs={'class': 'form-control'}),
+            'city':          forms.TextInput(attrs={'class': 'form-control'}),
+            'address':       forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+# APPOINTMENT FORM
+class Appointment2Form(forms.ModelForm):
+    class Meta:
+        model  = Appointment
+        fields = [
+            "subject",
+            "date",
+            "hour",
+            "description"
+        ]
+        widgets = {
+            'hour':        forms.Select(attrs={'class': 'form-control'}),
+            'subject':     forms.TextInput(attrs={'class': 'form-control'}),
+            'date':        forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':7}),
+        }
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        date  = cleaned_data.get('date')
+        hour  = cleaned_data.get('hour')
+        today = datetime.date.today()
+        if date < today:
+            self.add_error('date', "La date choisie doit être supérieure ou égale à la date d'aujourd'hui")
+        check = Appointment.objects.filter(date=date, hour=hour)
+        if check:
+            self.add_error('hour', "Un autre rendez-vous existe avec la même date et heure")
+        return cleaned_data
+
+
+
+
