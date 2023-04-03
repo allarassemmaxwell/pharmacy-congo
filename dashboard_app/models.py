@@ -290,13 +290,13 @@ class ProductCategory(models.Model):
 # PRODUCT MODEL
 
 class Product(models.Model):
-    category      = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_Image")
+    category      = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
     stock         = models.ForeignKey(Stock, on_delete=models.SET_NULL, blank=True, null=True, related_name="stock")
     name          = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     unity_price   = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
     quantity      = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
-    discount      = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=False, blank=False)
-    product_image = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
+    discount      = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=True, blank=True)
+    image         = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_image")
     brand_name    = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
     genetic_name  = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
     # producer      = models.CharField(_("Nom du Fabrican"), max_length=255, null=False, blank=False, unique=True)
@@ -308,6 +308,9 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def landing_get_detail_url(self):
+        return reverse("landing:product_detail", args=[str(self.slug)])
 
     def delete_url(self):
         return reverse("product_delete", args=[str(self.slug)])
@@ -344,7 +347,7 @@ class Patient(models.Model):
     profession    = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
     date_of_birth = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    phone         = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True, unique=True)
+    phone         = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True)
     country       = CountryField(_("Pays"), max_length=255, null=True, blank=True)
     city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
     address       = models.CharField(_("Address"), max_length=255, null=True, blank=True)
@@ -622,7 +625,7 @@ class Service(models.Model):
 
     # GET ALERT DETAIL ABSOLUTE URL
     def get_detail_url(self):
-        return reverse("landing:blog_detail", args=[str(self.slug)])
+        return reverse("landing:service_detail", args=[str(self.slug)])
 
     def delete_url(self):
         return reverse("service_delete", args=[str(self.slug)])

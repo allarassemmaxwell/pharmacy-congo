@@ -180,7 +180,7 @@ class ProductForm(forms.ModelForm):
         model  = Product
         labels = {
             'category': 'Catégorie',
-            'product_image': 'Photo',
+            'image': 'Photo',
         }
         fields = [
             "category",
@@ -189,7 +189,7 @@ class ProductForm(forms.ModelForm):
             "unity_price",
             "quantity",
             "discount",
-            "product_image",
+            "image",
             "brand_name",
             "genetic_name",
             "description"
@@ -500,6 +500,7 @@ class AppointmentForm(forms.ModelForm):
             "description"
         ]
         widgets = {
+            'hour':        forms.Select(attrs={'class': 'form-control'}),
             'subject':     forms.TextInput(attrs={'class': 'form-control'}),
             'date':        forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows':7}),

@@ -1,0 +1,102 @@
+{% extends "landing/base.html" %}
+{% load static %}
+{% block title %}Pharmacy Search{% endblock %}
+
+
+{% block content %}
+
+<div class="main-wrapper">
+    <div class="breadcrumb-bar-six">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <h2 class="breadcrumb-title">Service</h2>
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Accueil</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Service</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content pharmacy-cart-content">
+        <div class="container">
+            {% include 'message.html' %}
+            <div class="row">
+                <div class="col-lg-3 col-xl-3 theiaStickySidebar">
+                    <div class="filter-new">
+                        <div class="filter-header">
+                            <h4>Catégories</h4>
+                        </div>
+                        <div class="filter-widget">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'landing:service' %}">Voir tout
+                                    </a>
+                                </li>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'landing:service' %}?category={{ category.slug }}">{{ category.name|title }} <span> ({{category.service_category.count}})</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-xl-9">
+                    {% for service in services %}
+                    <div class="card pharmacy-card">
+                        <div class="card-body">
+                            <div class="doctor-widget pharmacy-widget">
+                                <div class="doc-info-left">
+                                    <div class="doctor-img1">
+                                        <a href="{{ service.get_detail_url }}">
+                                            {% if service.photo %}
+                                                <img src="{{ service.photo.url }}"  style="width: 400px; height: 300px; object-fit: cover;" class="img-fluid" alt="{{ service.name|title }}">
+                                            {% else %}
+                                                <img src="{% static 'assets/img/ban-bg-01.png' %}" style="width: 400px; height: 300px; object-fit: cover;" alt="{{ service.name|title }}" class="img-fluid">
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <div class="doc-info-cont">
+                                        <h4 class="doc-name">
+                                            <a href="{{ service.get_detail_url }}">{{ service.category }}</a>
+                                        </h4>
+
+                                        <div class="clinic-details">
+                                            <div class="clini-infos">
+                                                <p class="doc-location text-ellipse">
+                                                    <i class="feather-tag"></i>Catégorie: {{ service.name|title }}
+                                                </p>
+                                                <p class="doc-location text-ellipse">
+                                                    {{ service.description|safe|truncatechars:100 }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="pharmacy-booking">
+                                            <a class="btn browse-products-btn" href="{{ service.get_detail_url }}">Voir les détails</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!--Product Pagination -->
+
+                    {% if services %}
+                    {% include 'landing/service/pagination.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

@@ -6,21 +6,25 @@
 <!-- push blog-->
 {% block content %}
 
-<div class="breadcrumb-bar">
-    <div class="container-fluid">
+<div class="breadcrumb-bar-six">
+    <div class="container">
         <div class="row align-items-center">
             <div class="col-md-12 col-12">
+                <h2 class="breadcrumb-title">Blog</h2>
                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="/">Accueil</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Blog</li>
                     </ol>
                 </nav>
-                <h2 class="breadcrumb-title">Blog</h2>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 <div class="content">
@@ -29,45 +33,40 @@
         <div class="row">
             {% if blogs %}
                 <div class="col-lg-8 col-md-12">
-
                     <div class="row blog-grid-row">
                         {% for blog in blogs %}
-                        <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12">
 
-                            <div class="blog grid-blog">
-                                <div class="blog-image">
-                                    <a href="{{ blog.get_detail_url }}"><img class="img-fluid" src="{{ blog.photo.url }}"
-                                            style="width: 100%; height: 200px; object-fit: cover;"
-                                            alt="{{ blog.name|title }}"></a>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="entry-meta meta-item">
-                                        <!-- <li>
-                                            <div class="post-author">
-                                                <a href="doctor-profile.html"><img
-                                                        src="{% static 'assets/img/doctors/doctor-thumb-02.jpg' %}"
-                                                        alt="Post Author"> <span>{{ blog.user.get_first_name}}</span></a>            
-                                            </div>                                                
-                                        </li> -->
-                                        <li><i class="far fa-clock"></i> {{ blog.timestamp|date:"M d, Y" }}</li>
-                                    </ul>
-                                    <br>
-                                    <h3 class="blog-title"><a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
-                                    </h3>
-                                    <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
-                                    <br>
+                                <div class="blog grid-blog">
+                                    <div class="blog-image">
+                                        <a href="{{ blog.get_detail_url }}"><img class="img-fluid" src="{{ blog.photo.url }}" style="width: 100%; height: 200px; object-fit: cover;" alt="{{ blog.name|title }}"></a>
+                                    </div>
+                                    <div class="blog-content">
+                                        <ul class="entry-meta meta-item">
+                                            <li>
+                                                <div class="post-author">
+                                                    <a href="{{ blog.get_detail_url }}">
+                                                        <img src="{% static 'assets/img/person.svg' %}"
+                                                            alt="Post Author"> 
+                                                        <span>{{ blog.user.first_name}} {{ blog.user.last_name}}</span>
+                                                    </a>            
+                                                </div>                                                
+                                            </li>
+                                            <li><i class="far fa-clock"></i> {{ blog.timestamp|date:"M d, Y" }}</li>
+                                        </ul>
+                                        <br>
+                                        <h3 class="blog-title"><a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
+                                        </h3>
+                                        <p class="mb-0">{{ blog.description|safe|truncatechars:200 }}</p>
+                                        <br>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         {% endfor %}
-
                     </div>
 
-                    <!--Pagination-->
-                    
                     {% include 'landing/blog/blog-pagination.html' %}
                     
-
                 </div>
             {% endif %}
 
@@ -84,61 +83,27 @@
                         </form>
                     </div>
                 </div>
-
-
                 
-                    <div class="card category-widget">
-                        <div class="card-header">
-                            <h4 class="card-title">Blog Catégories</h4>
-                        </div>
-                        <div class="card-body">
-                            <ul class="categories">
-                                {% for cat in blog_categories %}
-                                    <li>
-                                        <a href="{% url 'landing:blog' %}?category={{ cat.slug }}">
-                                            {{ cat.name|title }} <span>({{ cat.blog_category.count }})</span>
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                
-
-
-
-                <!-- <div class="card post-widget">
+                <div class="card category-widget">
                     <div class="card-header">
-                        <h4 class="card-title">Derniers articles</h4>
+                        <h4 class="card-title">Catégories</h4>
                     </div>
                     <div class="card-body">
-                        {% if blogs %}
-                        <ul class="latest-posts">
-                            {% for blog in blogs %}
+                        <ul class="categories">
                             <li>
-                                <div class="post-thumb">
-                                    <a href="{{ blog.get_detail_url }}">
-                                        <img class="img-fluid" src="{{ blog.photo.url }}"
-                                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
-                                            alt="">
-                                    </a>
-                                </div>
-                                <div class="post-info">
-                                    <h4>
-                                        <a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a>
-                                    </h4>
-                                    <p>{{ blog.timestamp|date:"M d, Y" }}</p>
-                                </div>
+                                <a href="{% url 'landing:blog' %}">Voir tout
+                                </a>
                             </li>
+                            {% for cat in blog_categories %}
+                                <li>
+                                    <a href="{% url 'landing:blog' %}?category={{ cat.slug }}">
+                                        {{ cat.name|title }} <span>({{ cat.blog_category.count }})</span>
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
-                        {% endif %}
                     </div>
-                </div> -->
-
-
-
-
+                </div>
             </div>
 
         </div>

@@ -1,0 +1,128 @@
+{% extends "landing/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Appointment Pharmacist{% endblock %}
+
+
+{% block content %}
+<div class="breadcrumb-bar-six">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <h2 class="breadcrumb-title">Rendez-vous</h2>
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Accueil</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Rendez-vous</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="contact-form">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Prendre un  Rendez-vous!</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if request.user.is_authenticated %}
+                    <p style="text-align:center">You can Log In to your account and continue</p>
+                        <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Log in</a></button>
+                {% else %}
+                    <div class="row">
+                        <p style="text-align:center">You can create an account and book an appointment. It will help you to keep track of your reccords or you can Log In if you already have an account</p>
+                        <div class="col-md-6">
+                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Log in</a></button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_signup' %}">Create account</a></button>
+                        </div>
+                    </div>    
+                {% endif %}
+                <form method="POST">{% csrf_token %}
+                    {% include 'message.html' %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              {{ patient_form.first_name|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                              {{ patient_form.last_name|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ patient_form.gender|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ patient_form.phone|as_crispy_field }}
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ appointment_form.subject|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ appointment_form.date|as_crispy_field }}
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ appointment_form.hour|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ patient_form.city|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ patient_form.address|as_crispy_field }}
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            {{ patient_form.profession|as_crispy_field }}
+                          </div>
+                      </div>
+                    </div>
+                  
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                              {{ appointment_form.description|as_crispy_field }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <button class="btn bg-primary">Reserver</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<style type="text/css">
+    .error { 
+        color: red;
+    }
+</style>
+{% endblock  %}

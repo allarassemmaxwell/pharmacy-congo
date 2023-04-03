@@ -107,6 +107,32 @@ admin.site.register(Product, ProductAdmin)
 
 
 
+
+
+
+#  SERVICE ADMIN
+class ServiceCategoryAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['name', 'timestamp', 'updated']
+    list_display_links  = ['name',]
+    list_filter         = ['name']
+    search_fields       = ['name']
+    list_per_page       = 50
+    class Meta:
+        model = ServiceCategory
+admin.site.register(ServiceCategory, ServiceCategoryAdmin)
+
+
+
+
+
+
+
+
+
+
+
+
 #  SERVICE ADMIN
 class ServiceAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
@@ -118,7 +144,6 @@ class ServiceAdmin(admin.ModelAdmin):
     class Meta:
         model = Service
 admin.site.register(Service, ServiceAdmin)
-
 
 
 

@@ -1,0 +1,102 @@
+{% extends "landing/base.html" %}
+{% load static %}
+{% block title %}Product{% endblock %}
+
+
+{% block content %}
+
+<div class="main-wrapper">
+
+    <div class="breadcrumb-bar-six">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <h2 class="breadcrumb-title">Produits</h2>
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Accueil</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Produits</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content pharmacy-cart-content">
+        <div class="container">
+            {% include 'message.html' %}
+            <div class="row">
+                <div class="col-lg-3 col-xl-3 theiaStickySidebar">
+                    <div class="filter-new">
+                        <div class="filter-header">
+                            <h4>Catégories</h4>
+                        </div>
+                        <div class="filter-widget">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'landing:product' %}">Voir tout
+                                    </a>
+                                </li>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'landing:product' %}?category={{ category.slug }}">{{ category.name|title }} <span> ({{category.product_category.count}})</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-xl-9">
+                    <div class="pro-grid">
+                        {% if products %}
+                            <div class="row">
+                                {% for product in products %}
+                                    <div class="col-md-6 col-lg-4 col-xl-4">
+                                        <div class="prod-widget">
+                                            <div class="deal-pro-img">
+                                                {% if discount %}
+                                                    <div class="deal-pro-tags">
+                                                        <span class="offer">{{ product.discount }} %</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if product.image %}
+                                                    <a href="{{ product.landing_get_detail_url }}">
+                                                        <img src="{{ product.image.file.url }}" style="width: 100%; height: 230px; object-fit: cover;" alt=""
+                                                            class="img-fluid">
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ product.landing_get_detail_url }}">
+                                                        <img src="{% static 'assets/img/ban-bg-01.png' %}" style="width: 100%; height: 230px; object-fit: cover;" alt=""
+                                                            class="img-fluid">
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="deal-pro-detail">
+                                                <h6>{{ product.category|title }}</h6>
+                                                <h4>
+                                                    <a href="{{ product.landing_get_detail_url }}">{{ product.name|title }}</a>
+                                                </h4>
+                                                <h2>CFA {{product.unity_price }}
+                                                </h2>
+                                                <a href="{{ product.landing_get_detail_url }}" class="btn book-btn">
+                                                    Voir le produit </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!--Product Pagination -->
+                    {% if products %}
+                        {% include 'landing/product/pagination.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

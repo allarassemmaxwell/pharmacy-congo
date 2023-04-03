@@ -1,0 +1,203 @@
+{% extends "landing/base.html" %}
+{% load static %}
+{% block title %}Product Detail{% endblock %}
+
+
+{% block content %}
+    <div class="main-wrapper">
+
+        <div class="breadcrumb-bar-six">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <h2 class="breadcrumb-title">Produit</h2>
+                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="/">Accueil</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'landing:product' %}">Produits</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Détails</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content pharmacy-cart-content">
+            <div class="container">
+                {% include 'message.html' %}
+                <div class="card pharmacy-card">
+                    <div class="card-body">
+                        <div class="doctor-widget pharmacy-widget">
+                            <div class="doc-info-left">
+                                <div class="doctor-img1">
+                                    <a href="javascript:void(0)">
+                                        {% if product.image %}
+                                        <img src="{{ product.image.file.url }}" class="img-fluid"
+                                            alt="{{ product.name|title }}"  style="width: 100%; height: 230px; object-fit: cover;">
+                                        {% else %}
+                                            <img src="{% static 'assets/img/ban-bg-01.png' %}" class="img-fluid"
+                                        alt="{{ product.name|title }}"  style="width: 100%; height: 230px; object-fit: cover;">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="doc-info-cont">
+                                    <h4 class="doc-name">
+                                        <a href="javascript:void(0)">{{ product.name|title }}</a>
+                                    </h4>
+                                    <div class="clinic-details">
+                                        <div class="clini-infos">
+                                            <p class="doc-location">
+                                                <i class="feather-map-pin"></i> Congo
+                                            </p>
+                                            <p class="doc-location text-ellipse">
+                                                <i class="feather-phone"></i> +24200000000
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="pharmacy-social-links">
+                                        <ul class="nav">
+                                            <li>
+                                                <a href="javascript:void(0)" target="_blank">
+                                                    <i class="fab fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" target="_blank">
+                                                    <i class="fab fa-twitter"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" target="_blank">
+                                                    <i class="fab fa-instagram"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="javascript:void(0)" target="_blank">
+                                                    <i class="fab fa-linkedin"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="doc-info-right d-flex align-items-center justify-content-center">
+                                <div class="pharmacy-booking pharmacy-booking-right">
+
+                                    <a class="btn browse-products-btn" href="javascript:void(0)" data-bs-toggle="modal"
+                                        data-bs-target="#voice_call">
+                                        <i class="feather-phone-call"></i> Appelle maintenant </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pharmacy-details-info">
+                    <div class="tab-content pt-0">
+                        <div role="tabpanel" id="about_store" class="tab-pane fade show active">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="widget about-widget">
+                                        <p>{{ product.description|safe}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" id="pharmacy_locations" class="tab-pane fade">
+                            {% for service in categories %}
+                            <div class="card pharmacy-card">
+                                <div class="card-body">
+                                    <div class="doctor-widget pharmacy-widget">
+                                        <div class="doc-info-left">
+                                            <div class="doctor-img1">
+                                                <a href="pharmacy-details.html">
+                                                    <img src="{{ service.photo.url }}"
+                                                        style="width: 500px; height: 300px; object-fit: cover;"
+                                                        class="img-fluid" alt="">
+                                                </a>
+                                                <div class="pharmacy-pro-tags">
+                                                    <span class="pharmacy-closed">Disponible</span>
+                                                </div>
+                                            </div>
+                                            <div class="doc-info-cont">
+                                                <h4 class="doc-name">
+                                                    <a href="pharmacy-details.html">{{ service.category }}</a>
+                                                </h4>
+                                                <div class="rating">
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star filled"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <span class="d-inline-block average-rating">(150)</span>
+                                                </div>
+                                                <div class="clinic-details">
+                                                    <div class="clini-infos">
+                                                        <p class="doc-location text-ellipse">
+                                                            <i class="feather-tag"></i> {{ service.name }}
+                                                        </p>
+                                                        <p class="doc-location">
+                                                            <i class="feather-clock"></i> 24Hrs (Mon - Sun)
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="pharmacy-booking">
+
+                                                    <a class="btn view-details-btn business-btn"
+                                                        href="{% url 'landing:appointment' %}">Heure de Service</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="section section-feature">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header sec-head text-center aos" data-aos="fade-up">
+                            <h2>Produits connexes</h2>
+                            <div class="owl-nav slide-nav-10 nav-control"></div>
+                        </div>
+                        <div class="brand-sliders owl-carousel owl-theme">
+                            {% for product_related in products %}
+                                <div class="features-brand aos" data-aos="fade-up">
+                                    <div class="features-brand-img">
+                                        {% if product_related.image %}
+                                            <a href="{{ product_related.landing_get_detail_url }}">
+                                                <img src="{{ product_related.image.file.url }}" alt="{{ product_related.name|title }}" class="img-fluid">
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ product_related.landing_get_detail_url }}">
+                                                <img src="{% static 'assets/img/ban-bg-01.png' %}" style="width: 100%; height: 230px; object-fit: cover;" alt="{{ product_related.name|title }}" class="img-fluid">
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="feature-brand-overlay">
+                                        <div class="feature-brand">
+                                            <h4>
+                                                <a href="{{ product_related.landing_get_detail_url }}">{{ product_related.name|title }}</a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
