@@ -17,7 +17,7 @@
                             class="page-breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a
-                                        href="index.html">Home</a></li>
+                                        href="/">Home</a></li>
                                 <li class="breadcrumb-item active"
                                     aria-current="page">À propos de nous</li>
                             </ol>
@@ -189,22 +189,28 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-9">
-
+                        {% for service in services %}
                         <div class="specialities-slider slider">
-
+                            
                             <div class="speicality-item text-center">
                                 <div class="speicality-img">
+                                    <!--{% if service.photo %}-->
                                     <img
+                                        src="{{ service.photo.url }}" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"
+                                        class="img-fluid" alt="Speciality">
+                                    <!--{% else %}-->
+                                    <!--<img
                                         src="{% static 'assets/img/specialities/specialities-01.png' %}"
                                         class="img-fluid" alt="Speciality">
+                                    {% endif %}-->
                                     <span><i class="fa fa-circle"
                                             aria-hidden="true"></i></span>
                                 </div>
-                                <p>Urologie</p>
+                                <p>{{ service.category }}</p>
                             </div>
+                           
 
-
-                            <div class="speicality-item text-center">
+                            <!--<div class="speicality-item text-center">
                                 <div class="speicality-img">
                                     <img
                                         src="{% static 'assets/img/specialities/specialities-02.png' %}"
@@ -249,9 +255,10 @@
                                             aria-hidden="true"></i></span>
                                 </div>
                                 <p>Service dentaire</p>
-                            </div>
+                            </div>-->
 
                         </div>
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -273,7 +280,7 @@
                             <div class="testimonial-item text-center">
                                 <div class="testimonial-img">
                                     <img
-                                        src="{{ testimony.image.url }}"
+                                        src="{{ testimony.image.url }}" style="width: 170px; height: 170px; border-radius: 50%; object-fit: contain;"
                                         class="img-fluid" alt="Speciality">
                                 </div>
                                 <div class="testimonial-content">
@@ -283,8 +290,6 @@
                                 </div>
                             </div>
                             {% endfor %}
-
-                            
 
                         </div>
 

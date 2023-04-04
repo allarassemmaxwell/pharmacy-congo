@@ -144,288 +144,58 @@
                         <h2>Offre du jour</h2>
                         <div class="owl-nav slide-nav-9 nav-control"></div>
                     </div>
+                    {% if products %}
                     <div class="deals-sliders owl-carousel owl-theme">
-                        <div class="deals-box aos" data-aos="fade-up">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="deal-pro-img">
-                                        <div class="deal-pro-tags">
-                                            <span class="offer">-25% OFF</span>
-                                            <a href="javascript:void(0);" class="favourite-icon favourite-icon-bg">
-                                                <i class="far fa-heart"></i>
-                                            </a>
+                        {% for product in products %}
+                            <div class="deals-box aos" data-aos="fade-up">
+                                
+                                    <div class="row">
+                                        
+                                        <div class="col-sm-5">
+                                            <div class="deal-pro-img">
+                                                {% if discount %}
+                                                    <div class="deal-pro-tags">
+                                                        <span class="offer">{{ product.discount }} %</span>
+                                                        <a href="javascript:void(0);" class="favourite-icon favourite-icon-bg">
+                                                            <i class="far fa-heart"></i>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                                {% if product.image %}
+                                                    <div class="deal-product-img">
+                                                        <a href="{{ product.landing_get_detail_url }}"><img src="{{ product.image.file.url }}" style="width: 100%; height: 230px; object-fit: contain;"
+                                                                alt="" class="img-fluid"></a>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="deal-product-img">
+                                                        <a href="product-all.html"><img src="{% static 'assets/img/products/product-01.jpg' %}"
+                                                                alt="" class="img-fluid"></a>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                        <div class="deal-product-img">
-                                            <a href="product-all.html"><img src="{% static 'assets/img/products/product-01.jpg' %}"
-                                                    alt="" class="img-fluid"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="deal-pro-detail">
-                                        <h6>Diabetes, Health Conditions</h6>
-                                        <h4><a href="product-all.html">Vit D3, 60 tablets, Unflavoured</a></h4>
-                                        <ul class="brand-pro">
-                                            <li>By <span>HealthKart</span></li>
-                                            
-                                        </ul>
-                                        <h2>$120 </h2>
-                                        <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                class="w-auto d-inline-block"> Voir Produits</a>
-                                        <ul class="day-deal">
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>25</h6>
-                                                    <p>Days</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>05</h6>
-                                                    <p>Hours</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>30</h6>
-                                                    <p>Mins</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>50</h6>
-                                                    <p>Sec</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="deals-box aos" data-aos="fade-up">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="deal-pro-img">
-                                        <div class="deal-pro-tags">
-                                            <span class="offer">-30% OFF</span>
-                                            <a href="javascript:void(0);" class="favourite-icon favourite-icon-bg">
-                                                <i class="far fa-heart"></i>
-                                            </a>
-                                        </div>
-                                        <div class="deal-product-img">
-                                            <a href="product-all.html"><img src="{% static 'assets/img/products/product-02.jpg' %}"
-                                                    alt="" class="img-fluid"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="deal-pro-detail">
-                                        <h6>Covid Essentials</h6>
-                                        <h4><a href="product-all.html">Online Only Triple Oxygen</a></h4>
-                                        <ul class="brand-pro">
-                                            <li>By <span>Pyridoxine</span></li>
-                                            
-                                        </ul>
-                                        <h2>$240 </h2>
-                                        <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                class="w-auto d-inline-block">Voir Produits</a>
-                                        <ul class="day-deal">
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>60</h6>
-                                                    <p>Days</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>10</h6>
-                                                    <p>Hours</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>20</h6>
-                                                    <p>Mins</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>15</h6>
-                                                    <p>Sec</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="deals-box aos" data-aos="fade-up">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="deal-pro-img">
-                                        <div class="deal-pro-tags">
-                                            <span class="offer">-25% OFF</span>
-                                            <a href="javascript:void(0);" class="favourite-icon favourite-icon-bg">
-                                                <i class="far fa-heart"></i>
-                                            </a>
-                                        </div>
-                                        <div class="deal-product-img">
-                                            <a href="product-all.html"><img src="{% static 'assets/img/products/product-01.jpg' %}"
-                                                    alt="" class="img-fluid"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="deal-pro-detail">
-                                        <h6>Diabetes, Health Conditions</h6>
-                                        <h4><a href="product-all.html">Vit D3, 60 tablets, Unflavoured</a></h4>
-                                        <ul class="brand-pro">
-                                            <li>By <span>HealthKart</span></li>
-                                            <li>
-                                                <ul class="ratings">
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star"></i></a>
-                                                    </li>
-                                                    <li><span>(256)</span></li>
+                                        <div class="col-sm-7">
+                                            <div class="deal-pro-detail">
+                                                <h6>{{ product.category|title }}</h6>
+                                                <h4><a href="{{ product.landing_get_detail_url }}">{{ product.name }}, {{ product.genetic_name }} </a></h4>
+                                                <ul class="brand-pro">
+                                                    <li>Ou <span>{{ product.brand_name }}</span></li>
+                                                    
                                                 </ul>
-                                            </li>
-                                        </ul>
-                                        <h2>$120 <span>$125.50</span></h2>
-                                        <a href="cart.html" class="btn book-btn"><img
-                                                src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                class="w-auto d-inline-block"> Add to Cart</a>
-                                        <ul class="day-deal">
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>25</h6>
-                                                    <p>Days</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>05</h6>
-                                                    <p>Hours</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>30</h6>
-                                                    <p>Mins</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>50</h6>
-                                                    <p>Sec</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="deals-box aos" data-aos="fade-up">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="deal-pro-img">
-                                        <div class="deal-pro-tags">
-                                            <span class="offer">-30% OFF</span>
-                                            <a href="javascript:void(0);" class="favourite-icon favourite-icon-bg">
-                                                <i class="far fa-heart"></i>
-                                            </a>
+                                                <h2>CFA {{product.unity_price }}</h2>
+                                                <a href="{{ product.landing_get_detail_url }}" class="btn book-btn"><img
+                                                        src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
+                                                        class="w-auto d-inline-block"> Voir Produits</a>
+                                                
+                                            </div>
                                         </div>
-                                        <div class="deal-product-img">
-                                            <a href="product-all.html"><img src="{% static 'assets/img/products/product-02.jpg' %}"
-                                                    alt="" class="img-fluid"></a>
-                                        </div>
+                                        
                                     </div>
-                                </div>
-                                <div class="col-sm-7">
-                                    <div class="deal-pro-detail">
-                                        <h6>Covid Essentials</h6>
-                                        <h4><a href="product-all.html">Online Only Triple Oxygen</a></h4>
-                                        <ul class="brand-pro">
-                                            <li>By <span>Pyridoxine</span></li>
-                                            <li>
-                                                <ul class="ratings">
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star filled"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);"><i
-                                                                class="fas fa-star"></i></a>
-                                                    </li>
-                                                    <li><span>(256)</span></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                        <h2>$240 <span>$250</span></h2>
-                                        <a href="cart.html" class="btn book-btn"><img
-                                                src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                class="w-auto d-inline-block"> Add to Cart</a>
-                                        <ul class="day-deal">
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>60</h6>
-                                                    <p>Days</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>10</h6>
-                                                    <p>Hours</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>20</h6>
-                                                    <p>Mins</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="time-box">
-                                                    <h6>15</h6>
-                                                    <p>Sec</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -434,7 +204,9 @@
 
     <section class="section section-categories">
         <div class="container">
+            
             <div class="row">
+                
                 <div class="col-md-12">
                     <div class="section-header sec-head text-center aos" data-aos="fade-up">
                         <h2>Catégories populaires</h2>
@@ -442,161 +214,63 @@
                     <div class="popular-category aos" data-aos="fade-up">
                         <div class="category-tab">
                             <ul class="nav justify-content-center">
-                                <li>
-                                    <a href="pharmacy-index.html#" class="active" data-bs-toggle="tab"
-                                        data-bs-target="#supplyment">Supplements</a>
-                                </li>
-                                <li>
-                                    <a href="pharmacy-index.html#" data-bs-toggle="tab"
-                                        data-bs-target="#medicines">Medicines</a>
-                                </li>
-                                <li>
-                                    <a href="pharmacy-index.html#" data-bs-toggle="tab"
-                                        data-bs-target="#herbs">Herbs</a>
-                                </li>
+                                {% for category in categories %}
+                                    <li>
+                                        <a href="{% url 'landing:product' %}" class="active" 
+                                            data-bs-target="#supplyment">{{ category.name|title }}</a>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
+                        
                         <div class="tab-content pt-0">
-                            <div class="tab-pane active" id="supplyment">
-                                <div class="pro-slider">
-                                    <div class="prod-widget aos" data-aos="fade-up">
-                                        <div class="deal-pro-img">
-                                            <div class="deal-pro-tags">
-                                                <span class="offer">-25% OFF</span>
-                                                <a href="javascript:void(0);"
-                                                    class="favourite-icon favourite-icon-filled">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
+                            
+                                <div class="tab-pane active" id="supplyment">
+                                    
+                                    <div class="pro-slider">
+                                        {% for product in products %}
+                                        <div class="prod-widget aos" data-aos="fade-up">
+                                            <div class="deal-pro-img">
+                                                {% if discount %}
+                                                <div class="deal-pro-tags">
+                                                    <span class="offer">{{ product.discount }} %</span>
+                                                    <a href="javascript:void(0);"
+                                                        class="favourite-icon favourite-icon-filled">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                {% if product.image %}
+                                                    <a href="{{ product.landing_get_detail_url }}">
+                                                        <img src="{{ product.image.file.url }}" alt="" style="width: 100%; height: 265px; object-fit: contain;"
+                                                            class="img-fluid">
+                                                    </a>
+                                                {% else %}
+                                                    <a href="product-all.html">
+                                                        <img src="{% static 'assets/img/products/product-03.jpg' %}" alt=""
+                                                            class="img-fluid">
+                                                    </a>
+                                                {% endif %}
                                             </div>
-                                            <a href="product-all.html">
-                                                <img src="{% static 'assets/img/products/product-03.jpg' %}" alt=""
-                                                    class="img-fluid">
-                                            </a>
-                                        </div>
-                                        <div class="deal-pro-detail">
-                                            <h6>Vitamins, Health Chocolates</h6>
-                                            <h4><a href="product-all.html">Vit D3, 60 tablets, Unflavoured</a></h4>
-                                            <ul class="brand-pro">
-                                                <li>By <span>HealthKart</span></li>
-                                                
-                                            </ul>
-                                            <h2>$120 </h2>
-                                            <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                    src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                    class="w-auto d-inline-block me-1">Voir Produits</a>
-                                        </div>
-                                    </div>
-                                    <div class="prod-widget aos" data-aos="fade-up">
-                                        <div class="deal-pro-img">
-                                            <div class="deal-pro-tags">
-                                                <span class="offer">-35% OFF</span>
-                                                <a href="javascript:void(0);"
-                                                    class="favourite-icon favourite-icon-filled">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
+                                            <div class="deal-pro-detail">
+                                                <h6>{{ product.category|title }}</h6>
+                                                <h4><a href="product-all.html">{{ product.name }}, {{ product.genetic_name }}</a></h4>
+                                                <ul class="brand-pro">
+                                                    <li>Ou <span>{{ product.brand_name }}</span></li>
+                                                    
+                                                </ul>
+                                                <h2>CFA {{product.unity_price }} </h2>
+                                                <a href="{{ product.landing_get_detail_url }}" class="btn book-btn"><img
+                                                        src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
+                                                        class="w-auto d-inline-block me-1">Voir Produits</a>
                                             </div>
-                                            <a href="product-all.html">
-                                                <img src="{% static 'assets/img/products/product-04.jpg' %}" alt=""
-                                                    class="img-fluid">
-                                            </a>
                                         </div>
-                                        <div class="deal-pro-detail">
-                                            <h6>Sports Nutritions</h6>
-                                            <h4><a href="product-all.html">Own Vitamin B1 250mg Tab X</a></h4>
-                                            <ul class="brand-pro">
-                                                <li>By <span>HealthKart</span></li>
-                                                
-                                            </ul>
-                                            <h2>$350 </h2>
-                                            <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                    src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                    class="w-auto d-inline-block me-1">Voir Produits </a>
-                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="prod-widget aos" data-aos="fade-up">
-                                        <div class="deal-pro-img">
-                                            <div class="deal-pro-tags">
-                                                <span class="offer">-15% OFF</span>
-                                                <a href="javascript:void(0);"
-                                                    class="favourite-icon favourite-icon-filled">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                            </div>
-                                            <a href="product-all.html">
-                                                <img src="{% static 'assets/img/products/product-05.jpg' %}" alt=""
-                                                    class="img-fluid">
-                                            </a>
-                                        </div>
-                                        <div class="deal-pro-detail">
-                                            <h6>Supplements</h6>
-                                            <h4><a href="product-all.html">Spring Leaf Liver Detox</a></h4>
-                                            <ul class="brand-pro">
-                                                <li>By <span>HealthKart</span></li>
-                                                
-                                            </ul>
-                                            <h2>$120 </h2>
-                                            <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                    src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                    class="w-auto d-inline-block me-1"> Add to Cart</a>
-                                        </div>
-                                    </div>
-                                    <div class="prod-widget aos" data-aos="fade-up">
-                                        <div class="deal-pro-img">
-                                            <div class="deal-pro-tags">
-                                                <span class="offer">-10% OFF</span>
-                                                <a href="javascript:void(0);"
-                                                    class="favourite-icon favourite-icon-filled">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                            </div>
-                                            <a href="product-all.html">
-                                                <img src="{% static 'assets/img/products/product-06.jpg' %}" alt=""
-                                                    class="img-fluid">
-                                            </a>
-                                        </div>
-                                        <div class="deal-pro-detail">
-                                            <h6>Sports Nutritions</h6>
-                                            <h4><a href="product-all.html">Protein Chocolate Flake</a></h4>
-                                            <ul class="brand-pro">
-                                                <li>By <span>HealthKart</span></li>
-                                                
-                                            </ul>
-                                            <h2>$190 </h2>
-                                            <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                    src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                    class="w-auto d-inline-block me-1"> Voir Produits</a>
-                                        </div>
-                                    </div>
-                                    <div class="prod-widget aos" data-aos="fade-up">
-                                        <div class="deal-pro-img">
-                                            <div class="deal-pro-tags">
-                                                <span class="offer">-10% OFF</span>
-                                                <a href="javascript:void(0);"
-                                                    class="favourite-icon favourite-icon-filled">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                            </div>
-                                            <a href="product-all.html">
-                                                <img src="{% static 'assets/img/products/product-04.jpg' %}" alt=""
-                                                    class="img-fluid">
-                                            </a>
-                                        </div>
-                                        <div class="deal-pro-detail">
-                                            <h6>Sports Nutritions</h6>
-                                            <h4><a href="product-all.html">Protein Chocolate Flake</a></h4>
-                                            <ul class="brand-pro">
-                                                <li>By <span>HealthKart</span></li>
-                                                
-                                            </ul>
-                                            <h2>$190 </h2>
-                                            <a href="{% url 'landing:product' %}" class="btn book-btn"><img
-                                                    src="{% static 'assets/img/icons/cart-icon.svg' %}" alt=""
-                                                    class="w-auto d-inline-block me-1"> Voir Produits</a>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="medicines">
+                            
+                            <!--<div class="tab-pane fade" id="medicines">
                                 <div class="pro-slider aos" data-aos="fade-up">
                                     <div class="prod-widget aos" data-aos="fade-up">
                                         <div class="deal-pro-img">
@@ -734,8 +408,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="herbs">
+                            </div>-->
+                            <!--<div class="tab-pane fade" id="herbs">
                                 <div class="pro-slider">
                                     <div class="prod-widget aos" data-aos="fade-up">
                                         <div class="deal-pro-img">
@@ -873,8 +547,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
+                               
                         </div>
+                        
+
+                        
                     </div>
 
                     <div class="section-header sec-head text-center aos" data-aos="fade-up">
@@ -903,7 +581,9 @@
                     </div>
 
                 </div>
+                
             </div>
+            
         </div>
     </section>
 
@@ -982,62 +662,24 @@
                         <h2>De notre blog</h2>
                     </div>
                 </div>
+                {% for blog in blogs %}
                 <div class="col-md-4 aos" data-aos="fade-up">
                     <div class="pharm-grid-blog w-100">
                         <div class="grid-blog-image">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" src="{% static 'assets/img/blog/pharm-blog-01.jpg' %}" alt="News Image">
+                            <a href="{{ blog.get_detail_url }}">
+                                <img class="img-fluid" src="{{ blog.photo.url }}" style="width: 100%; height: 360px; object-fit: cover;" alt="News Image">
                             </a>
                            
                         </div>
                         <div class="blog-content">
-                            <h3><a href="blog-details.html">Understanding Different Types of Bone and Joint
-                                    Diseases</a></h3>
-                            <p>It’s been a tough few weeks. Our hospitals have become overwhelmed with COVID-19
-                                patients, and deaths rates are rising. Vaccine distribution has been slower than we
-                                had hoped. And then there was the chaotic, disturbing event...</p>
+                            <h3><a href="{{ blog.get_detail_url }}">{{ blog.name|title }}</a></h3>
+                            <p>{{ blog.description|safe|truncatechars:200 }}</p>
                         </div>
-                        <a href="blog-details.html" class="btn book-btn">En savoir plus <i
+                        <a href="{{ blog.get_detail_url }}" class="btn book-btn">En savoir plus <i
                                 class="feather-chevron-right"></i></a>
                     </div>
                 </div>
-                <div class="col-md-4 aos" data-aos="fade-up">
-                    <div class="pharm-grid-blog w-100">
-                        <div class="grid-blog-image">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" src="{% static 'assets/img/blog/pharm-blog-02.jpg' %}" alt="News Image">
-                            </a>
-                            
-                        </div>
-                        <div class="blog-content">
-                            <h3><a href="blog-details.html">Know All About Robotic Knee Replacement Surgery</a></h3>
-                            <p>It has been almost 10 months since life got “locked down” due to COVID-19. This new
-                                normal has not been easy for anyone. Being significantly restricted in our daily
-                                lives, wearing masks, hearing bad news about the pandemic...</p>
-                        </div>
-                        <a href="blog-details.html" class="btn book-btn">En savoir plus <i
-                                class="feather-chevron-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4 aos" data-aos="fade-up">
-                    <div class="pharm-grid-blog w-100">
-                        <div class="grid-blog-image">
-                            <a href="blog-details.html">
-                                <img class="img-fluid" src="{% static 'assets/img/blog/pharm-blog-03.jpg' %}" alt="News Image">
-                            </a>
-                            
-                        </div>
-                        <div class="blog-content">
-                            <h3><a href="blog-details.html">6 Things to Include in a Diet for High Blood
-                                    Pressure</a></h3>
-                            <p>The first time, she had a bad headache and noticed that her blood pressure was
-                                170/95. We rushed her to the hospital, and she was admitted. After several rounds of
-                                medication, she was released with instructions to take...</p>
-                        </div>
-                        <a href="blog-details.html" class="btn book-btn">En savoir plus <i
-                                class="feather-chevron-right"></i></a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -1052,42 +694,28 @@
                         <p>Découvrez les récits de satisfaction de clients qui ont fait confiance à nos experts</p>
                     </div>
                     <div class="client-slider">
+                        {% for testimony in testimonies %}
                         <div class="pharm-testimonials aos" data-aos="fade-up">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="pat-info d-flex align-items-center">
-                                        <img src="{% static 'assets/img/patients/patient3.jpg' %}" alt="">
+                                        {% if testimony.image %}
+                                            <img src="{{ testimony.image.url }}" style="width: 100%; height: 120px; object-fit: contain; alt="{{ testimony.full_name|title }}">
+                                        {% else %}
+                                            <img src="{% static 'assets/img/patients/patient3.jpg' %}" alt="{{ testimony.full_name|title }}">
+                                        {% endif %}
                                         <div class="patient-details">
-                                            <h5>Anna Norton</h5>
-                                            <h6>Leland, USA</h6>
-                                            <ul class="ratings">
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
+                                            <h5>{{ testimony.full_name|title }}</h5>
+                                            <h6>{{ testimony.occupation|safe|truncatechars:20 }}</h6>
+                                            
                                         </div>
                                     </div>
-                                    <p>It has survived not only five centuries, but also the leap into electronic
-                                        typesetting, remaining essentially unchanged. It was popularised in the
-                                        1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                                        and more recently with desktop publishing software like Aldus PageMaker
-                                        including versions of Lorem </p>
+                                    <p>{{ testimony.description|truncatewords:250 }}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="pharm-testimonials aos" data-aos="fade-up">
+                        {% endfor %}
+                        <!--<div class="pharm-testimonials aos" data-aos="fade-up">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="pat-info d-flex align-items-center">
@@ -1095,23 +723,7 @@
                                         <div class="patient-details">
                                             <h5>Jenifer Robinson</h5>
                                             <h6>Abignton, USA</h6>
-                                            <ul class="ratings">
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
+                                            
                                         </div>
                                     </div>
                                     <p>It has survived not only five centuries, but also the leap into electronic
@@ -1130,23 +742,7 @@
                                         <div class="patient-details">
                                             <h5>Denise Stevens</h5>
                                             <h6>Abignton, USA</h6>
-                                            <ul class="ratings">
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
+                                            
                                         </div>
                                     </div>
                                     <p>It has survived not only five centuries, but also the leap into electronic
@@ -1165,23 +761,7 @@
                                         <div class="patient-details">
                                             <h5>Norton Anna</h5>
                                             <h6>Abignton, USA</h6>
-                                            <ul class="ratings">
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star filled"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                                <li>
-                                                    <i class="fas fa-star"></i>
-                                                </li>
-                                            </ul>
+                                            
                                         </div>
                                     </div>
                                     <p>It has survived not only five centuries, but also the leap into electronic
@@ -1191,7 +771,7 @@
                                         including versions of Lorem </p>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

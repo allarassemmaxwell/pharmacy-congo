@@ -15,6 +15,7 @@ from landing_app.models import *
 from patient_app.forms import *
 from .forms import *
 from django.core.mail import send_mail, BadHeaderError
+import calendar
 
 
 
@@ -27,7 +28,7 @@ from django.db.models import Sum ,Count, F
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models.functions import TruncDay
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 
 
@@ -68,8 +69,8 @@ def get_current_year():
 # DASHBOARD VIEW 
 @login_required
 def dashboard_view(request):
-    this_year = datetime.datetime.now().year
-    this_month = datetime.datetime.now().month
+    this_year = datetime.now().year
+    this_month = datetime.now().month
     if request.user.role == "Patient":
        return redirect('patient:home')
     else:
@@ -93,6 +94,33 @@ def dashboard_view(request):
             'doctors': doctors,
             'prescriptions': prescriptions
         }
+        #👆 I added the code above to make it work
+        
+    # this_year = datetime.datetime.now().year
+    # this_month = datetime.datetime.now().month
+    # if request.user.role == "Patient":
+    #    return redirect('patient:home')
+    # else:
+    #     doctor_count  = User.objects.filter(role="Docteur").count()
+    #     patient_count = Patient.objects.filter(active=True).count()
+    #     patients = Patient.objects.filter(active=True)[:10]
+    #     doctors  = User.objects.filter(role="Docteur")[:10]
+    #     prescriptions = AppointmentPrescription.objects.filter(active=True)[:10]
+    #     appointment_count = Appointment.objects.filter(active=True).count()
+    #     month_s_appointments = Appointment.objects.filter(date__year=this_year, date__month=this_month, active=True)
+    #     revenu_count = 0
+    #     for sale in Sale.objects.all():
+    #         revenu_count += sale.total
+    #     context = {
+    #         'doctor_count': doctor_count,
+    #         'patient_count': patient_count,
+    #         'appointment_count': appointment_count,
+    #         'revenu_count': revenu_count,
+    #         'month_s_appointments': month_s_appointments,
+    #         'patients': patients,
+    #         'doctors': doctors,
+    #         'prescriptions': prescriptions
+    #     }
         template = "dashboard/index.html"
         return render(request,template,context)
         
@@ -1845,21 +1873,28 @@ def fridge_update_view(request, id):
 
 @login_required
 def rapport_quotidien_view(request):
-    # Get the date from the request parameters or use the current date
-    year  = request.GET.get('year', timezone.now().year)
-    month = request.GET.get('month', timezone.now().month)
-    day   = request.GET.get('day', timezone.now().day)
+     # Get the date from the request parameters or use the current date
+    year = timezone.now().year
+    month = timezone.now().month
+    day = timezone.now().day
+    
+    if 'day' in request.GET and request.GET['day']:
+        selected_date = request.GET['day']
+        try:
+            day, month, year = map(int, selected_date.split("-"))
+        except ValueError:
+            pass
 
     # Filter the sales for the selected day
     sales = Sale.objects.filter(timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
 
     # Calculate the total amount and the sales for each product
-    total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
+    total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
     products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
 
     # Prepare the data for the chart
     chart_labels = [data['product__name'] for data in products_sales]
-    chart_data   = [float(data['sales']) for data in products_sales]
+    chart_data = [float(data['sales']) for data in products_sales]
 
     context = {
         'sales': sales,
@@ -1868,6 +1903,7 @@ def rapport_quotidien_view(request):
         'total_amount': total_amount,
         'products_sales': products_sales,
     }
+    
     template = "dashboard/report/quotidien.html"
     return render(request, template, context)
 
@@ -1884,8 +1920,42 @@ def rapport_quotidien_view(request):
 
 @login_required
 def rapport_hebdomadaire_view(request):
+    # Get the week number from the request parameters or use the current week
+    selected_date = request.GET.get('week', None)
+    if selected_date:
+        try:
+            selected_date_obj = datetime.strptime(selected_date, '%d-%m-%Y')
+            week_number = selected_date_obj.isocalendar()[1]
+        except ValueError:
+            pass
+    else:
+        today = timezone.now()
+        week_number = today.strftime('%V')
+
+    # Filter the sales for the selected week
+    sales = Sale.objects.filter(
+        timestamp__week=week_number,
+        active=True
+    )
+
+    # Calculate the total amount and the sales for each product
+    total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
+    products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
+
+    # Prepare the data for the chart
+    chart_labels = [data['product__name'] for data in products_sales]
+    chart_data = [float(data['sales']) for data in products_sales]
+
+    context = {
+        'sales': sales,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+        'total_amount': total_amount,
+        'products_sales': products_sales,
+    }
+    
     template = "dashboard/report/hebdomadaire.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 
@@ -1907,8 +1977,48 @@ def rapport_hebdomadaire_view(request):
 
 @login_required
 def rapport_mensuel_view(request):
+    date_string = request.GET.get('month')
+    if date_string and len(date_string) == 7:
+        # If only month and year are provided, use 1st day of month
+        date_obj = datetime.strptime(date_string, "%m-%Y").date()
+        first_day = date(date_obj.year, date_obj.month, 1)
+        last_day = calendar.monthrange(date_obj.year, date_obj.month)[1]
+        last_day = date(date_obj.year, date_obj.month, last_day)
+    elif date_string is not None:
+        # If full date is provided, use that date
+        date_obj = datetime.strptime(date_string, "%d-%m-%Y").date()
+        # Extract month and year from the provided date
+        first_day = date(date_obj.year, date_obj.month, 1)
+        last_day = calendar.monthrange(date_obj.year, date_obj.month)[1]
+        last_day = date(date_obj.year, date_obj.month, last_day)
+    else:
+        # If no date string is provided, use the current month and year
+        date_obj = timezone.now().date()
+        first_day = date(date_obj.year, date_obj.month, 1)
+        last_day = calendar.monthrange(date_obj.year, date_obj.month)[1]
+        last_day = date(date_obj.year, date_obj.month, last_day)
+
+    # Filter the sales for the selected month
+    sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
+
+    # Calculate the total amount and the sales for each product
+    total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
+    products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
+
+    # Prepare the data for the chart
+    chart_labels = [data['product__name'] for data in products_sales]
+    chart_data   = [float(data['sales']) for data in products_sales]
+
+    context = {
+        'sales': sales,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+        'total_amount': total_amount,
+        'products_sales': products_sales,
+    }
+    
     template = "dashboard/report/mensuel.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 
@@ -1924,9 +2034,39 @@ def rapport_mensuel_view(request):
 
 @login_required
 def rapport_annuel_view(request):
-    
+    year_str = request.GET.get('year', timezone.now().strftime('%d-%m-%Y'))
+    try:
+        year = datetime.strptime(year_str, '%d-%m-%Y').date().year
+    except ValueError:
+        # handle invalid year format
+        year = timezone.now().year
+
+    # Get the first and last day of the year
+    first_day = date(year, 1, 1)
+    last_day = date(year, 12, 31)
+
+    # Filter the sales for the selected year
+    sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
+
+    # Calculate the total amount and the sales for each product
+    total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
+    products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
+
+    # Prepare the data for the chart
+    chart_labels = [data['product__name'] for data in products_sales]
+    chart_data = [float(data['sales']) for data in products_sales]
+
+    context = {
+        'sales': sales,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+        'total_amount': total_amount,
+        'products_sales': products_sales,
+    }
+
+
     template = "dashboard/report/annuel.html"
-    return render(request, template)
+    return render(request, template, context)
 
 
 
