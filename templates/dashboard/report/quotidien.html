@@ -1,5 +1,6 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
+
 {% load crispy_forms_tags %}
 {% block title %}Rapport Quotidien{% endblock %}
 
@@ -32,7 +33,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Partenaires</h5>
+                                <h5 class="card-title">Ventes</h5>
                             </div>
                             <div class="col-auto d-flex">
                                 
@@ -46,22 +47,34 @@
                                     <div class="mb-4">
                                         <label class="form-label">Filtrer par jour</label>
                                         <div class="input-group" id="datepicker2">
-                                            <input name="day" id="day" type="text" class="form-control" placeholder="dd mm, yyyy" data-date-format="dd mm, yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
-
+                                            <input name="day" id="day" type="text" class="form-control" placeholder="dd mm, yyyy"
+                                                   data-date-format="dd-mm-yyyy" data-date-container='#datepicker2' data-provide="datepicker"
+                                                   data-date-autoclose="true" pattern="(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}" required>
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                         </div><!-- input-group -->
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir une date valide au format jj-mm-aaaa.
+                                        </div>
                                     </div>
-
+                                    
                                     <div class="mb-0">
                                         <div>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
                                                 Filtrer
                                             </button>
+                                            {% if request.GET.day %}
+                                                <a href="{% url 'rapport_quotidien' %}" class="btn btn-secondary waves-effect waves-light me-1">
+                                                    Effacer le filtre
+                                                </a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </form>
+                                
                             </ul>
                         </div>
+
+                        
 
                             <div class="clearfix"></div>
                            

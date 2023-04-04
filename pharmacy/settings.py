@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',   
     'django_summernote', # pip install django-summernote
     'chartjs',
+    'bootstrap_datepicker_plus',
 
 
 ]

@@ -33,9 +33,48 @@ from dashboard_app.forms import *
 
 # LANDING FUNCTION
 def home_view(request):
-	context  = {}
-	template = "landing/index.html"
-	return render(request, template, context)
+    products = Product.objects.all()
+    
+    categories = ProductCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        products = Product.objects.filter(category__slug=category_slug, active=True)
+        
+     #👉 For blog in Landing   
+    category = ''
+    blogs    = Blog.objects.filter(active=True)
+    blog_categories = BlogCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        blogs = Blog.objects.filter(category__slug=category_slug, active=True)
+    
+    # 👉 for testimony
+    testimonies = Testimony.objects.filter(active=True)
+    
+    # 👉 for services
+    services    = Service.objects.filter(active=True)
+    cat_services = ServiceCategory.objects.filter(active=True)
+    category_slug = request.GET.get('category')
+
+    if category_slug:
+        services = Service.objects.filter(category__slug=category_slug, active=True)
+        
+    context  = {
+        'products': products,
+        'categories': categories,
+        'category': category,
+        'blogs': blogs,
+        'blog_categories': blog_categories,
+        'testimonies': testimonies,
+        'services': services,
+        'cat_services': cat_services,
+        
+        
+        }
+    template = "landing/index.html"
+    return render(request, template, context)
 
 
 
