@@ -187,30 +187,31 @@
                     <p class="sub-title">Nos activités médicales englobent un large éventail de services spécialisés 
                         visant à promouvoir, maintenir et restaurer la santé et le bien-être.</p>
                 </div>
+                
                 <div class="row justify-content-center">
                     <div class="col-md-9">
-                        {% for service in services %}
+                        
                         <div class="specialities-slider slider">
-                            
+                            {% for service in services %}
                             <div class="speicality-item text-center">
                                 <div class="speicality-img">
-                                    <!--{% if service.photo %}-->
+                                   {% if service.photo %}
                                     <img
                                         src="{{ service.photo.url }}" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"
                                         class="img-fluid" alt="Speciality">
-                                    <!--{% else %}-->
-                                    <!--<img
+                                    {% else %}
+                                    <img
                                         src="{% static 'assets/img/specialities/specialities-01.png' %}"
                                         class="img-fluid" alt="Speciality">
-                                    {% endif %}-->
+                                    {% endif %}
                                     <span><i class="fa fa-circle"
                                             aria-hidden="true"></i></span>
                                 </div>
                                 <p>{{ service.category }}</p>
                             </div>
-                           
+                            {% endfor %}
 
-                            <!--<div class="speicality-item text-center">
+                            <div class="speicality-item text-center">
                                 <div class="speicality-img">
                                     <img
                                         src="{% static 'assets/img/specialities/specialities-02.png' %}"
@@ -221,47 +222,12 @@
                                 <p>Neurologie</p>
                             </div>
 
-
-                            <div class="speicality-item text-center">
-                                <div class="speicality-img">
-                                    <img
-                                        src="{% static 'assets/img/specialities/specialities-03.png' %}"
-                                        class="img-fluid" alt="Speciality">
-                                    <span><i class="fa fa-circle"
-                                            aria-hidden="true"></i></span>
-                                </div>
-                                <p>Orthopédie</p>
-                            </div>
-
-
-                            <div class="speicality-item text-center">
-                                <div class="speicality-img">
-                                    <img
-                                        src="{% static 'assets/img/specialities/specialities-04.png' %}"
-                                        class="img-fluid" alt="Speciality">
-                                    <span><i class="fa fa-circle"
-                                            aria-hidden="true"></i></span>
-                                </div>
-                                <p>Cardiologie</p>
-                            </div>
-
-
-                            <div class="speicality-item text-center">
-                                <div class="speicality-img">
-                                    <img
-                                        src="{% static 'assets/img/specialities/specialities-05.png' %}"
-                                        class="img-fluid" alt="Speciality">
-                                    <span><i class="fa fa-circle"
-                                            aria-hidden="true"></i></span>
-                                </div>
-                                <p>Service dentaire</p>
-                            </div>-->
-
                         </div>
-                        {% endfor %}
+                       
 
                     </div>
                 </div>
+                
             </div>
         </section>
 
