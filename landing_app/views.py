@@ -55,11 +55,11 @@ def home_view(request):
     
     # 👉 for services
     services    = Service.objects.filter(active=True)
-    cat_services = ServiceCategory.objects.filter(active=True)
-    category_slug = request.GET.get('category')
+    # service_categories = ServiceCategory.objects.filter(active=True)
+    # category_slug = request.GET.get('category')
 
-    if category_slug:
-        services = Service.objects.filter(category__slug=category_slug, active=True)
+    # if category_slug:
+    #     services = Service.objects.filter(category__slug=category_slug, active=True)
         
     context  = {
         'products': products,
@@ -69,7 +69,7 @@ def home_view(request):
         'blog_categories': blog_categories,
         'testimonies': testimonies,
         'services': services,
-        'cat_services': cat_services,
+        # 'service_categories': service_categories,
         
         
         }
