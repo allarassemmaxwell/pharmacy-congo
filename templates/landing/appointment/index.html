@@ -30,16 +30,16 @@
         <div class="row">
             <div class="col-md-12">
                 {% if request.user.is_authenticated %}
-                    <p style="text-align:center">You can Log In to your account and continue</p>
+                    <p style="text-align:center">Vous pouvez vous connecter à votre compte et continuer</p>
                         <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Log in</a></button>
                 {% else %}
                     <div class="row">
-                        <p style="text-align:center">You can create an account and book an appointment. It will help you to keep track of your reccords or you can Log In if you already have an account</p>
+                        <p style="text-align:center">Vous pouvez créer un compte et prendre rendez-vous. Cela vous aidera à suivre vos dossiers ou vous pouvez vous connecter si vous avez déjà un compte.</p>
                         <div class="col-md-6">
-                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Log in</a></button>
+                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_login' %}">Se connecter</a></button>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_signup' %}">Create account</a></button>
+                            <button class="btn bg-primary" style="display:block; margin: 0 auto;"><a href="{% url 'account_signup' %}">Créer un compte</a></button>
                         </div>
                     </div>    
                 {% endif %}

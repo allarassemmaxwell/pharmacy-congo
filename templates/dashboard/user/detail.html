@@ -14,7 +14,7 @@
                 <div class="media d-flex align-items-center justify-content-between">
                     <div class="flex-shrink-0 d-flex align-items-center">
                         {% if user.user_profile.photo %}
-                            <img src="{{ user.user_profile.photo }}" alt="{{ user.first_name|title }} {{ user.last_name|title }}" class="doctor">
+                            <img src="{{ user.user_profile.photo.url }}" alt="{{ user.first_name|title }} {{ user.last_name|title }}" class="doctor">
                         {% else %}
                             <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name|title }} {{ user.last_name|title }}" class="doctor">
                         {% endif %}
