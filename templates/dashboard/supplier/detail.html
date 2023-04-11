@@ -1,0 +1,127 @@
+{% load static %}
+
+
+
+<div class="modal fade contentmodal" id="details-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="media d-flex align-items-center justify-content-between">
+                    <div class="flex-shrink-0 d-flex align-items-center">
+                        <div class="doc-info">
+                            <h3>{{ supplier.name|title }}</h3>
+                            <p>{{ supplier.timestamp|date:"d M Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Email</h6>
+                                <p>{{ supplier.email }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Téléphone</h6>
+                                {% if supplier.phone %}
+                                    <p>{{ supplier.phone }}</p>
+                                {% else %}
+                                    <p class="text-danger">Est manquant</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Pays</h6>
+                                {% if supplier.country %}
+                                    <p>{{ supplier.country.name }}</p>
+                                {% else %}
+                                    <p class="text-danger">Est manquant</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Ville</h6>
+                                {% if supplier.city %}
+                                    <p>{{ supplier.city }}</p>
+                                {% else %}
+                                    <p class="text-danger">Est manquante</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Adresse</h6>
+                                {% if supplier.address %}
+                                    <p>{{ supplier.address }}</p>
+                                {% else %}
+                                    <p class="text-danger">Est manquante</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Site Web</h6>
+                                {% if supplier.website %}
+                                    <p><a href="{{ supplier.website }}" target="_blank">Ouvrir</a></p>
+                                {% else %}
+                                    <p class="text-danger">Est manquant</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="member-wrapper">
+                    <h5>Info supplémentaire</h5>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Facebook</h6>
+                                {% if supplier.facebook %}
+                                    <p><a href="{{ supplier.facebook }}" target="_blank">Ouvrir</a></p>
+                                {% else %}
+                                    <p class="text-danger">Est manquant</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Instagram</h6>
+                                {% if supplier.instagram %}
+                                    <p><a href="{{ supplier.instagram }}" target="_blank">Ouvrir</a></p>
+                                {% else %}
+                                    <p class="text-danger">Est manquante</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Twitter</h6>
+                                {% if supplier.twitter %}
+                                    <p><a href="{{ supplier.twitter }}" target="_blank">Ouvrir</a></p>
+                                {% else %}
+                                    <p class="text-danger">Est manquante</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

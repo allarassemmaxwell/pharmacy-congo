@@ -1179,11 +1179,7 @@ def product_update_view(request, slug=None):
             return redirect('product')
     else:
         form = ProductForm(instance=obj)
-    # image  = obj.product_image.file
-    context  = { 
-        'form': form,
-        # 'image': image
-    }
+    context  = {'form': form}
     template = "dashboard/product/product-update.html"
     return render(request, template, context)
 

@@ -60,11 +60,11 @@
                                 <tbody>
                                     {% for supplier in suppliers %}
                                     {% include 'dashboard/modal/supplier-delete.html' with supplier=supplier %}
+                                    {% include 'dashboard/supplier/detail.html' with supplier=supplier %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ supplier.name|title }}</span>
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span>{{ supplier.name|title }}</span>
                                                 </a>
                                             </h2>
                                         </td>

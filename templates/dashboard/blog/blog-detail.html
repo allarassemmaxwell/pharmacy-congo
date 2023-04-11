@@ -1,0 +1,58 @@
+{% load static %}
+
+
+
+<div class="modal fade contentmodal" id="details-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="media d-flex align-items-center justify-content-between">
+                    <div class="flex-shrink-0 d-flex align-items-center">
+                        {% if blog.photo %}
+                            <img src="{{ blog.photo.url }}" alt="{{ blog.name|title }}" class="doctor">
+                        {% else %}
+                            <img src="{% static 'admin/img/person.svg' %}" alt="{{ blog.name|title }}" class="doctor">
+                        {% endif %}
+                        
+                        <div class="doc-info">
+                                <h3>{{ blog.name|title }}</h3>
+                            <p>{{ blog.timestamp|date:"d M Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Catégorie</h6>
+                                <p>{{ blog.category.name }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Propriétaire</h6>
+                                <p>{{ blog.user.first_name }} {{ blog.user.last_name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <h5>Description</h5>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="mem-info">
+                                <p>{{ blog.description|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

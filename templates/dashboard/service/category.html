@@ -37,7 +37,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Catégorie de services</h5>
+                                <h5 class="card-title">Catégorie</h5>
                             </div>
                             <div class="col-auto custom-list d-flex">
                                 <div class="form-custom me-2">
@@ -60,7 +60,7 @@
                                     {% for category in categories %}
                                         {% include 'dashboard/modal/service-category-delete.html' with category=category %}
                                         <tr>
-                                            <td>{{ category.name|title }}</td>
+                                            <td><a href="{{ category.update_url }}">{{ category.name|title }}</a></td>
                                             <td>{{ category.timestamp|date:"d M Y" }}</td>
                                             <td class="text-end">
                                                 <div class="actions">
