@@ -65,7 +65,11 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
-                                                    <img class="avatar avatar-img" src="{% static 'admin/img/person.svg' %}" alt="{{ patient.photo.first_name|title }}">
+                                                    {% if patient.user.user_profile.photo %}
+                                                        <img class="avatar avatar-img" src="{{ patient.user.user_profile.photo.url }}" alt="{{ patient.photo.first_name|title }}">
+                                                    {% else %}
+                                                        <img class="avatar avatar-img" src="{% static 'admin/img/person.svg' %}" alt="{{ patient.photo.first_name|title }}">
+                                                    {% endif %}
                                                 </a>
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
                                                     <span>{{ patient.get_name }}</span>

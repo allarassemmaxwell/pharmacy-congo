@@ -179,7 +179,7 @@
                                             <td>{{ patient.reg_no }}</td>
                                             <td>
                                                 <h2 class="table-avatar">
-                                                    <a href="profile.html">
+                                                    <a href="{% url 'profile' %}">
                                                         {% if patient.user.user_profile.photo %}
                                                             <img class="avatar avatar-img"
                                                             src="{{ patient.user.user_profile.photo.url }}" alt="{{ patient.get_name }}">
