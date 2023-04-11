@@ -38,8 +38,8 @@
                             <table class="datatable table table-borderless hover-table" id="data-tables">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Prénom</th>
+                                        <th>Nom & Prénom</th>
+                                        <th></th>
                                         <th>Email</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -48,10 +48,11 @@
                                 <tbody>
                                     {% for user in users %}
                                     {% include 'dashboard/modal/user-delete.html' with user=user %}
+                                    {% include 'dashboard/user/detail.html' with user=user %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#">
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
                                                     {% if user.user_profile.photo %}
                                                         <img class="avatar avatar-img" src="{{ user.user_profile.photo.url }}" alt="{{ user.get_full_name }}">
                                                     {% else %}
@@ -60,25 +61,16 @@
                                                         alt="Photo">
                                                     {% endif %}
                                                 </a>
-                                                {% if user.first_name %}
-                                                    <a href="#"><span class="user-name">{{ user.first_name|title }}</span></a>
+                                                {% if user.first_name or user.last_name %}
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span class="user-name">{{ user.first_name|title }} {{ user.last_name|title }}</span></a>
                                                 {% else %}
-                                                    <a href="#"><span class="user-name text-danger">Nom n'existe pas</span></a>
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span class="user-name text-danger">Nom et prénom n'existent pas</span></a>
                                                 {% endif %}
                                             </h2>
                                         </td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                {% if user.last_name %}
-                                                <a href="#">{{ user.last_name|title }}</a>
-                                                {% else %}
-                                                    <a href="#" class="user-name text-danger">Prenom existe pas</a>
-                                                {% endif %}
-                                            </h2>
-                                        </td>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="#">{{ user.email|title }}</a>
+                                                {{ user.email|title }}
                                             </h2>
                                         </td>
                                         <td>

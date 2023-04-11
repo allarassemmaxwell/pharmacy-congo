@@ -48,22 +48,23 @@
                                 <tbody>
                                     {% for testimony in testimonies %}
                                     {% include 'dashboard/modal/testimony-delete.html' with testimony=testimony %}
+                                    {% include 'dashboard/testimony/detail.html' with testimony=testimony %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#">
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
                                                     {% if testimony.image %}
                                                         <img class="avatar avatar-img" src="{{ testimony.image.url }}" alt="{{ testimony.full_name|title }}">
                                                     {% else %}
                                                         <img class="avatar avatar-img" src="{% static 'admin/img/person.svg' %}" alt="{{ testimony.full_name|title }}">
                                                     {% endif %}
                                                 </a>
-                                                <a href="#"><span class="user-name">{{ testimony.full_name|title }}</span></a>
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span class="user-name">{{ testimony.full_name|title }}</span></a>
                                             </h2>
                                         </td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#">{{ testimony.occupation|safe|truncatechars:50 }}</a>
+                                                <a href="#">{{ testimony.occupation|safe|truncatechars:45 }}</a>
                                             </h2>
                                         </td>
                                         <td>

@@ -59,14 +59,15 @@
                                 <tbody>
                                     {% for stock in stocks %}
                                     {% include 'dashboard/modal/stock-delete.html' with stock=stock %}
+                                    {% include 'dashboard/stock/detail.html' with stock=stock %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
                                                 {% if stock.supplier %}
-                                                    <a href="#"><span>{{ stock.supplier.name|title }}</span>
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span>{{ stock.supplier.name|title }}</span>
                                                     </a>
                                                 {% else %}
-                                                    <a href="#" class="text-danger"><span>Fournisseur n'existe pas</span>
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" class="text-danger"><span>Fournisseur n'existe pas</span>
                                                     </a>
                                                 {% endif %}
                                             </h2>
