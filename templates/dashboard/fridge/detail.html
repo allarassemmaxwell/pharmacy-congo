@@ -1,0 +1,94 @@
+{% load static %}
+
+
+
+<div class="modal fade contentmodal" id="details-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="media d-flex align-items-center justify-content-between">
+                    <div class="flex-shrink-0 d-flex align-items-center">
+                        {% if fridge.photo %}
+                            <img class="avatar avatar-img" src="{{ fridge.photo.url }}" alt="{{ fridge.photo.name|title }}">
+                        {% else %}
+                            <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ fridge.photo.name|title }}">
+                        {% endif %}
+
+                        
+                        <div class="doc-info">
+                            <h3>{{ fridge.name|title }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Marque</h6>
+                                <p>{{ fridge.marque }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Code PQS</h6>
+                                <p><span>{{ fridge.code_pqs }}</span></p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Date d'acquisition</h6>
+                                    <p>{{ fridge.date_acquisition }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Etat du Frigo</h6>
+                                    <p>{{ fridge.state }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Nombre de Reparation</h6>
+                                    <p>{{ fridge.fix_number }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Energie Utilisée</h6>
+                                    <p>{{ fridge.energy }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Prix</h6>
+                                    <p>{{ fridge.price }} f cfa</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mem-info">
+                                <h6>Horodatage </h6>
+                                    <p>{{ fridge.timestamp|date:"d M Y" }}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

@@ -63,10 +63,11 @@
                                 <tbody>
                                     {% for fridge in fridges %}
                                     {% include 'dashboard/modal/fridge-delete.html' with fridge=fridge %}
+                                    {% include 'dashboard/fridge/detail.html' with fridge=fridge %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editModal">
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
                                                     {% if fridge.photo %}
                                                         <img class="avatar avatar-img" src="{{ fridge.photo.url }}" alt="{{ fridge.photo.name|title }}">
                                                     {% else %}
