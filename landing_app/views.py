@@ -184,8 +184,18 @@ def blog_detail_view(request, slug=None):
 
 # ABOUT VIEW  
 def about_view(request):
-    testimonies = Testimony.objects.filter(active=True) 
-    context  = {'testimonies':testimonies}
+    testimonies = Testimony.objects.filter(active=True)
+    # 👉 for services
+    services    = Service.objects.filter(active=True)
+    # service_categories = ServiceCategory.objects.filter(active=True)
+    # category_slug = request.GET.get('category')
+
+    # if category_slug:
+    #     services = Service.objects.filter(category__slug=category_slug, active=True) 
+    context  = {
+        'testimonies':testimonies,
+        'services': services
+    }
     template = "about.html"
     return render(request,template,context)
 
