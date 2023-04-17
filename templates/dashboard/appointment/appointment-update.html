@@ -25,37 +25,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.first_name|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.last_name|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ form.email|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.phone|as_crispy_field }}
+                                {{ form.patient|as_crispy_field }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-focus">
                                 {{ form.subject|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.gender|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.age|as_crispy_field }}
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -75,6 +50,7 @@
                                 {{ form.description|as_crispy_field }}
                             </div>
                         </div>
+                        
                     </div>
                     <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>
                 </form>

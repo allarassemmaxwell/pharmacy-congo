@@ -52,9 +52,6 @@
                                         <th>Marque</th>
                                         <th>Code PQS</th>
                                         <th>Date D'acquisition</th>
-                                        <th>Etat Frigo</th>
-                                        <th>Nombre Reparation</th>
-                                        <th>Energie</th>
                                         <th>Prix</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -79,12 +76,9 @@
                                                 </a>
                                             </h2>
                                         </td>
-                                        <td>{{ fridge.marque }}</td>
-                                        <td>{{ fridge.code_pqs }}</td>
+                                        <td>{{ fridge.marque|truncatechars:25 }}</td>
+                                        <td>{{ fridge.code_pqs|truncatechars:25 }}</td>
                                         <td>{{ fridge.date_acquisition }}</td>
-                                        <td>{{ fridge.state }}</td>
-                                        <td>{{ fridge.fix_number }}</td>
-                                        <td>{{ fridge.energy }}</td>
                                         <td>{{ fridge.price }}f cfa</td>
                                         <td>{{ fridge.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">

@@ -39,8 +39,8 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Nom & Prénom</th>
-                                        <th></th>
                                         <th>Email</th>
+                                        <th>Rôle</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -71,6 +71,11 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 {{ user.email|title }}
+                                            </h2>
+                                        </td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                {{ user.role|title }}
                                             </h2>
                                         </td>
                                         <td>

@@ -581,7 +581,7 @@ class AppointmentPrescription(models.Model):
 
 # BLOG CATEGORY MODEL
 class ServiceCategory(models.Model):
-    name        = models.CharField(_("Name"), max_length=255, null=False, blank=False, unique=True)
+    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     active      = models.BooleanField(_("Active"), default=True)
     timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
     updated     = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
@@ -611,7 +611,7 @@ class ServiceCategory(models.Model):
 # SERVICE MODEL
 class Service(models.Model):
     category    = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
-    name        = models.CharField(_("Name"), max_length=255, null=False, blank=False)
+    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
     photo       = models.ImageField(_("Image"), upload_to="Service/%Y/%m/%d/", null=True, blank=True)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Active"), default=True)

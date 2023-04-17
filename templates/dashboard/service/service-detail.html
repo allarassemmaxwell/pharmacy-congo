@@ -11,10 +11,10 @@
             <div class="modal-body">
                 <div class="media d-flex align-items-center justify-content-between">
                     <div class="flex-shrink-0 d-flex align-items-center">
-                        {% if service.photo.file %}
-                            <img src="{{ service.photo.url }}" alt="{{ service.name|title }}" class="doctor">
+                        {% if service.photo %}
+                            <img src="{{ service.photo.url }}" alt="{{ service.name|title }}" class="{{ service.name|title }}">
                         {% else %}
-                            <img src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ service.name|title }}" class="doctor">
+                            <img src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ service.name|title }}" class="{{ service.name|title }}">
                         {% endif %}
 
                         
