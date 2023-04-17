@@ -84,8 +84,8 @@
         <li class="nav-item dropdown main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                 <span class="user-img">
-                    {% if user.profile.photo %}
-                        <img src="{{ user.profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}">
+                    {% if user.user_profile.photo %}
+                        <img src="{{ user.user_profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}">
                     {% else %}
                         <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{ user.first_name }}">
                     {% endif %}
@@ -95,8 +95,8 @@
             <div class="dropdown-menu">
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        {% if user.profile.photo %}
-                        <img src="{{ user.profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}"
+                        {% if user.user_profile.photo %}
+                        <img src="{{ user.user_profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}"
                             class="avatar-img rounded-circle">
                         {% else %}
                             <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{ user.first_name }}"

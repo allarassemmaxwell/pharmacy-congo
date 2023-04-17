@@ -1522,8 +1522,7 @@ def appointment_add_view(request):
     else:
         form = AppointmentForm()
     context  = {
-        'form': form,
-        'today': datetime.date.today()
+        'form': form
     }
     template = "dashboard/appointment/appointment-add.html"
     return render(request, template, context)
