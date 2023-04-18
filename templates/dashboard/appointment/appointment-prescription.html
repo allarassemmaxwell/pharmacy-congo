@@ -62,11 +62,12 @@
                                 <tbody>
                                     {% for prescription in appointmentPrescriptions %}
                                     {% include 'dashboard/modal/appointment-prescription-delete.html' with prescription=prescription %}
+                                    {% include 'dashboard/appointment/detail-prescription.html' with prescription=prescription %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#editModal"><span>{{ prescription.appointment.patient }}</span>
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" 
+                                                    ><span>{{ prescription.appointment.patient }}</span>
                                                 </a>
                                             </h2>
                                         </td>

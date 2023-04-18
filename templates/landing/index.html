@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-6 d-flex justify-content-center aos" data-aos="fade-up">
-                            <img src="{% static 'assets/img/doc-slider.png' %}" class="img-fluid" alt="">
+                            <img src="{% static 'assets/img/nurse_1.png' %}" class="img-fluid" alt="">
                         </div>
                     </div>
 
@@ -32,17 +32,16 @@
                     <div class="col-12 d-flex">
                         <div class="col-12 col-md-6 aos" data-aos="fade-up">
                             <div class="slide-image">
-                                <h6>Everyday Save upto</h6>
-                                <h2>50% <span>Hurry</span></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <h6>Economisez jusqu'à</h6>
+                                <h6>25% <span>Dépêchez-vous</span></h6>
+                                <p>Sur Log Support, nous vous accueillons avec plaisir. Nous sommes engagés à fournir des renseignements exacts et à jour sur différents sujets liés à la santé. Notre but est de vous aider à prendre des choix avertis en ce qui concerne votre santé et votre bien-être.</p>
                                 <div class="d-inline-block">
-                                    <a href="booking.html" class="btn book-btn1" tabindex="0">Shop Now</a>
+                                    <a href="{% url 'landing:product' %}" class="btn book-btn1" tabindex="0">Voir nos produits</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 d-flex justify-content-center aos" data-aos="fade-up">
-                            <img src="{% static 'assets/img/doc-slider.png' %}" class="img-fluid" alt="">
+                            <img src="{% static 'assets/img/doctor_1.png' %}" class="img-fluid" alt="">
                         </div>
                     </div>
 
@@ -50,37 +49,21 @@
                     <div class="col-12 d-flex">
                         <div class="col-12 col-md-6 aos" data-aos="fade-up">
                             <div class="slide-image">
-                                <h6>Everyday Save upto</h6>
-                                <h2>35% <span>Hurry</span></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <h6>Economisez jusqu'à</h6>
+                                <h6>25% <span>Dépêchez-vous</span></h6>
+                                <p>Log Support fournit des informations fiables sur des sujets liés à la santé. Notre objectif est de vous aider à prendre des décisions éclairées sur votre bien-être. Bienvenue sur notre plateforme de bien-être.</p>
                                 <div class="d-inline-block">
-                                    <a href="booking.html" class="btn book-btn1" tabindex="0">Shop Now</a>
+                                    <a href="{% url 'landing:product' %}" class="btn book-btn1" tabindex="0">Voir nos produits</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 d-flex justify-content-center aos" data-aos="fade-up">
-                            <img src="{% static 'assets/img/doc-slider.png' %}" class="img-fluid" alt="">
+                            <img src="{% static 'assets/img/nurse_2.png' %}" class="img-fluid" alt="">
                         </div>
                     </div>
 
 
-                    <div class="col-12 d-flex">
-                        <div class="col-12 col-md-6 aos" data-aos="fade-up">
-                            <div class="slide-image">
-                                <h6>Everyday Save upto</h6>
-                                <h2>60% <span>Hurry</span></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.</p>
-                                <div class="d-inline-block">
-                                    <a href="booking.html" class="btn book-btn1" tabindex="0">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 d-flex justify-content-center aos" data-aos="fade-up">
-                            <img src="{% static 'assets/img/doc-slider.png' %}" class="img-fluid" alt="">
-                        </div>
-                    </div>
+                   
 
                 </div>
             </div>
@@ -662,7 +645,7 @@
                         <h2>De notre blog</h2>
                     </div>
                 </div>
-                {% for blog in blogs %}
+                {% for blog in blogs|slice:":3" %}
                 <div class="col-md-4 aos" data-aos="fade-up">
                     <div class="pharm-grid-blog w-100">
                         <div class="grid-blog-image">

@@ -51,32 +51,32 @@
                                     <div class="clinic-details">
                                         <div class="clini-infos">
                                             <p class="doc-location">
-                                                <i class="feather-map-pin"></i> Congo
+                                                <i class="feather-feather"></i> {{ service.category }}
                                             </p>
                                             <p class="doc-location text-ellipse">
-                                                <i class="feather-phone"></i> +24200000000
+                                                <i class="feather-file-text"></i>{{ service.description|safe }}
                                             </p>
                                         </div>
                                     </div>
                                     <div class="pharmacy-social-links">
                                         <ul class="nav">
                                             <li>
-                                                <a href="javascript:void(0)" target="_blank">
+                                                <a href="https://www.facebook.com/" target="_blank">
                                                     <i class="fab fa-facebook"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:void(0)" target="_blank">
+                                                <a href="https://twitter.com/" target="_blank">
                                                     <i class="fab fa-twitter"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:void(0)" target="_blank">
+                                                <a href="https://www.instagram.com/" target="_blank">
                                                     <i class="fab fa-instagram"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="javascript:void(0)" target="_blank">
+                                                <a href="https://www.linkedin.com/" target="_blank">
                                                     <i class="fab fa-linkedin"></i>
                                                 </a>
                                             </li>
@@ -117,7 +117,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-header sec-head text-center aos" data-aos="fade-up">
-                            <h2>Produits connexes</h2>
+                            <h2>Services connexes</h2>
                             <div class="owl-nav slide-nav-10 nav-control"></div>
                         </div>
                         <div class="brand-sliders owl-carousel owl-theme">
@@ -126,7 +126,7 @@
                                     <div class="features-brand-img">
                                         {% if product_related.photo %}
                                             <a href="{{ product_related.landing_get_detail_url }}">
-                                                <img src="{{ product_related.photo.url }}" alt="{{ product_related.name|title }}" class="img-fluid">
+                                                <img src="{{ product_related.photo.url }}" style="width: 400px; height: 300px; object-fit: contain;" alt="{{ product_related.name|title }}" class="img-fluid">
                                             </a>
                                         {% else %}
                                             <a href="{{ product_related.landing_get_detail_url }}">

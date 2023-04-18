@@ -48,10 +48,11 @@
                                 <tbody>
                                     {% for newsletter in newsletters %}
                                     {% include 'dashboard/modal/newsletter-delete.html' with newsletter=newsletter %}
+                                    {% include 'dashboard/newsletter/detail.html' with newsletter=newsletter %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#">{{ newsletter.email|title }}</a>
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">{{ newsletter.email|title }}</a>
                                             </h2>
                                         </td>
                                         <td>

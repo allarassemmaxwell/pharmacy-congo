@@ -61,8 +61,15 @@
                                 <tbody>
                                     {% for sale in sales %}
                                     {% include 'dashboard/modal/sale-delete.html' with sale=sale %}
+                                    {% include 'dashboard/sale/detail.html' with sale=sale %}
                                     <tr>
-                                        <td>{{ sale.product }}</td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
+                                                <span>{{sale.product}}</span>
+                                                </a>
+                                            </h2>
+                                        </td>
                                         <td>{{ sale.unity_price }}f cfa</td>
                                         <td>{{ sale.quantity }}</td>
                                         <td>{{ sale.total }}f cfa</td>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <title>Sign Up | Log Support</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'admin/img/favicon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'admin/img/log1.png' %}">
 
     <link rel="stylesheet" href="{% static 'admin/css/bootstrap.min.css' %}">
 
@@ -46,12 +46,12 @@
                 <div class="login-wrapper">
                     <div class="loginbox">
                         <div class="img-logo">
-                            <img src="{% static 'admin/img/logo.png' %}" class="img-fluid" alt="Logo">
+                            <img src="{% static 'admin/img/log1.png' %}" style="display: block; margin: auto;" class="img-fluid" alt="Logo">
                         </div>
                         <h3>S'inscrire</h3>
                         <form method="POST">{% csrf_token %}
                             {% if form.errors %}
-                                <div class="alert alert-danger" role="alert">Incorrect email or password
+                                <div class="alert alert-danger" role="alert">Email ou mot de passe incorrect
                                 </div>
                             {% endif %}
                             {% include 'message.html' %}

@@ -1,0 +1,60 @@
+{% load static %}
+
+
+
+<div class="modal fade contentmodal" id="details-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="media d-flex align-items-center justify-content-between">
+                    <div class="flex-shrink-0 d-flex align-items-center">
+            
+                        <div class="doc-info">
+                            <h6>Email Abonné(e)</h6>
+                            <p>{{ newsletter.email|title }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Date</h6>
+                                <p>{{ newsletter.timestamp|date:"d M Y"  }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Status</h6>
+                                <p>
+                                    <span>
+                                        {% if newsletter.active %}
+                                            <span class="badge bg-badge-grey text-success">
+                                                <i class="fas fa-circle me-1"></i> Actif
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-badge-grey text-danger">
+                                                <i class="fas fa-circle me-1"></i> Inactif
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                       
+                       
+                       
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

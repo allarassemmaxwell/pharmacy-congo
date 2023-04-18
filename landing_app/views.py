@@ -280,10 +280,12 @@ def product_detail_view(request, slug=None):
 	product       = get_object_or_404(Product, slug=slug, active=True)
 	categories    = ProductCategory.objects.filter(active=True)
 	products 	  = ProductCategory.objects.filter(active=True).exclude(slug=slug)
+	product_details 	  = Product.objects.filter(active=True).exclude(slug=slug)
 	context       = {
 		'product': product,
 		'categories': categories,
-		'products': products
+		'products': products,
+		'product_details': product_details,
 	}
 	template = "landing/product/detail.html"
 	return render(request, template, context)
