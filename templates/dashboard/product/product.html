@@ -64,8 +64,8 @@
                                         <td>            
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal">
-                                                    {% if product.product_image.file %}
-                                                        <img class="avatar avatar-img" src="{{ product.product_image.file.url }}" alt="{{ product.product_image.name|title }}">
+                                                    {% if product.image.file %}
+                                                        <img class="avatar avatar-img" src="{{ product.image.file.url }}" alt="{{ product.image.name|title }}">
                                                     {% else %}
                                                         <img class="avatar avatar-img" src="{% static 'admin/img/products/product1.jpg' %}" alt="{{ product.product_image.name|title }}">
                                                     {% endif %}

@@ -5,17 +5,17 @@
             <ul>
                 {% if request.user.role == 'Admin' or request.user.role == 'Docteur'  %}
                     <li class="">
-                        <a href="{% url 'dashboard' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
+                        <a href="{% url 'dashboard' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
                     <li class="menu-title"><span>Produits</span></li>
                     <li class="">
-                        <a href="{% url 'product_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                        <a href="{% url 'product_category' %}"><i class="feather-airplay"></i> <span>Catégorie</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'product_image' %}"><i class="feather-grid"></i> <span>Image</span></a>
+                        <a href="{% url 'product_image' %}"><i class="feather-image"></i> <span>Image</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'product' %}"><i class="feather-grid"></i> <span>Produit</span></a>
+                        <a href="{% url 'product' %}"><i class="feather-gift"></i> <span>Produit</span></a>
                     </li>
 
 
@@ -24,10 +24,10 @@
                         <span>Service</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'service_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                        <a href="{% url 'service_category' %}"><i class="feather-compass"></i> <span>Catégorie</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'service' %}"><i class="feather-grid"></i> <span>Service</span></a>
+                        <a href="{% url 'service' %}"><i class="feather-clipboard"></i> <span>Service</span></a>
                     </li>
 
                     <li class="menu-title">
@@ -36,19 +36,19 @@
 
 
                     <li class="">
-                        <a href="{% url 'user' %}"><i class="feather-grid"></i> <span>Utilisateur</span></a>
+                        <a href="{% url 'user' %}"><i class="feather-users"></i> <span>Utilisateur</span></a>
                     </li>
 
                     <li class="">
-                        <a href="{% url 'supplier' %}"><i class="feather-grid"></i> <span>Fournisseur</span></a>
+                        <a href="{% url 'supplier' %}"><i class="feather-truck"></i> <span>Fournisseur</span></a>
                     </li>
 
                     <li class="">
-                        <a href="{% url 'stock' %}"><i class="feather-grid"></i> <span>Stock</span></a>
+                        <a href="{% url 'stock' %}"><i class="feather-database"></i> <span>Stock</span></a>
                     </li>
                     
                     <li class="">
-                        <a href="{% url 'patient' %}"><i class="feather-grid"></i> <span>Patient </span></a>
+                        <a href="{% url 'patient' %}"><i class="feather-user-plus"></i> <span>Patient </span></a>
                     </li>
 
 
@@ -57,13 +57,13 @@
                         <span>Rendez-vous</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment_symptom' %}"><i class="feather-grid"></i> <span>Symptôme</span></a>
+                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Symptôme</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment' %}"><i class="feather-grid"></i> <span>Rendez-vous</span></a>
+                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Rendez-vous</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment_prescription' %}"><i class="feather-grid"></i> <span>Ordonnance</span></a>
+                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Ordonnance</span></a>
                     </li>
 
 
@@ -71,7 +71,7 @@
                         <span></span>
                     </li>
                     <li class="">
-                        <a href="{% url 'sale' %}"><i class="feather-grid"></i> <span>Vente</span></a>
+                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Vente</span></a>
                     </li>
 
 
@@ -91,10 +91,10 @@
                         <span>Blog</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'blog_category' %}"><i class="feather-grid"></i> <span>Catégorie</span></a>
+                        <a href="{% url 'blog_category' %}"><i class="feather-award"></i> <span>Catégorie</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'blog' %}"><i class="feather-grid"></i> <span>Blog</span></a>
+                        <a href="{% url 'blog' %}"><i class="feather-feather"></i> <span>Blog</span></a>
                     </li>
 
 
@@ -102,10 +102,10 @@
                         <span>Newsletter</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'newsletter' %}"><i class="feather-grid"></i> <span>Abonnées</span></a>
+                        <a href="{% url 'newsletter' %}"><i class="feather-user-x"></i> <span>Abonnées</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'mail_newsletter' %}"><i class="feather-grid"></i> <span>Email Envoyé</span></a>
+                        <a href="{% url 'mail_newsletter' %}"><i class="feather-send"></i> <span>Email Envoyé</span></a>
                     </li>
 
 
@@ -113,10 +113,10 @@
                         <span>Contact</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'contact' %}"><i class="feather-grid"></i> <span>Contact</span></a>
+                        <a href="{% url 'contact' %}"><i class="feather-book-open"></i> <span>Contact</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'response_contact' %}"><i class="feather-grid"></i> <span>Contact Repondu</span></a>
+                        <a href="{% url 'response_contact' %}"><i class="feather-message-circle"></i> <span>Contact Repondu</span></a>
                     </li>
 
 
@@ -126,29 +126,29 @@
                     </li>
 
                     <li class="">
-                        <a href="{% url 'fridge' %}"><i class="feather-grid"></i> <span>Gestion de Froid</span></a>
+                        <a href="{% url 'fridge' %}"><i class="feather-flag"></i> <span>Gestion de Froid</span></a>
                     </li>
 
                     <li class="">
-                        <a href="{% url 'testimony' %}"><i class="feather-grid"></i> <span>Témoignage</span></a>
+                        <a href="{% url 'testimony' %}"><i class="feather-layers"></i> <span>Témoignage</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'partner' %}"><i class="feather-grid"></i> <span>Partenaire</span></a>
+                        <a href="{% url 'partner' %}"><i class="feather-link"></i> <span>Partenaire</span></a>
                     </li>
                 {% endif %}
 
                 {% if request.user.role == 'Patient' %}
                     <li class="">
-                        <a href="{% url 'patient:home' %}"><i class="feather-grid"></i> <span>Tableau de bord</span></a>
+                        <a href="{% url 'patient:home' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:appointment' %}"><i class="feather-grid"></i> <span>Rendez-vous </span></a>
+                        <a href="{% url 'patient:appointment' %}"><i class="feather-calendar"></i> <span>Rendez-vous </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:symptom' %}"><i class="feather-grid"></i> <span>Symptôme </span></a>
+                        <a href="{% url 'patient:symptom' %}"><i class="feather-eye"></i> <span>Symptôme </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:prescription' %}"><i class="feather-grid"></i> <span>Ordonnance </span></a>
+                        <a href="{% url 'patient:prescription' %}"><i class="feather-edit"></i> <span>Ordonnance </span></a>
                     </li>
                 {% endif %}
                 

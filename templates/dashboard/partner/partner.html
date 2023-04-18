@@ -48,10 +48,11 @@
                                 <tbody>
                                     {% for partner in partners %}
                                     {% include 'dashboard/modal/partner-delete.html' with partner=partner %}
+                                    {% include 'dashboard/partner/detail.html' with partner=partner %}
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="#"><img class="avatar avatar-img" src="{{ partner.logo.url }}"
+                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" ><img class="avatar avatar-img" src="{{ partner.logo.url }}"
                                                         alt="{{ partner.name|title }}"></a>
                                                 <a href="#"><span class="user-name">{{ partner.name|title }}</span></a>
                                             </h2>
