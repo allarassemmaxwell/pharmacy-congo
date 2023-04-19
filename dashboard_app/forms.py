@@ -445,13 +445,17 @@ class StockForm(forms.ModelForm):
         }
         fields = [
             "supplier",
+            # "product_stock",
             "quantity",
+            "unity_price",
             "total",
             "description",
             "active",
         ]
         widgets = {
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            # 'product_stock': forms.TextInput(attrs={'class': 'form-control'}),
+            'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'total':       forms.NumberInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }

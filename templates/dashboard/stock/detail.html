@@ -15,6 +15,7 @@
                             <h3>{{ stock.supplier.name|title }}</h3>
                             <p>{{ stock.timestamp|date:"d M Y" }}</p>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="member-wrapper">
@@ -28,22 +29,34 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="mem-info">
+                                <h6>Prix Unitaire(cfa)</h6>
+                                <p>{{ stock.unity_price }}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mem-info">
                                 <h6>Total(cfa)</h6>
                                 <p>{{ stock.total }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Description</h6>
+                                <p>{{ stock.description|safe }}</p>
                             </div>
                         </div>
                         
                     </div>
                 </div>
                 
-                <div class="member-wrapper">
-                    <h5>Description</h5>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            {{ stock.description|safe }}
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
