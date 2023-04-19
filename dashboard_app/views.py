@@ -1364,6 +1364,9 @@ def stock_add_view(request):
         if form.is_valid():
             supplier = form.save(commit=False)
             supplier.created_by = request.user
+            obj = form.save(commit=False)
+            obj.total = obj.unity_price * obj.quantity
+            # obj.save()
             form.save()
             messages.success(request, _("Stock créé avec succès."))
             return redirect('stock')
@@ -1403,6 +1406,8 @@ def stock_update_view(request, id=None):
     if request.method == 'POST':
         form = StockForm(request.POST, instance=obj)
         if form.is_valid():
+            obj = form.save(commit=False)
+            obj.total = obj.unity_price * obj.quantity
             form.save()
             messages.success(request, _("Stock mis à jour avec succès."))
             return redirect('stock')

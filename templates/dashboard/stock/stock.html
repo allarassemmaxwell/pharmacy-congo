@@ -51,6 +51,7 @@
                                     <tr>
                                         <th>Fournisseur</th>
                                         <th>Quantité</th>
+                                        <th>Prix Unitaire</th>
                                         <th>Total</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -73,6 +74,7 @@
                                             </h2>
                                         </td>
                                         <td>{{ stock.quantity }}</td>
+                                        <td>{{ stock.unity_price }}f cfa</td>
                                         <td>{{ stock.total }}f cfa</td>
                                         <td>{{ stock.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
