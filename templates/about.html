@@ -4,37 +4,32 @@
 
 
 {% block content %}
-
-<body class="about-page">
-
-    <div class="main-wrapper">
-
-        <div class="breadcrumb-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-12 col-12">
-                        <nav aria-label="breadcrumb"
-                            class="page-breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a
-                                        href="/">Home</a></li>
-                                <li class="breadcrumb-item active"
-                                    aria-current="page">À propos de nous</li>
-                            </ol>
-                        </nav>
-                        <h2 class="breadcrumb-title">À propos de nous</h2>
-                    </div>
-                </div>
+<div class="breadcrumb-bar-six">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-12 col-12">
+                <h2 class="breadcrumb-title">À propos de nous</h2>
+                <nav aria-label="breadcrumb" class="page-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Accueil</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">À propos de nous</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+    </div>
+</div>
 
-
-        <section class="about-section">
+<body class="about-page">
+    <div class="main-wrapper">
+        <section class="about-section" style="background-image: none;">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        <a href="javascript:voide(0);" class="about-titile
-                            mb-4">À propos de Log Support</a>
+                    <div class="col-lg-12 col-md-12">
+                        <!-- <a href="javascript:voide(0);" class="about-titile
+                            mb-4">À propos de Log Support</a> -->
                         <h3 class="mb-4">Profil de l'entreprise</h3>
                         <p>Log Support est une entreprise médicale qui s'engage à fournir des produits 
                             et des services de santé de haute qualité, accessibles, 
@@ -47,7 +42,8 @@
                             avec ses clients, qui lui font confiance pour leur fournir 
                             les meilleures solutions possibles en matière de soins de santé.</p>
                         
-                        <p class="mb-0">Conscients que les soins de santé peuvent 
+                        <p class="mb-0">
+                            Conscients que les soins de santé peuvent 
                             être accablants, nous nous efforcons de rendre nos services 
                             aussi conviviaux que possible et d'offrir des soins 
                             personnalisés à chaque patient. L'établissement de relations 
@@ -58,9 +54,6 @@
                             L'entreprise est un partenaire de santé de confiance 
                             qui s'engage à fournir des produits et des 
                             services médicaux de haute qualité.</p>
-                        
-                    </div>
-                    <div class="col-md-6">
                     </div>
                 </div>
             </div>
@@ -112,73 +105,6 @@
             </div>
         </section>
 
-        <section class="section section-featurebox">
-            <div class="container">
-                <div class="section-header text-center">
-                    <h2>Options disponibles dans notre clinique</h2>
-                    <p class="sub-title">Log Support est une plateforme de soins de santé
-                         qui offre des outils de gestion des patients, et autres services.</p>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="feature-col-list">
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-07.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Opération</h4>
-                            </div>
-                        </div>
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-09.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Médical</h4>
-                            </div>
-                        </div>
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-08.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Service des patients</h4>
-                            </div>
-                        </div>
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-10.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Salle de test</h4>
-                            </div>
-                        </div>
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-11.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Unité de Soins Intensifs</h4>
-                            </div>
-                        </div>
-                        <div class="feature-col">
-                            <div class="feature-subox d-flex flex-wrap
-                                justify-content-center">
-                                <img
-                                    src="{% static 'assets/img/features/feature-12.jpg' %}"
-                                    class="img-fluid" alt="Features">
-                                <h4>Laboratoire</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section class="section section-specialities">
             <div class="container-fluid">
@@ -190,7 +116,6 @@
                 
                 <div class="row justify-content-center">
                     <div class="col-md-9">
-                        
                         <div class="specialities-slider slider">
                             {% for service in services %}
                                 <div class="speicality-item text-center">
@@ -210,13 +135,9 @@
                                     <p>{{ service.category }}</p>
                                 </div>
                             {% endfor %}
-
                         </div>
-                       
-
                     </div>
                 </div>
-                
             </div>
         </section>
 
@@ -229,25 +150,22 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-lg-12">
-
                         <div class="testimonial-slider slider">
                             {% for testimony in testimonies%}
-                            <div class="testimonial-item text-center">
-                                <div class="testimonial-img">
-                                    <img
-                                        src="{{ testimony.image.url }}" style="width: 150px; height: 150px; border-radius: 50%; object-fit: contain;"
-                                        class="img-fluid" alt="Speciality">
+                                <div class="testimonial-item text-center">
+                                    <div class="testimonial-img">
+                                        <img
+                                            src="{{ testimony.image.url }}" style="width: 150px; height: 150px; border-radius: 50%; object-fit: contain;"
+                                            class="img-fluid" alt="{{testimony.full_name}}">
+                                    </div>
+                                    <div class="testimonial-content">
+                                        <p>{{testimony.description|truncatewords:150 }}</p>
+                                        <p class="user-name">- {{testimony.full_name}}</p>
+                                        <p class="user-location mb-0">{{testimony.occupation|truncatewords:10}}</p>
+                                    </div>
                                 </div>
-                                <div class="testimonial-content">
-                                    <p>{{testimony.description|truncatewords:150 }}</p>
-                                    <p class="user-name">- {{testimony.full_name}}</p>
-                                    <p class="user-location mb-0">{{testimony.occupation|truncatewords:10}}</p>
-                                </div>
-                            </div>
                             {% endfor %}
-
                         </div>
-
                     </div>
                 </div>
             </div>

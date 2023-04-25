@@ -58,7 +58,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="pharmacy-social-links">
+                                    <!-- <div class="pharmacy-social-links">
                                         <ul class="nav">
                                             <li>
                                                 <a href="https://www.facebook.com/" target="_blank">
@@ -81,7 +81,7 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="doc-info-right d-flex align-items-center justify-content-center">
@@ -165,18 +165,17 @@
 
         <section class="section section-feature">
             <div class="container">
-                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-header sec-head text-center aos" data-aos="fade-up">
-                            <h2>Produits connexes</h2>
+                            <h2>Produits reliés</h2>
                             <div class="owl-nav slide-nav-10 nav-control"></div>
                         </div>
                         <div class="brand-sliders owl-carousel owl-theme">
-                            {% for product_related in products %}
+                            {% for product_related in related_products %}
                                 <div class="features-brand aos" data-aos="fade-up">
                                     <div class="features-brand-img">
-                                        {% if product_related.image %}
+                                        {% if product_related.image.file %}
                                             <a href="{{ product_related.landing_get_detail_url }}">
                                                 <img src="{{ product_related.image.file.url }}" alt="{{ product_related.name|title }}" class="img-fluid">
                                             </a>

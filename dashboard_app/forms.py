@@ -448,22 +448,22 @@ class StockForm(forms.ModelForm):
             # "product_stock",
             "quantity",
             "unity_price",
-            "total",
+            # "total",
             "description",
-            "active",
+            # "active",
         ]
         widgets = {
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             # 'product_stock': forms.TextInput(attrs={'class': 'form-control'}),
             'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'total':       forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'total':       forms.NumberInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(StockForm, self).__init__(*args, **kwargs)
-        self.fields['supplier'].queryset = Supplier.objects.all()
-        self.fields['supplier'].label_from_instance = lambda obj: obj.name
+    # def __init__(self, *args, **kwargs):
+    #     super(StockForm, self).__init__(*args, **kwargs)
+    #     self.fields['supplier'].queryset = Supplier.objects.all()
+    #     self.fields['supplier'].label_from_instance = lambda obj: obj.name
 
 
 
