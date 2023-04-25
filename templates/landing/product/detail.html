@@ -177,7 +177,7 @@
                                     <div class="features-brand-img">
                                         {% if product_related.image.file %}
                                             <a href="{{ product_related.landing_get_detail_url }}">
-                                                <img src="{{ product_related.image.file.url }}" alt="{{ product_related.name|title }}" class="img-fluid">
+                                                <img src="{{ product_related.image.file.url }}" style="width: 400px; height: 350px; object-fit: cover;"  alt="{{ product_related.name|title }}" class="img-fluid">
                                             </a>
                                         {% else %}
                                             <a href="{{ product_related.landing_get_detail_url }}">
