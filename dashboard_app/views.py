@@ -1521,7 +1521,7 @@ def appointment_add_view(request):
             hour = form.cleaned_data.get("hour")
             appointment = form.save()
             subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
-            Notification.objects.create(appointment=appointment, subject=subject)
+            Notificaty.objects.create(appointment=appointment, subject=subject)
             messages.success(request, _("Rendez-Vous créé avec succès."))
             return redirect('appointment')
     else:
@@ -1758,7 +1758,7 @@ def sale_update_view(request, id):
 # NOTIFICATION   FUNCTION
 @login_required
 def notification_view(request):
-    notifications = Notification.objects.filter(active=True)
+    notifications = Notificaty.objects.filter(active=True)
     context  = {'notifications': notifications}
     template = "dashboard/notification/notification.html"
     return render(request, template, context)
@@ -2092,7 +2092,7 @@ def rapport_annuel_view(request):
 # GLOBAL  NOTIFICATION FUNCTION
 def global_notification_view(request):
     notifications=[]
-    for notification in Notification.objects.all():
+    for notification in Notificaty.objects.all():
         if notification.contact and notification.contact.read == False or notification.appointment and notification.appointment.read == False:
             notifications.append(notification)
     return {'GLOBAL_NOTIFICATIONS': notifications}

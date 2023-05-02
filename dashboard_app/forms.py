@@ -699,9 +699,9 @@ class SubscriberResponseForm(forms.ModelForm):
 
 
 # NOTIFICATION FORM
-class NotificationForm(forms.ModelForm):
+class NotificatyForm(forms.ModelForm):
     class Meta:
-        model  = Notification
+        model  = Notificaty
         fields = [
             "contact",
             "appointment",

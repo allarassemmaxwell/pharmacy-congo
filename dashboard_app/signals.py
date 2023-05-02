@@ -243,7 +243,7 @@ def create_notification_slug(instance, new_slug=None):
 def presave_notification(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_notification_slug(instance)
-pre_save.connect(presave_notification, sender=Notification)
+pre_save.connect(presave_notification, sender=Notificaty)
 
 
 
