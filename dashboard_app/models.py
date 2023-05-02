@@ -648,7 +648,7 @@ class Service(models.Model):
 
 
 # NOTIFICATION MODELS
-class Notification(models.Model):
+class Notificaty(models.Model):
     contact     = models.ForeignKey(Contact, on_delete=models.CASCADE, null=True, blank=True, related_name="notification_contact")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True, related_name="notification_appointment")
     subject     = models.CharField(_("Sujet"), max_length=255, null=True, blank=False)
