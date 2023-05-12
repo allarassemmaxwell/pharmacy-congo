@@ -1,0 +1,130 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Produits{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'stock' %}" class="btn btn-primary btn-add">
+                        <i class="feather-plus-square me-1"></i> Ajouter Stock Details
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            
+            <div class="col-sm-12">
+                {% include 'message.html' %}
+                <div class="row  align-items-center">
+                    <div class="col-md-12 d-flex  justify-content-start">
+                        <a href="{% url 'issue_items' stock.id %}" class="btn btn-primary btn-add">
+                            <i class="feather-plus-square me-1"></i> Issue the Item
+                        </a><br>
+            
+                        <a href="{% url 'receive_items' stock.id %}" class="btn btn-primary btn-add">
+                            <i class="feather-plus-square me-1"></i> Receive the Items
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header border-bottom-0">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="card-title">Stoks</h5>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="datatable table table-borderless hover-table" id="data-table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Nom Produit</th>
+                                        <th>Quantité en Stock</th>
+                                        <th>Dernière mise à jour</th>
+                                        <th>Niveau de Réapprovisionnement</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                    {% include 'dashboard/modal/stock-delete.html' with stock=stock %}
+                                    {% include 'dashboard/stock/stock_detail.html' with stock=stock %}
+                                    <tr>
+                                        <td>{{ stock.item_name }}</td>
+                                        <td>{{ stock.quantity }}</td>
+                                        <td>{{ stock.updated }}</td>
+                                        <td>{{ stock.reorder_level }}</td>
+                                        <td>{{ stock.timestamp|date:"d M Y" }}</td>
+                                        <td class="text-end">
+                                            <div class="actions">
+                                                <a href="{{ stock.update_url }}" class="text-black">
+                                                    <i class="feather-edit-3 me-1"></i> Modifier
+                                                </a>
+                                                <a class="text-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#stockDeleteModal-{{ forloop.counter }}">
+                                                    <i class="feather-trash-2 me-1"></i> Supprimer
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}

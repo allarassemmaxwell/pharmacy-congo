@@ -37,7 +37,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Catégories</h5>
+                                <h5 class="card-title">Catégories Stock</h5>
                             </div>
                             <div class="col-auto custom-list d-flex">
                                 <div class="form-custom me-2">
@@ -57,9 +57,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
                                     {% for category in categories %}
-                                        {% include 'dashboard/modal/product-category-delete.html' with category=category %}
+                                        {% include 'dashboard/modal/stock-category-delete.html' with category=category %}
                                         <tr>
                                             <td><a href="{{ category.update_url }}">{{ category.name|title }}</a></td>
                                             <td>{{ category.timestamp|date:"d M Y" }}</td>
@@ -70,14 +69,13 @@
                                                         <i class="feather-edit-3 me-1"></i> Modifier
                                                     </a>
                                                     <a class="text-danger" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#productCategoryDeleteModal-{{ forloop.counter }}">
+                                                        data-bs-target="#stockCategoryDeleteModal-{{ forloop.counter }}">
                                                         <i class="feather-trash-2 me-1"></i> Supprimer
                                                     </a>
                                                 </div>
                                             </td>
                                         </tr>
                                     {% endfor %}
-                                    
                                 </tbody>
                             </table>
                         </div>
@@ -94,7 +92,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content doctor-profile">
             <div class="modal-header">
-                <h3 class="mb-0">Ajouter une Catégorie</h3>
+                <h3 class="mb-0">Ajouter une Catégorie de Stock</h3>
                 <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
                         class="feather-x-circle"></i></button>
             </div>

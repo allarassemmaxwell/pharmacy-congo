@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.translation import activate, gettext_lazy as _
 
+# from django.urls import reverse
+# from django.http import Http404
+# from uuid import UUID
+
 from .models import *
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -1340,6 +1344,75 @@ def supplier_update_view(request, slug=None):
 
 
 
+# STOCK CATEGORY VIEW 
+@login_required
+def stock_category_view(request):
+    categories    = StockCategory.objects.all()
+    if request.method == 'POST':
+        form = StockCategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Catégorie créée avec succès."))
+            return redirect('stock_category')
+    else:
+        form = StockCategoryForm()
+    context  = {
+        'categories': categories,
+        'form': form
+    }
+    template = "dashboard/stock/category_stock.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+# STOCK CATEGORY DELETE
+
+@login_required
+def stock_category_delete_view(request, slug=None):
+    caregory = get_object_or_404(StockCategory, slug=slug, active=True)
+    caregory.delete()
+    messages.success(request, _("Catégorie supprimée avec succès."))
+    return redirect('stock_category')
+
+
+
+
+
+
+
+# STOCK KEYWORD UPDATE VIEW FUNCTION
+@login_required
+def stock_category_update_view(request, slug=None):
+    obj  = get_object_or_404(StockCategory, slug=slug)
+    form = StockCategoryForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.success(request, _("Catégorie mise à jour avec succès."))
+        return redirect('stock_category')
+    context = {'form': form}
+    template = "dashboard/stock/category-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # STOCK VIEW 
 @login_required
@@ -1416,6 +1489,149 @@ def stock_update_view(request, id=None):
     context  = {'form': form}
     template = "dashboard/stock/stock-update.html"
     return render(request, template, context)
+
+
+
+
+
+
+
+# STOCK DETAILS ITEMS
+
+# 👉 detail items#
+@login_required
+def stock_detail_view(request, pk):
+    stocks = Stock.objects.get(id=pk)
+    context = {
+        "stocks": stocks,
+    }
+    template = "dashboard/stock/stock_detail.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+# ISSUE ITEMS
+# 👉 issue items (move out)
+@login_required
+def issue_items_view(request, pk):
+    try:
+        uuid_obj = UUID(pk, version=4)
+    except ValueError:
+        raise Http404("Invalid ID")
+    
+    # ... your view code here ...
+
+    try:
+        url = reverse('issue_items', args=[pk])
+    except NoReverseMatch:
+        # Handle the case where the URL pattern doesn't exist
+        # or the reverse function failed to reverse the URL
+        # for some other reason.
+        url = None
+    stocks = Stock.objects.get(id=pk)
+    form = IssueForm(request.POST or None, instance=stocks)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.quantity -= instance.issue_quantity
+        instance.issue_by = str(request.user)
+        messages.success(request, "Émis avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
+        instance.save()
+
+        return redirect('stock' +str(instance.id))
+		# return HttpResponseRedirect(instance.get_absolute_url())
+
+    context = {
+        # "title": 'Issue ' + str(queryset.item_name),
+        "stocks": stocks,
+        "form": form,
+        "username": 'Émis Par: ' + str(request.user),
+    }
+    template = "dashboard/stock/stock.html"
+    return render(request, template, context)
+    # return render(request, "add_items.html", context)
+
+
+
+
+
+
+
+
+
+
+
+
+#  RECEIVE ITEMS
+
+# 👉 receive items
+@login_required
+def receive_items_view(request, pk):
+    stocks = Stock.objects.get(id=pk)
+    form = ReceiveForm(request.POST or None, instance=stocks)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.quantity += instance.receive_quantity
+        instance.save()
+        messages.success(request, "Reçu avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + "s now in Store")
+        return redirect('stock' + str(instance.id))
+        # return HttpResponseRedirect(instance.get_absolute_url())
+
+    context = {
+        # "title": 'Reaceive ' + str(queryset.item_name),
+        "instance": stocks,
+        "form": form,
+        "username": 'Reçu Par: ' + str(request.user),
+    }
+    template = "dashboard/stock/stock.html"
+    # return render(request, "add_items.html", context)
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 👉 reorder items
+@login_required
+def reorder_level_view(request, pk):
+    stocks = Stock.objects.get(id=pk)
+    form = ReorderLevelForm(request.POST or None, instance=stocks)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Niveau de réapprovisionnement pour " + str(instance.item_name) + " est mis à jour en " + str(instance.reorder_level))
+
+        return redirect("stock")
+    context = {
+            "instance": stocks,
+            "form": form,
+        }
+    template = "dashboard/stock/stock.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
 
 
 

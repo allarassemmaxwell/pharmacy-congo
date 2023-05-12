@@ -86,6 +86,17 @@ urlpatterns = [
     path('stock/add/', stock_add_view, name="stock_add"),
     path('stock/delete/<str:id>/', stock_delete_view, name="stock_delete"),
     path('stock/update/<str:id>/', stock_update_view, name="stock_update"),
+    path('stock_detail/<str:pk>/', stock_detail_view, name="stock_detail"),
+    
+    
+    path('stock/category/', stock_category_view, name="stock_category"),
+    path('stock/category/delete/<slug:slug>/', stock_category_delete_view, name="stock_category_delete"),
+    path('stock/category/update/<slug:slug>/', stock_category_update_view, name="stock_category_update"),
+
+    
+    path('issue_items/<str:pk>/', issue_items_view, name="issue_items"),
+    path('receive_items/<str:pk>/', receive_items_view, name="receive_items"),
+    path('reorder_level/<str:pk>/', reorder_level_view, name="reorder_level"),
     
     
     path('appointment/symptoms/', appointment_symptom_view, name="appointment_symptom"),

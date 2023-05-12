@@ -49,10 +49,13 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
+                                        <th>Nom Produit</th>
+                                        <th>Catégorie</th>
                                         <th>Fournisseur</th>
-                                        <th>Quantité</th>
+                                        <th>Quantité en Stock</th>
                                         <th>Prix Unitaire</th>
                                         <th>Total</th>
+                                        <th>Niveau de Réapprovisionnement</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -62,6 +65,8 @@
                                     {% include 'dashboard/modal/stock-delete.html' with stock=stock %}
                                     {% include 'dashboard/stock/detail.html' with stock=stock %}
                                     <tr>
+                                        <td>{{ stock.item_name }}</td>
+                                        <td>{{ stock.category }}</td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 {% if stock.supplier %}
@@ -73,9 +78,12 @@
                                                 {% endif %}
                                             </h2>
                                         </td>
-                                        <td>{{ stock.quantity }}</td>
-                                        <td>{{ stock.unity_price }}f cfa</td>
-                                        <td>{{ stock.total }}f cfa</td>
+                                        <td>
+                                            <a href="{% url 'stock_detail' stock.id %}">{{ stock.quantity }}</a>
+                                        </td>
+                                        <td>{{ stock.unity_price }} f cfa</td>
+                                        <td>{{ stock.total }} f cfa</td>
+                                        <td>{{ stock.reorder_level }} </td>
                                         <td>{{ stock.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">

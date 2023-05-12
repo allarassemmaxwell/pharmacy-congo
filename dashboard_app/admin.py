@@ -155,14 +155,15 @@ admin.site.register(Service, ServiceAdmin)
 #  STOCK ADMIN
 class StockAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['supplier', 'quantity', 'total', 'description', 'timestamp', 'updated']
+    list_display        = ['supplier', 'category', 'item_name', 'quantity', 'total', 'description', 'timestamp', 'updated']
     list_display_links  = ['supplier',]
     list_filter         = ['active']
-    search_fields       = ['supplier__name', 'description']
+    search_fields       = ['category', 'item_name', 'supplier__name', 'description']
     list_per_page       = 50
     class Meta:
         model = Stock
 admin.site.register(Stock, StockAdmin)
+admin.site.register(StockCategory)
 
 
 

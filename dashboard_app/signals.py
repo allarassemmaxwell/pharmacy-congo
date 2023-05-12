@@ -152,6 +152,30 @@ pre_save.connect(presave_product_cat, sender=ProductCategory)
 
 
 
+def create_stock_cat_slug(instance, new_slug=None):
+    slug = slugify(instance.name)
+    if new_slug is not None:
+        slug = new_slug
+    ourQuery = StockCategory.objects.filter(slug=slug)
+    exists = ourQuery.exists()
+    if exists:
+        new_slug = "%s-%s" % (slug, ourQuery.first().id)
+        return create_stock_cat_slug(instance, new_slug=new_slug)
+    return slug
+
+def presave_stock_cat(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_stock_cat_slug(instance)
+pre_save.connect(presave_stock_cat, sender=StockCategory)
+
+
+
+
+
+
+
+
+
 def create_product_slug(instance, new_slug=None):
     slug = slugify(instance.name)
     if new_slug is not None:

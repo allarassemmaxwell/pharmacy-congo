@@ -433,6 +433,25 @@ class SupplierForm(forms.ModelForm):
 
 
 
+# STOCK CATEGORY FORM
+class StockCategoryForm(forms.ModelForm):
+    class Meta:
+        model  = StockCategory
+        fields = [
+            "name",
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
+
+
 
 
 # STOCK FORM
@@ -445,6 +464,8 @@ class StockForm(forms.ModelForm):
         }
         fields = [
             "supplier",
+            'category', 
+            'item_name',
             # "product_stock",
             "quantity",
             "unity_price",
@@ -454,6 +475,7 @@ class StockForm(forms.ModelForm):
         ]
         widgets = {
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'item_name':  forms.TextInput(attrs={'class': 'form-control'}),
             # 'product_stock': forms.TextInput(attrs={'class': 'form-control'}),
             'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             # 'total':       forms.NumberInput(attrs={'class': 'form-control'}),
@@ -464,6 +486,73 @@ class StockForm(forms.ModelForm):
     #     super(StockForm, self).__init__(*args, **kwargs)
     #     self.fields['supplier'].queryset = Supplier.objects.all()
     #     self.fields['supplier'].label_from_instance = lambda obj: obj.name
+
+
+
+
+
+
+# STOCK SEARCH
+
+# 👉 to search stock
+class StockSearchForm(forms.ModelForm):
+    export_to_CSV = forms.BooleanField(required=False)
+    class Meta:
+        model = Stock
+        fields = ['category', 'item_name']
+
+
+
+
+
+
+
+
+
+# ISSUE STOCK
+
+# 👉 issue form
+class IssueForm(forms.ModelForm):
+    	class Meta:
+            model = Stock
+            fields = ['issue_quantity', 'issue_to']
+
+
+
+
+
+
+
+
+
+# RECEIVE STOCK
+# 👉 receive form
+class ReceiveForm(forms.ModelForm):
+	class Meta:
+		model = Stock
+		fields = ['receive_quantity']
+
+
+
+
+
+
+
+
+
+
+# REORDER STOCK
+
+# 👉 reorder items form
+class ReorderLevelForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = ['reorder_level']
+
+
+
+
+
 
 
 

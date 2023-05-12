@@ -22,6 +22,18 @@
                 <h5 class="mb-3">Ajouter un stock</h5>
                 <form class="custom-validation" method="POST">{% csrf_token %}
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.item_name|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.category|as_crispy_field }}
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="form-group form-focus">
                                 {{ form.supplier|as_crispy_field }}
@@ -39,7 +51,7 @@
                                 {{ form.unity_price|as_crispy_field }}
                             </div>
                         </div>
-                        
+
                         <div class="col-md-12">
                             <div class="form-group form-focus">
                                 {{ form.description|as_crispy_field }}
