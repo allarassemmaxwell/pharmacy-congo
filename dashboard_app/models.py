@@ -190,6 +190,28 @@ class Supplier(models.Model):
 
 
 
+class StockCategory(models.Model):
+    name = models.CharField(max_length=50, blank=True, null=True)
+    active     = models.BooleanField(_("Est actif"), default=True)
+    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    def __str__(self):
+        return self.name
+    
+    
+    def delete_url(self):
+        return reverse("stock_category_delete", args=[str(self.slug)])
+    
+
+    def update_url(self):
+        return reverse("stock_category_update", args=[str(self.slug)])
+
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
 
 
 
@@ -198,16 +220,26 @@ class Supplier(models.Model):
 
 # STOCK MODEL
 class Stock(models.Model):
-    id          = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    supplier    = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name="supplier")
+    id               = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    supplier         = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name="supplier")
+    category         = models.ForeignKey(StockCategory, on_delete=models.CASCADE, blank=True)
+    item_name        = models.CharField(_("Nom Produit"),max_length=50, blank=True, null=True)
+    receive_quantity = models.IntegerField(_("Quantité Reçue"), default='0', blank=True, null=True)
+    receive_by       = models.CharField(_("Reçue Par"), max_length=50, blank=True, null=True)
+    issue_quantity   = models.IntegerField(_("Quantité d'émission"), default='0', blank=True, null=True)
+    issue_by         = models.CharField(_("Emis par"), max_length=50, blank=True, null=True)
+    issue_to         = models.CharField(_("Emis a"), max_length=50, blank=True, null=True)
+    phone_number     = models.CharField(_("Numero de Telephone"), max_length=50, blank=True, null=True)
+    created_by       = models.CharField(_("Créé par"), max_length=50, blank=True, null=True)
+    reorder_level    = models.IntegerField(_("Niveau de réapprovisionnement"), default='0', blank=True, null=True)
     # product_stock =  models.CharField(_("Nom Produit"), max_length=255, null=False, blank=False, unique=True)
-    quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
-    unity_price = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
-    total       = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-    description = models.TextField(_("Description"), null=False, blank=False)
-    active      = models.BooleanField(_("Est actif"), default=True)
-    timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    quantity         = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    unity_price      = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    total            = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    description      = models.TextField(_("Description"), null=False, blank=False)
+    active           = models.BooleanField(_("Est actif"), default=True)
+    timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
         return str(self.timestamp)
