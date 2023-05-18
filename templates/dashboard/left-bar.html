@@ -70,9 +70,23 @@
                         <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Ordonnance</span></a>
                     </li>
 
+                    <li class="menu-title">
+                        <span>Facturations</span>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="feather-folder-plus"></i> <span> Facturation</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'rapport_quotidien' %}">Proformat</a></li>
+                            <li><a href="{% url 'invoice' %}">Facture</a></li>
+                            <li><a href="{% url 'rapport_mensuel' %}">Recu</a></li>
+                        </ul>
+                    </li>
+
 
                     <li class="menu-title">
-                        <span></span>
+                        <span>Ventes</span>
                     </li>
                     <li class="">
                         <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Vente</span></a>

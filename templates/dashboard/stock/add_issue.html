@@ -1,0 +1,48 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Ajouter un stock{% endblock %}
+
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/stock/">Add Issue</a></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="mb-3">Ajouter un Issue</h5>
+                <form class="custom-validation" method="POST">{% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.issue_quantity|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.issue_to|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

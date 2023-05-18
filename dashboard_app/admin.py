@@ -289,3 +289,23 @@ class NotificatyAdmin(admin.ModelAdmin):
         model = Notificaty
 admin.site.register(Notificaty, NotificatyAdmin)
 
+
+
+
+
+
+
+
+
+#  INVOICE ADMIN
+class InvoiceAdmin(admin.ModelAdmin):
+    date_hierarchy      = 'timestamp'
+    list_display        = ['customer_name', 'payment_date', 'payment_mode']
+    list_display_links  = ['customer_name',]
+    list_filter         = ['active']
+    search_fields       = ['customer_name', 'payment_date', 'payment_mode',]
+    list_per_page       = 50
+    class Meta:
+        model = Invoice
+admin.site.register(Invoice, InvoiceAdmin)
+

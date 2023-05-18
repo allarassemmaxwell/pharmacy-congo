@@ -6,6 +6,9 @@ from django.contrib.auth import get_user_model
 from .models import *
 from allauth.account.forms import SignupForm
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+
 from django.core.files.images import get_image_dimensions
 User = get_user_model()
 
@@ -443,6 +446,12 @@ class StockCategoryForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Ajouter'))
 
 
 
@@ -513,9 +522,17 @@ class StockSearchForm(forms.ModelForm):
 
 # 👉 issue form
 class IssueForm(forms.ModelForm):
-    	class Meta:
-            model = Stock
-            fields = ['issue_quantity', 'issue_to']
+    class Meta:
+        model = Stock
+        fields = [
+            'issue_quantity',
+            'issue_to'
+        ]
+
+        widgets = {
+            'issue_quantity': forms.NumberInput({'class': 'form-control'}),
+            'issue_to': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
 
@@ -528,9 +545,14 @@ class IssueForm(forms.ModelForm):
 # RECEIVE STOCK
 # 👉 receive form
 class ReceiveForm(forms.ModelForm):
-	class Meta:
-		model = Stock
-		fields = ['receive_quantity']
+    class Meta:
+        model = Stock
+        fields = ['receive_quantity', 'receive_by']
+        
+        widgets = {
+            'receive_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'receive_by': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
 
@@ -548,6 +570,12 @@ class ReorderLevelForm(forms.ModelForm):
     class Meta:
         model = Stock
         fields = ['reorder_level']
+        
+        widgets = {
+            'reorder_level': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+    
+    
 
 
 
@@ -844,4 +872,52 @@ class FridgeForm(forms.ModelForm):
            
         }
 
-       
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE FORM
+class InvoiceForm(forms.ModelForm):
+    class Meta:
+        model  = Invoice
+        # exclude = ['issued_date']
+        fields = [
+            "customer_name",
+            "customer_phone",
+            "customer_address",
+            "doc_name",
+            "doc_phone",
+            "doc_address",
+            "payment_mode",
+            "unity_price",
+            "quantity",
+            "vat",
+            "description",
+            "payment_date",
+            "invoice_type",
+           
+        ]
+        widgets = {
+            'customer_name':       forms.TextInput(attrs={'class': 'form-control'}),
+            'customer_phone':       forms.TextInput(attrs={'class': 'form-control'}),
+            'customer_address':       forms.TextInput(attrs={'class': 'form-control'}),
+            'doc_name':       forms.TextInput(attrs={'class': 'form-control'}),
+            'doc_phone':       forms.TextInput(attrs={'class': 'form-control'}),
+            'doc_address':       forms.TextInput(attrs={'class': 'form-control'}),
+            'description':       forms.TextInput(attrs={'class': 'form-control'}),
+            'payment_mode':      forms.Select(attrs={'class': 'form-control'}),
+            'unity_price':      forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'vat':    forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'issued_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'invoice_type': forms.Select(attrs={'class': 'form-control'}),
+           
+        }

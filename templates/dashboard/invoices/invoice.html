@@ -1,0 +1,121 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Invoice{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="doc-badge me-3"><a href="/">Accueil</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+                    <a href="{% url 'invoice_add' %}" class="btn btn-primary btn-add">
+                        <i class="feather-plus-square me-1"></i> Ajouter Facture
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'message.html' %}
+                <div class="card">
+                    <div class="card-header border-bottom-0">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="card-title">Factures</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="datatable table table-borderless hover-table" id="data-table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Nom Client</th>
+                                        <th>Type de Facturation</th>
+                                        <th>Mode de Paiement</th>
+                                        
+                                        <th>Date Paiement</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for invoice in invoices %}
+                                    {% include 'dashboard/modal/invoice-delete.html' with invoice=invoice %}
+                                    
+                                    <tr>
+                                       
+                                        <td>{{ invoice.customer_name }}</td>
+                                        <td>{{ invoice.invoice_type }}</td>
+                                        <td>{{ invoice.payment_mode }}</td>
+                                        
+                                        <td>{{ invoice.payment_date }}</td>
+                                       
+                                        <td>{{ invoice.timestamp|date:"d M Y" }}</td>
+                                        <td class="text-end">
+                                            <div class="actions">
+                                                <a href="{{ invoice.update_url }}" class="text-black">
+                                                    <i class="feather-edit-3 me-1"></i> Modifier
+                                                </a>
+                                                <a class="text-danger" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#invoiceDeleteModal-{{ forloop.counter }}">
+                                                    <i class="feather-trash-2 me-1"></i> Supprimer
+                                                </a>
+                                                <a class="text-success" href="{% url 'show_invoice' invoice.id %}" >
+                                                    <i class="feather-eye"></i> Voir
+                                                </a>
+                                                <a class="text-success" href="{% url 'invoice_pdf' invoice.id %}" >
+                                                    
+                                                    <i class="feather-download"></i> Télécharger
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="tablepagination" class="dataTables_wrapper"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
+
+<script src="{% static 'admin/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
+
+<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
+
+<script src="{% static 'admin/js/script.js' %}"></script>
+{% endblock %}

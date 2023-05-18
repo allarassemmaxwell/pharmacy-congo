@@ -1,0 +1,21 @@
+<div class="modal fade contentmodal" id="invoiceDeleteModal-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header border-bottom-0 justify-content-end">
+                <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-wrap text-center">
+                    <div class="del-icon"><i class="feather-x-circle"></i></div>
+                    <h2>Etes-vous sûr que vous voulez supprimer</h2>
+                    <p>“{{ invoice.customer_name }}”</p>
+                    <div class="submit-section">
+                        <a href="#" class="btn btn-danger" data-bs-dismiss="modal">Non</a>
+                        <a href="{{ invoice.delete_url }}" class="btn btn-success me-2">Oui</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
