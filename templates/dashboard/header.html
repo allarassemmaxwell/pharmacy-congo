@@ -87,7 +87,7 @@
                     {% if user.user_profile.photo %}
                         <img src="{{ user.user_profile.photo.url }}" alt="{{ user.first_name }} {{ user.first_name }}">
                     {% else %}
-                        <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{ user.first_name }}">
+                        <img src="{% static 'admin/img/person.svg' %}" alt="{{ user.first_name }} {{  user.last_name  }}">
                     {% endif %}
                     <span class="status online"></span>
                 </span>

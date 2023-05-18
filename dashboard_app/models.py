@@ -249,6 +249,8 @@ class Stock(models.Model):
 
     def update_url(self):
         return reverse("stock_update", args=[str(self.id)])
+    
+
 
     class Meta:
         ordering = ('-timestamp',)
@@ -754,3 +756,77 @@ class Fridge(models.Model):
         ordering = ('-timestamp',)
         
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE MODEL
+
+class Invoice(models.Model):
+    PAYMENT_CHOICES=(
+        ('Carte Bancaire', 'Carte Bancaire'),
+        ('Cheques', 'Cheques'),
+        ('Cash', 'Cash'),
+        ('En Attente', 'En Attente'),
+    )
+    
+    INVOICE_CHOICES=(
+        ('Proformat', 'Proformat'),
+        ('Facture', 'Facture'),
+        ('Reçu', 'Reçu'),
+        
+    )
+    # order_id           = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    customer_name      = models.CharField(_("Nom du Client"), max_length=255, null=False, blank=False, unique=True)
+    customer_phone     = models.CharField(_("Téléphone Client"), max_length=255, null=False, blank=False, unique=True)
+    customer_address   = models.CharField(_("Addresse Client"), max_length=255, null=False, blank=False, unique=True)
+    doc_name           = models.CharField(_("Nom du Personel"), max_length=255, null=False, blank=False, unique=True)
+    doc_phone          = models.CharField(_("Téléphone Personel"), max_length=255, null=False, blank=False, unique=True)
+    doc_address        = models.CharField(_("Addresse Personel"), max_length=255, null=False, blank=False, unique=True)
+    payment_mode       = models.CharField(_("Mode de Paiement"), max_length=100, choices=PAYMENT_CHOICES, null=True, blank=True)
+    unity_price        = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    quantity           = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    vat                = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
+    description        = models.CharField(_("Designation du Produit"), max_length=255, null=False, blank=False, unique=True)
+    issued_date        = models.DateField(_("Date D'emission"), blank=True, null=True, auto_now_add=True)
+    payment_date       = models.DateField(_("Date de paiement"), blank=True, null=True)
+    invoice_type       = models.CharField(_("Type de Facturation"), max_length=100, choices=INVOICE_CHOICES, null=True, blank=True)
+    
+    total              = models.DecimalField(_("Total Produit par Ligne (cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    sub_total          = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
+    global_total       = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
+    
+    active             = models.BooleanField(_("Est actif"), default=True)
+    timestamp          = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated            = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    # slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
+    def __str__(self):
+        return self.customer_name
+
+    def delete_url(self):
+        return reverse("invoice_delete", args=[str(self.id)])
+
+    def update_url(self):
+        return reverse("invoice_update", args=[str(self.id)])
+
+
+    class Meta:
+        ordering = ('-timestamp',)
+        

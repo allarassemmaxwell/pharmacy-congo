@@ -79,11 +79,19 @@
                                             </h2>
                                         </td>
                                         <td>
-                                            <a href="{% url 'stock_detail' stock.id %}">{{ stock.quantity }}</a>
+                                            {% if stock.quantity <= stock.reorder_level %}
+								                <div style="background-color: orange;">
+                                                    <a href="{% url 'stock_detail' stock.id  %}">{{ stock.quantity }}</a>
+                                                </div>
+                                            {% else %}
+                                                <a href="{% url 'stock_detail' stock.id  %}">{{ stock.quantity }}</a>
+                                            {% endif %}
                                         </td>
                                         <td>{{ stock.unity_price }} f cfa</td>
                                         <td>{{ stock.total }} f cfa</td>
-                                        <td>{{ stock.reorder_level }} </td>
+                                        <td>
+                                            <a href="{% url 'reorder_level' stock.id  %}">{{ stock.reorder_level }} </a>
+                                        </td>
                                         <td>{{ stock.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">

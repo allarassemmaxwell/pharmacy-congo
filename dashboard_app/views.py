@@ -1,11 +1,19 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.utils.translation import activate, gettext_lazy as _
+from decimal import Decimal
+from django.core.exceptions import ObjectDoesNotExist
 
 # from django.urls import reverse
-# from django.http import Http404
+from django.http import Http404
 # from uuid import UUID
+
+# for PDF
+from .pdf import html2pdf
+from django.template.loader import render_to_string
+from io import BytesIO
+from xhtml2pdf import pisa
 
 from .models import *
 from django.contrib import messages
@@ -1500,8 +1508,8 @@ def stock_update_view(request, id=None):
 
 # 👉 detail items#
 @login_required
-def stock_detail_view(request, pk):
-    stocks = Stock.objects.get(id=pk)
+def stock_detail_view(request, id):
+    stocks = Stock.objects.get(id=id)
     context = {
         "stocks": stocks,
     }
@@ -1521,42 +1529,44 @@ def stock_detail_view(request, pk):
 # ISSUE ITEMS
 # 👉 issue items (move out)
 @login_required
-def issue_items_view(request, pk):
-    try:
-        uuid_obj = UUID(pk, version=4)
-    except ValueError:
-        raise Http404("Invalid ID")
-    
-    # ... your view code here ...
-
-    try:
-        url = reverse('issue_items', args=[pk])
-    except NoReverseMatch:
-        # Handle the case where the URL pattern doesn't exist
-        # or the reverse function failed to reverse the URL
-        # for some other reason.
-        url = None
-    stocks = Stock.objects.get(id=pk)
+def issue_items_view(request, id):
+    stocks = Stock.objects.get(id=id)
     form = IssueForm(request.POST or None, instance=stocks)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.quantity -= instance.issue_quantity
         instance.issue_by = str(request.user)
-        messages.success(request, "Émis avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
+        messages.success(request, "Issued SUCCESSFULLY. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
         instance.save()
 
-        return redirect('stock' +str(instance.id))
-		# return HttpResponseRedirect(instance.get_absolute_url())
+        return redirect('stock_detail', id=instance.id)
 
     context = {
-        # "title": 'Issue ' + str(queryset.item_name),
+        "title": 'Issue ' + str(stocks.item_name),
         "stocks": stocks,
         "form": form,
-        "username": 'Émis Par: ' + str(request.user),
+        "username": 'Issue By: ' + str(request.user),
     }
-    template = "dashboard/stock/stock.html"
+
+    template = "dashboard/stock/add_issue.html"
     return render(request, template, context)
     # return render(request, "add_items.html", context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1573,25 +1583,24 @@ def issue_items_view(request, pk):
 
 # 👉 receive items
 @login_required
-def receive_items_view(request, pk):
-    stocks = Stock.objects.get(id=pk)
+def receive_items_view(request, id):
+    stocks = get_object_or_404(Stock, id=id)
     form = ReceiveForm(request.POST or None, instance=stocks)
+
     if form.is_valid():
         instance = form.save(commit=False)
         instance.quantity += instance.receive_quantity
         instance.save()
-        messages.success(request, "Reçu avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + "s now in Store")
-        return redirect('stock' + str(instance.id))
-        # return HttpResponseRedirect(instance.get_absolute_url())
+
+        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
+        return redirect('stock_detail', id=instance.id)
 
     context = {
-        # "title": 'Reaceive ' + str(queryset.item_name),
-        "instance": stocks,
+        "stocks": stocks,
         "form": form,
-        "username": 'Reçu Par: ' + str(request.user),
+        "username": f"Reçu Par: {request.user}",
     }
-    template = "dashboard/stock/stock.html"
-    # return render(request, "add_items.html", context)
+    template = "dashboard/stock/add_receive.html"
     return render(request, template, context)
 
 
@@ -1608,22 +1617,21 @@ def receive_items_view(request, pk):
 
 # 👉 reorder items
 @login_required
-def reorder_level_view(request, pk):
-    stocks = Stock.objects.get(id=pk)
+def reorder_level_view(request, id):
+    stocks = Stock.objects.get(id=id)
     form = ReorderLevelForm(request.POST or None, instance=stocks)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        messages.success(request, "Niveau de réapprovisionnement pour " + str(instance.item_name) + " est mis à jour en " + str(instance.reorder_level))
-
+        messages.success(request, "Niveau de réapprovisionnement pour " + str(stocks.item_name) + " est mis à jour en " + str(stocks.reorder_level))
         return redirect("stock")
+    
     context = {
-            "instance": stocks,
-            "form": form,
-        }
-    template = "dashboard/stock/stock.html"
+        "stocks": stocks,
+        "form": form,
+    }
+    template = "dashboard/stock/add_reorder.html"
     return render(request, template, context)
-
 
 
 
@@ -2067,6 +2075,155 @@ def fridge_update_view(request, id):
     return render(request, template, context)
 
 
+
+
+
+
+
+
+
+
+
+
+# INVOICE MANAGEMENT
+
+# INVOICE VIEW 
+@login_required
+def invoice_view(request):
+    invoices = Invoice.objects.all()
+    context  = {'invoices': invoices}
+    template = "dashboard/invoices/invoice.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+# SHOW INVOICE VIEW 
+@login_required
+def show_invoice_view(request, id):
+    invoice = get_object_or_404(Invoice, id=id)
+    context = {'invoice': invoice}
+    template = "dashboard/invoices/invoice_pdf.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE ADD VIEW 
+@login_required
+def invoice_add_view(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            invoice = form.save(commit=False)
+
+            # Calculate the total
+            invoice.total = invoice.unity_price * invoice.quantity
+
+            # Save the object
+            invoice.save()
+
+            messages.success(request, _("Facture créée avec succès."))
+            return redirect('invoice')
+    else:
+        form = InvoiceForm()
+
+    context = {'form': form}
+    template = "dashboard/invoices/invoice-add.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE DELETE VIEW
+
+@login_required
+def invoice_delete_view(request, id):
+    invoice = get_object_or_404(Invoice, id=id, active=True)
+    invoice.delete()
+    messages.success(request, _("Facture supprimée avec succès."))
+    return redirect('invoice')
+
+
+
+
+
+
+
+
+
+
+
+# INVOICE UPDATE VIEW FUNCTION
+@login_required
+def invoice_update_view(request, id):
+    obj  = get_object_or_404(Invoice, id=id)
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Facture mis à jour avec succès."))
+            return redirect('invoice')
+    else:
+        form = InvoiceForm(instance=obj)
+    # image  = obj.product_image.file
+    context  = { 
+        'form': form,
+        # 'image': image
+    }
+    template = "dashboard/invoices/invoice-update.html"
+    return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+# 👉 to generate pdf
+def invoice_pdf_view(request, id):
+    invoice = get_object_or_404(Invoice, id=id)
+    context = {'invoice': invoice}
+
+    try:
+        pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+        if pdf:
+            response = HttpResponse(content_type='application/pdf')
+            invoice_name = invoice.customer_name  # Assuming customer_name is an attribute of the Invoice model
+            filename = f"facture_{invoice_name}.pdf"
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            response.write(pdf)
+            return response
+        else:
+            return HttpResponse("Error generating PDF", status=500)
+    except Exception as e:
+        return HttpResponse(f"Error generating PDF: {str(e)}", status=500)
 
 
 
