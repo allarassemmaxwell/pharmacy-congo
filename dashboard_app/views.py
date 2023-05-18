@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # from django.urls import reverse
 from django.http import Http404
+import csv
 # from uuid import UUID
 
 # for PDF
@@ -1425,10 +1426,33 @@ def stock_category_update_view(request, slug=None):
 # STOCK VIEW 
 @login_required
 def stock_view(request):
-    stocks  = Stock.objects.all()
-    context = {'stocks': stocks}
+    stocks = Stock.objects.all()
+    form = StockSearchForm(request.POST or None)
+    context = {
+        'stocks': stocks,
+        'form': form,
+    }
+    
+    if request.method == 'POST':
+        category = form['category'].value()
+        item_name = form['item_name'].value()
+        stocks = Stock.objects.filter(category__name__icontains=category,
+                                      item_name__icontains=item_name)
+        context['stocks'] = stocks
+
+        if form['export_to_CSV'].value() == True:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="Liste de stock.csv"'
+            writer = csv.writer(response)
+            writer.writerow(['Catégorie', 'Nom Produit', 'Quantité en Stock'])
+            for stock in stocks:
+                writer.writerow([stock.category.name, stock.item_name, stock.quantity])
+            return response
+    
     template = "dashboard/stock/stock.html"
     return render(request, template, context)
+
+
 
 
 
@@ -1456,6 +1480,8 @@ def stock_add_view(request):
     context  = {'form': form}
     template = "dashboard/stock/stock-add.html"
     return render(request, template, context)
+
+
 
 
 

@@ -508,7 +508,13 @@ class StockSearchForm(forms.ModelForm):
     export_to_CSV = forms.BooleanField(required=False)
     class Meta:
         model = Stock
-        fields = ['category', 'item_name']
+        fields = ['category', 'item_name', 'export_to_CSV' ]
+        
+        widgets = {
+            'category': forms.TextInput(attrs={'class': 'form-control'}),
+            'item_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 
 
 
