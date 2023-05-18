@@ -44,6 +44,34 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--👉 For research-->
+                    <form class="custom-validation" method="POST">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group form-focus">
+                                    {{ form.category|as_crispy_field }}
+                                </div>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ form.item_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-focus">
+                                    {{ form.export_to_CSV|as_crispy_field }}
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary save-btn"  style="margin-left: 20px;  value="Search">Search</button>
+                    </form>
+
+
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="datatable table table-borderless hover-table" id="data-table">
@@ -78,7 +106,7 @@
                                                 {% endif %}
                                             </h2>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             {% if stock.quantity <= stock.reorder_level %}
 								                <div style="background-color: orange;">
                                                     <a href="{% url 'stock_detail' stock.id  %}">{{ stock.quantity }}</a>
@@ -89,7 +117,7 @@
                                         </td>
                                         <td>{{ stock.unity_price }} f cfa</td>
                                         <td>{{ stock.total }} f cfa</td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             <a href="{% url 'reorder_level' stock.id  %}">{{ stock.reorder_level }} </a>
                                         </td>
                                         <td>{{ stock.timestamp|date:"d M Y" }}</td>

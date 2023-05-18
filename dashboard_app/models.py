@@ -237,6 +237,7 @@ class Stock(models.Model):
     unity_price      = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
     total            = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
     description      = models.TextField(_("Description"), null=False, blank=False)
+    export_to_CSV    = models.BooleanField(_("Export en CSV"), default=False)
     active           = models.BooleanField(_("Est actif"), default=True)
     timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
