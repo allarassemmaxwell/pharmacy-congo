@@ -51,24 +51,19 @@
                                         <th>Nom Client</th>
                                         <th>Type de Facturation</th>
                                         <th>Mode de Paiement</th>
-                                        
                                         <th>Date Paiement</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for invoice in invoices %}
                                     {% include 'dashboard/modal/invoice-delete.html' with invoice=invoice %}
-                                    
+                                    {% for invoice in invoices %}
                                     <tr>
-                                       
                                         <td>{{ invoice.customer_name }}</td>
-                                        <td>{{ invoice.invoice_type }}</td>
+                                        <td>{{ invoice.get_invoice_type_display }}</td>
                                         <td>{{ invoice.payment_mode }}</td>
-                                        
                                         <td>{{ invoice.payment_date }}</td>
-                                       
                                         <td>{{ invoice.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">
@@ -79,11 +74,10 @@
                                                     data-bs-target="#invoiceDeleteModal-{{ forloop.counter }}">
                                                     <i class="feather-trash-2 me-1"></i> Supprimer
                                                 </a>
-                                                <a class="text-success" href="{% url 'show_invoice' invoice.id %}" >
+                                                <a class="text-success" href="{% url 'show_invoice' invoice.id %}">
                                                     <i class="feather-eye"></i> Voir
                                                 </a>
-                                                <a class="text-success" href="{% url 'invoice_pdf' invoice.id %}" >
-                                                    
+                                                <a class="text-success" href="{% url 'invoice_pdf' invoice.id  %}">
                                                     <i class="feather-download"></i> Télécharger
                                                 </a>
                                             </div>
@@ -94,6 +88,7 @@
                             </table>
                         </div>
                     </div>
+                    
                 </div>
                 <div id="tablepagination" class="dataTables_wrapper"></div>
             </div>
