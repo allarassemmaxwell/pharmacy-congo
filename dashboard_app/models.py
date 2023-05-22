@@ -191,7 +191,7 @@ class Supplier(models.Model):
 
 
 class StockCategory(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(_("Nom Catégorie"), max_length=50, blank=True, null=True)
     active     = models.BooleanField(_("Est actif"), default=True)
     timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)

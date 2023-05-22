@@ -15,6 +15,22 @@ from .pdf import html2pdf
 from django.template.loader import render_to_string
 from io import BytesIO
 from xhtml2pdf import pisa
+import os
+from django.template.loader import get_template
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus.tables import Table
+import tempfile
+
+
+
+import pdfkit
+# config = pdfkit.configuration(wkhtmltopdf=r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
+
 
 from .models import *
 from django.contrib import messages
@@ -2148,7 +2164,6 @@ def show_invoice_view(request, id):
 
 
 
-
 # INVOICE ADD VIEW 
 @login_required
 def invoice_add_view(request):
@@ -2232,24 +2247,77 @@ def invoice_update_view(request, id):
 
 
 
+
+
+
+
+
+
+
+
+
 # 👉 to generate pdf
+
 def invoice_pdf_view(request, id):
     invoice = get_object_or_404(Invoice, id=id)
     context = {'invoice': invoice}
 
-    try:
-        pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
-        if pdf:
-            response = HttpResponse(content_type='application/pdf')
-            invoice_name = invoice.customer_name  # Assuming customer_name is an attribute of the Invoice model
-            filename = f"facture_{invoice_name}.pdf"
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
-            response.write(pdf)
-            return response
-        else:
-            return HttpResponse("Error generating PDF", status=500)
-    except Exception as e:
-        return HttpResponse(f"Error generating PDF: {str(e)}", status=500)
+    html = render_to_string('dashboard/invoices/invoice_pdf.html', context)
+    pdf_data = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+
+    if pdf_data is not None:
+        response = HttpResponse(content_type='application/pdf')
+        invoice_name = invoice[0].customer_name  # Assuming item_name is an attribute of Stock model
+        filename = f"invoice_{invoice_name}.pdf"
+        response['Content-Disposition'] = f'filename="{filename}"'
+        response.write(pdf_data)
+        return response
+
+    return HttpResponse("Error generating PDF", status=500)
+
+    
+    
+    # invoice = get_object_or_404(Invoice, id=id)
+    # context = {'invoice': invoice}
+
+    # html = render_to_string('dashboard/invoices/invoice_pdf.html', context)
+    # pdf_data = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+
+    # if pdf_data is not None:
+    #     response = HttpResponse(content_type='application/pdf')
+    #     invoice_name = invoice[0].customer_name  # Assuming item_name is an attribute of Stock model
+    #     filename = f"invoice_{invoice_name}.pdf"
+    #     response['Content-Disposition'] = f'filename="{filename}"'
+    #     response.write(pdf_data)
+    #     return response
+
+    # return HttpResponse("Error generating PDF", status=500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
