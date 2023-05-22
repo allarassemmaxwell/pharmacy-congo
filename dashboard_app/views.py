@@ -1578,7 +1578,7 @@ def issue_items_view(request, id):
         instance = form.save(commit=False)
         instance.quantity -= instance.issue_quantity
         instance.issue_by = str(request.user)
-        messages.success(request, "Produit sortie avec  Succès. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
+        messages.success(request, "Produit sortie avec  Succès. " + str(instance.quantity) + " " + str(instance.item_name) + " laissé en Stock")
         instance.save()
 
         return redirect('stock_detail', id=instance.id)
@@ -1634,7 +1634,7 @@ def receive_items_view(request, id):
         instance.quantity += instance.receive_quantity
         instance.save()
 
-        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s dans le  Stock")
+        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name} dans le  Stock")
         return redirect('stock_detail', id=instance.id)
 
     context = {
