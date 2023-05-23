@@ -257,7 +257,7 @@ def create_notification_slug(instance, new_slug=None):
     slug = random_string(15)
     if new_slug is not None:
         slug = new_slug
-    ourQuery = Notification.objects.filter(slug=slug)
+    ourQuery = Notificaty.objects.filter(slug=slug)
     exists = ourQuery.exists()
     if exists:
         new_slug = "%s-%s" % (slug, ourQuery.first().id)

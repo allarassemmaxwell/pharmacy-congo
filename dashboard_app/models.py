@@ -191,11 +191,12 @@ class Supplier(models.Model):
 
 
 class StockCategory(models.Model):
-    name = models.CharField(_("Nom Catégorie"), max_length=50, blank=True, null=True)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    name      = models.CharField(_("Nom Catégorie"), max_length=50, blank=True, null=True)
+    active    = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    
     def __str__(self):
         return self.name
     
@@ -648,7 +649,7 @@ class ServiceCategory(models.Model):
 # SERVICE MODEL
 class Service(models.Model):
     category    = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=False, blank=False, related_name="service_category")
-    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False)
+    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
     photo       = models.ImageField(_("Image"), upload_to="Service/%Y/%m/%d/", null=True, blank=True)
     description = models.TextField(_("Description"), null=False, blank=False)
     active      = models.BooleanField(_("Active"), default=True)

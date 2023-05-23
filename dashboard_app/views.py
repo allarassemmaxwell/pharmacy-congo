@@ -785,11 +785,11 @@ def patient_update_view(request, slug=None):
         patient_form = PatientForm(request.POST, request.FILES, instance=obj)
         if not user_boolean and patient_form.is_valid():
             patient_form.save()
-            messages.success(request, _("Patient modifié(e) avec succès."))
+            messages.success(request, _("Patient(e) modifié(e) avec succès."))
             return redirect('patient')
         else:
             user_form.save()
-            messages.success(request, _("Patient modifié(e) avec succès."))
+            messages.success(request, _("Patient(e) modifié(e) avec succès."))
             return redirect('patient')
     else:
         user_form    = UserUpdateForm(instance=obj.user)
@@ -1442,18 +1442,17 @@ def stock_category_update_view(request, slug=None):
 # STOCK VIEW 
 @login_required
 def stock_view(request):
-    stocks = Stock.objects.all()
-    form = StockSearchForm(request.POST or None)
+    stocks  = Stock.objects.all()
+    form    = StockSearchForm(request.POST or None)
     context = {
         'stocks': stocks,
         'form': form,
     }
     
     if request.method == 'POST':
-        category = form['category'].value()
+        category  = form['category'].value()
         item_name = form['item_name'].value()
-        stocks = Stock.objects.filter(category__name__icontains=category,
-                                      item_name__icontains=item_name)
+        stocks    = Stock.objects.filter(category__name__icontains=category, item_name__icontains=item_name)
         context['stocks'] = stocks
 
         if form['export_to_CSV'].value() == True:
@@ -1578,6 +1577,9 @@ def issue_items_view(request, id):
         instance = form.save(commit=False)
         instance.quantity -= instance.issue_quantity
         instance.issue_by = str(request.user)
+        update_total   = instance.unity_price * instance.quantity
+        instance.total = update_total
+
         messages.success(request, "Issued SUCCESSFULLY. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
         instance.save()
 
@@ -1627,12 +1629,15 @@ def issue_items_view(request, id):
 @login_required
 def receive_items_view(request, id):
     stocks = get_object_or_404(Stock, id=id)
-    form = ReceiveForm(request.POST or None, instance=stocks)
+    form   = ReceiveForm(request.POST or None, instance=stocks)
 
     if form.is_valid():
         instance = form.save(commit=False)
         instance.quantity += instance.receive_quantity
+        update_total   = instance.unity_price * instance.quantity
+        instance.total = update_total
         instance.save()
+
 
         messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
         return redirect('stock_detail', id=instance.id)
@@ -1699,7 +1704,7 @@ def appointment_symptom_view(request):
         form = AppointmentSymptomForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Symptoms Rendez-vous créé avec succès."))
+            messages.success(request, _("Symptoms créé avec succès."))
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm()
