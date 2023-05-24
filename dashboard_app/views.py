@@ -1643,6 +1643,7 @@ def receive_items_view(request, id):
         instance.total = update_total
         instance.save()
 
+
         messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
         return redirect('stock_detail', id=instance.id)
 
