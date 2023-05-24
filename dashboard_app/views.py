@@ -790,11 +790,11 @@ def patient_update_view(request, slug=None):
         patient_form = PatientForm(request.POST, request.FILES, instance=obj)
         if not user_boolean and patient_form.is_valid():
             patient_form.save()
-            messages.success(request, _("Patient modifié(e) avec succès."))
+            messages.success(request, _("Patient(e) modifié(e) avec succès."))
             return redirect('patient')
         else:
             user_form.save()
-            messages.success(request, _("Patient modifié(e) avec succès."))
+            messages.success(request, _("Patient(e) modifié(e) avec succès."))
             return redirect('patient')
     else:
         user_form    = UserUpdateForm(instance=obj.user)
@@ -1447,18 +1447,17 @@ def stock_category_update_view(request, slug=None):
 # STOCK VIEW 
 @login_required
 def stock_view(request):
-    stocks = Stock.objects.all()
-    form = StockSearchForm(request.POST or None)
+    stocks  = Stock.objects.all()
+    form    = StockSearchForm(request.POST or None)
     context = {
         'stocks': stocks,
         'form': form,
     }
     
     if request.method == 'POST':
-        category = form['category'].value()
+        category  = form['category'].value()
         item_name = form['item_name'].value()
-        stocks = Stock.objects.filter(category__name__icontains=category,
-                                      item_name__icontains=item_name)
+        stocks    = Stock.objects.filter(category__name__icontains=category, item_name__icontains=item_name)
         context['stocks'] = stocks
 
         if form['export_to_CSV'].value() == True:
@@ -1583,7 +1582,10 @@ def issue_items_view(request, id):
         instance = form.save(commit=False)
         instance.quantity -= instance.issue_quantity
         instance.issue_by = str(request.user)
-        messages.success(request, "Produit sortie avec  Succès. " + str(instance.quantity) + " " + str(instance.item_name) + " laissé en Stock")
+        update_total   = instance.unity_price * instance.quantity
+        instance.total = update_total
+
+        messages.success(request, "Issued SUCCESSFULLY. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
         instance.save()
 
         return redirect('stock_detail', id=instance.id)
@@ -1632,14 +1634,16 @@ def issue_items_view(request, id):
 @login_required
 def receive_items_view(request, id):
     stocks = get_object_or_404(Stock, id=id)
-    form = ReceiveForm(request.POST or None, instance=stocks)
+    form   = ReceiveForm(request.POST or None, instance=stocks)
 
     if form.is_valid():
         instance = form.save(commit=False)
         instance.quantity += instance.receive_quantity
+        update_total   = instance.unity_price * instance.quantity
+        instance.total = update_total
         instance.save()
 
-        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name} dans le  Stock")
+        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
         return redirect('stock_detail', id=instance.id)
 
     context = {
@@ -1704,7 +1708,7 @@ def appointment_symptom_view(request):
         form = AppointmentSymptomForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Symptoms Rendez-vous créé avec succès."))
+            messages.success(request, _("Symptoms créé avec succès."))
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm()
@@ -1792,7 +1796,7 @@ def appointment_add_view(request):
             hour = form.cleaned_data.get("hour")
             appointment = form.save()
             subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
-            Notification.objects.create(appointment=appointment, subject=subject)
+            Notificaty.objects.create(appointment=appointment, subject=subject)
             messages.success(request, _("Rendez-Vous créé avec succès."))
             return redirect('appointment')
     else:
@@ -2029,7 +2033,7 @@ def sale_update_view(request, id):
 # NOTIFICATION   FUNCTION
 @login_required
 def notification_view(request):
-    notifications = Notification.objects.filter(active=True)
+    notifications = Notificaty.objects.filter(active=True)
     context  = {'notifications': notifications}
     template = "dashboard/notification/notification.html"
     return render(request, template, context)
@@ -2588,7 +2592,7 @@ def rapport_annuel_view(request):
 # GLOBAL  NOTIFICATION FUNCTION
 def global_notification_view(request):
     notifications=[]
-    for notification in Notification.objects.all():
+    for notification in Notificaty.objects.all():
         if notification.contact and notification.contact.read == False or notification.appointment and notification.appointment.read == False:
             notifications.append(notification)
     return {'GLOBAL_NOTIFICATIONS': notifications}

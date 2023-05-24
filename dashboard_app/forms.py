@@ -269,7 +269,7 @@ class BlogForm(forms.ModelForm):
         ]
         widgets = {
             'name':        forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':15}),
         }
 
 
@@ -371,7 +371,7 @@ class ServiceForm(forms.ModelForm):
         ]
         widgets = {
             'name':        forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':15}),
         }
 
 
@@ -822,9 +822,9 @@ class SubscriberResponseForm(forms.ModelForm):
 
 
 # NOTIFICATION FORM
-class NotificationForm(forms.ModelForm):
+class NotificatyForm(forms.ModelForm):
     class Meta:
-        model  = Notification
+        model  = Notificaty
         fields = [
             "contact",
             "appointment",
