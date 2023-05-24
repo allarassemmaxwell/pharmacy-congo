@@ -1,609 +1,261 @@
-{% extends "dashboard/base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
-{% block title %}Invoice{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factures</title>
+    <style>
+        /* Reset default margin and padding */
+        body, h1, h2, h3, h4, h5, h6, p, ol, ul, li {
+            margin: 0;
+            padding: 0;
+        }
 
+        body {
+            font-family: "Your Handwriting Font", cursive;
+            font-size: 14px;
+            line-height: 1.4;
+        }
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'admin/css/feather.css' %}">
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-<link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
+        .invoice-header h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
 
-<link rel="stylesheet" href="{% static 'admin/plugins/select2/css/select2.min.css' %}">
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-<link rel="stylesheet" href="{% static 'admin/plugins/datatables/datatables.min.css' %}">
-{% endblock %}
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
 
-{% block content %}
-<style>
-    html {
-        height: 100%;
-    }
+        .customer-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-    body {
-        background-color: #fff;
-        color: #272b41;
-        font-family: poppins, sans-serif;
-        font-size: .9375rem;
-        height: 100%;
-        overflow-x: hidden;
-    }
+        .customer-info .left {
+            width: 50%;
+        }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        color: #272b41;
-        font-weight: 500;
-    }
+        .customer-info .right {
+            width: 50%;
+            text-align: right;
+        }
 
-    .h1,
-    h1 {
-        font-size: 2.25rem;
-    }
+        .customer-info p {
+            margin-bottom: 5px;
+            color: #333333;
+        }
 
-    .h2,
-    h2 {
-        font-size: 1.875rem;
-    }
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
 
-    .h3,
-    h3 {
-        font-size: 1.5rem;
-    }
+        .company-info .left {
+            width: 50%;
+        }
 
-    .h4,
-    h4 {
-        font-size: 1.125rem;
-    }
+        .company-info .right {
+            width: 50%;
+            text-align: right;
+        }
 
-    .h5,
-    h5 {
-        font-size: 1rem;
-    }
+        .company-info p {
+            margin-bottom: 5px;
+            color: #333333;
+        }
 
-    .h6,
-    h6 {
-        font-size: .875rem;
-    }
+        .payment-info {
+            margin-top: 20px;
+        }
 
-    a {
-        color: #2e3842;
-    }
+        .payment-info p {
+            margin-bottom: 5px;
+            color: #333333;
+        }
 
-    a:hover {
-        color: #09dca4;
-    }
+        .invoice-items {
+            margin-top: 20px;
+        }
 
-    .table {
-        color: #272b41;
-        max-width: 100%;
-        margin-bottom: 0;
-        width: 100%;
-    }
+        .invoice-items table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .table-striped>tbody>tr:nth-of-type(2n+1) {
-        background-color: #f8f9fa;
-    }
+        .invoice-items th,
+        .invoice-items td {
+            border: 1px solid #cccccc;
+            padding: 6px;
+        }
 
-    .table.no-border>tbody>tr>td,
-    .table>tbody>tr>th,
-    .table.no-border>tfoot>tr>td,
-    .table.no-border>tfoot>tr>th,
-    .table.no-border>thead>tr>td,
-    .table.no-border>thead>tr>th {
-        border-top: 0;
-        padding: 10px 8px;
-    }
+        .invoice-items th {
+            background-color: #eaf6ff;
+            text-align: left;
+        }
 
-    .table-nowrap td,
-    .table-nowrap th {
-        white-space: nowrap;
-    }
+        .invoice-items td {
+            text-align: right;
+        }
 
-    .table.dataTable {
-        border-collapse: collapse !important;
-    }
+        .invoice-items tr:nth-child(even) {
+            background-color: #eaf6ff;
+        }
 
-    table.table td h2 {
-        display: inline-block;
-        font-size: inherit;
-        font-weight: 400;
-        margin: 0;
-        padding: 0;
-        vertical-align: middle;
-    }
+        .invoice-items tr:nth-child(odd) {
+            background-color: white;
+        }
 
-    table.table td h2.table-avatar {
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-        font-size: inherit;
-        font-weight: 400;
-        margin: 0;
-        padding: 0;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
+        .invoice-items td:first-child {
+            text-align: left;
+        }
 
-    table.table td h2 a {
-        color: #272b41;
-    }
+        .invoice-total {
+            margin-top: 20px;
+        }
 
-    table.table td h2 a:hover {
-        color: #10defd;
-    }
+        .invoice-total table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    table.table td h2 span {
-        color: #888;
-        display: block;
-        font-size: 12px;
-        margin-top: 3px;
-    }
+        .invoice-total th,
+        .invoice-total td {
+            border: 1px solid #cccccc;
+            padding: 6px;
+        }
 
-    .table thead {
-        border-bottom: 1px solid rgba(0, 0, 0, .03);
-    }
+        .invoice-total th {
+            background-color: #eaf6ff;
+            text-align: right;
+            font-weight: bold;
+        }
 
-    .table thead tr th {
-        border-bottom: 1px solid rgba(0, 0, 0, .05);
-    }
+        .invoice-total td {
+            text-align: right;
+        }
 
-    .table tbody tr {
-        border-bottom: 1px solid rgba(0, 0, 0, .05);
-    }
+        .delivery-info {
+            margin-top: 60px;
+            text-align: right;
+        }
 
-    .table tbody tr:last-child {
-        border-color: transparent;
-    }
-    
-    .table.table-center td,
-    .table.table-center th {
-        vertical-align: middle;
-    }
-    
-    .table-hover tbody tr:hover td {
-        color: #474648;
-    }
-    
-    .table-striped thead tr {
-        border-color: transparent;
-    }
-    
-    .table-striped tbody tr {
-        border-color: transparent;
-    }
-    
-    .table-striped tbody tr:nth-of-type(even) {
-        background-color: rgba(255, 255, 255, .3);
-    }
-    
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: rgba(235, 235, 235, .4);
-    }
-    
-    .table-bordered {
-        border: 1px solid rgba(0, 0, 0, .05) !important;
-    }
-    
-    .table-bordered th,
-    .table-bordered td {
-        border-color: rgba(0, 0, 0, .05);
-    }
-    
-    .card-table .card-body {
-        padding: 0;
-    }
-    
-    .card-table .card-body .table>thead>tr>th {
-        border-top: 0;
-    }
-    
-    
-    
-    .card-table .table tr td:last-child,
-    .card-table .table tr th:last-child {
-        padding-right: 1.5rem;
-    }
-    
-    .card-table .table td,
-    .card-table .table th {
-        border-top: 1px solid #e2e5e8;
-        padding: 1rem .75rem;
-        white-space: nowrap;
-    }
-    
-    
-    
-    table.table td,
-    table.table th {
-        border-color: #dee2e6;
-    }
-    
-    .table-bordered td,
-    .table-bordered th {
-        border: 1px solid #dee2e6;
-    }
-    
-    .breadcrumb-bar {
-        background-color: #15558d;
-        padding: 15px 0;
-    }
-    
-    .breadcrumb-bar-one {
-        background-color: #3e5463;
-    }
-    
-    .breadcrumb-bar-two {
-        background-color: #00284f;
-    }
-    
-    .breadcrumb-bar-three {
-        background-color: #0071dc;
-    }
-    
-    .breadcrumb-bar-four {
-        background-color: #263238;
-    }
-    
-    .breadcrumb-bar-five {
-        background-color: #15558d;
-    }
-    
-    .breadcrumb-bar-six {
-        background: url(../img/ban-bg-01.png), url(../img/ban-bg-02.png), #f8f8f8;
-        background-position: left, right;
-        background-repeat: no-repeat;
-        padding: 40px 0;
-    }
-    
-    .breadcrumb-bar .breadcrumb-title {
-        color: #fff;
-        font-size: 22px;
-        font-weight: 700;
-        margin: 5px 0 0;
-    }
-    
-    .breadcrumb-bar-six .breadcrumb-title {
-        font-size: 32px;
-        font-weight: 600;
-        margin: 0 0 10px;
-    }
-    
-    .breadcrumb-bar-six .page-breadcrumb ol {
-        font-size: 16px;
-    }
-    
-    .page-breadcrumb ol {
-        background-color: transparent;
-        font-size: 12px;
-        margin-bottom: 0;
-        padding: 0;
-    }
-    
-    .breadcrumb-bar-six .page-breadcrumb ol li a,
-    .breadcrumb
-    -bar-six .page-breadcrumb ol li.active {
-    color: rgba(39, 43, 65, .5);
-    font-weight: 500;
-    }
+        .signature {
+            margin-top: 20px;
+            text-align: right;
+        }
 
-    .breadcrumb-bar-six .page-breadcrumb ol li a:hover {
-        color: #0de0fe;
-    }
-    
-    .page-breadcrumb ol li a {
-        color: #fff;
-    }
-    
-    .page-breadcrumb ol li.active {
-        color: #fff;
-    }
-    
-    .page-breadcrumb .breadcrumb-item+.breadcrumb-item:before {
-        color: #fff;
-        font-size: 10px;
-    }
-    
-    .breadcrumb-bar-six .page-breadcrumb .breadcrumb-item+.breadcrumb-item:before {
-        color: rgba(39, 43, 65, .5);
-        font-family: "font awesome 5 free";
-        padding-right: 6px;
-        vertical-align: middle;
-        content: "\f105";
-        color: #a2a1a1;
-        font-size: 16px;
-        font-weight: 700;
-    }
-    
-    .invoice-content {
-        background-color: #fff;
-        border: 1px solid #f0f0f0;
-        border-radius: 4px;
-        margin-bottom: 30px;
-        padding: 30px;
-    }
-    
-    .invoice-item .invoice-logo {
-        margin-bottom: 30px;
-    }
-    
-    .invoice-item .invoice-logo img {
-        width: auto;
-        max-height: 52px;
-    }
-    
-    .invoice-item .invoice-text h2 {
-        color: #272b41;
-        font-size: 36px;
-        font-weight: 600;
-    }
-    
-    .invoice-item .invoice-details {
-        text-align: right;
-        color: #757575;
-        font-weight: 500;
-    }
-    
-    .invoice-item .invoice-details strong {
-        color: #272b41;
-    }
-    
-    .invoice-item .invoice-details-two {
-        text-align: left;
-    }
-    
-    .invoice-item .invoice-text {
-        padding-top: 42px;
-        padding-bottom: 36px;
-    }
-    
-    .invoice-item .invoice-text h2 {
-        font-weight: 400;
-    }
-    
-    .invoice-info {
-        margin-bottom: 30px;
-    }
-    
-    .invoice-info p {
-        margin-bottom: 0;
-    }
-    
-    .invoice-info.invoice-info2 {
-        text-align: right;
-    }
-    
-    .invoice-item .customer-text {
-        font-size: 18px;
-        color: #272b41;
-        font-weight: 600;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .invoice-table tr th,
-    .invoice-table tr td,
-    .invoice-table-two tr th,
-    .invoice-table-two tr td {
-        color: #272b41;
-        font-weight: 600;
-        padding: 10px 20px;
-        line-height: inherit;
-    }
-    
-    .invoice-table tr td,
-    .invoice-table-two tr td {
-        color: #757575;
-        font-weight: 500;
-    }
-    
-    .invoice-table-two {
-        margin-bottom: 0;
-    }
-    
-    .invoice-table-two tr th,
-    .invoice-table-two tr td {
-        border-top: 0;
-    }
-    
-    .invoice-table-two tr td {
-        text-align: right;
-    }
-    
-    .invoice-info h5 {
-        font-size: 16px;
-        font-weight: 500;
-    }
-    
-    .other-info {
-        margin-top: 10px;
-    }
-    
-    .tab-content.schedule-cont .card-title {
-        margin-bottom: 10px;
-    }
-    
-</style>
-
-
-
-<div class="breadcrumb-bar">
-    <div class="container-fluid">
-      <div class="row align-items-center">
-        <div class="col-md-12 col-12">
-          <nav aria-label="breadcrumb" class="page-breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page">Invoice View</li>
-            </ol>
-          </nav>
-          <h2 class="breadcrumb-title">Invoice View</h2>
-        </div>
-      </div>
+        .signature p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{% static 'assets/img/logsup.png' %}" alt="Company Logo">
     </div>
-  </div>
-  <div class="page-header">
-    <div class="row align-items-center">
-        <div class="col-md-12 d-flex justify-content-end">
-            <div class="doc-badge me-3"><a href="/">Accueil</a></div>
-            <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
+    <div class="invoice-header">
+        <h1>{{invoice.invoice_type}}</h1>
+        <h3>{{invoice.id}}</h3>
+    </div>
+    <div class="customer-info">
+        <div class="left">
+            <p>Compagnie: <strong>Log Support</strong></p>
+            <p>Telephone: 00123-456-789</p>
+            <p>Email: logsupport@gmail.com</p>
+            <p>Address: Alpha, Congo/Kinshasa/Brazza </p>
+            <p>Date: {{ now|date:"j F, Y" }}</p> <!-- a corriger-->
             
         </div>
+        <div class="right">
+            <p>Nom Client:  <strong>{{ invoice.customer_name }}</strong></p>
+            <p>Telephone Client: {{ invoice.customer_phone }}</p>
+            <p>Addresse Client: {{ invoice.customer_address }}</p>
+        </div>
     </div>
-</div>
-
-
-    
-<div class="content">
-
-    <div class="container-fluid">
-        
-            <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-                <div class="invoice-content">
-                <div class="invoice-item">
-                    <div class="row">
-                    <div class="col-md-6">
-                        <div class="invoice-logo">
-                        <img src="/static/assets/img/logsup.png" style="height: 70px; width:70px" alt="logo">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="invoice-details">
-                        <strong>Num Commande: </strong>#00124 <br>
-                        <strong>Délivré:</strong> {{invoice.issued_date}}
-                        </p>
-                    </div>
-                    </div>
-                </div>
-                <div class="invoice-item">
-                    <div class="row">
-                    <div class="col-md-6">
-                        <div class="invoice-info">
-                        <strong class="customer-text">Type de Facturation: {{invoice.invoice_type}}</strong>
-                        <p class="invoice-details invoice-details-two"> {{invoice.doc_name}} <br> {{invoice.doc_phone }}, <br> {{invoice.doc_address}} <br>
-                        </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="invoice-info invoice-info2">
-                        <strong class="customer-text">Facture à</strong>
-                        <p class="invoice-details">{{invoice.customer_name }} <br> {{invoice.customer_phone}}, <br> {{invoice.customer_address}} <br>
-                        </p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="invoice-item">
-                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="invoice-info">
-                        <strong class="customer-text">Mode de paiement</strong>
-                        <p class="invoice-details invoice-details-two"> {{invoice.payment_mode}} <br> {{invoice.payment_date }} <br>
-                        </p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="invoice-item invoice-table-wrap">
-                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                        <table class="invoice-table table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Designation</th>
-                                <th class="text-center">Quantite</th>
-                                <th class="text-center">Prix</th>
-                                <th class="text-end">Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                
-                            <tr>
-                                <td>{{invoice.description}}</td>
-                                <td class="text-center">{{invoice.quantity}}</td>
-                                <td class="text-center">{{invoice.unity_price}} f cfa</td>
-                                <td class="text-end">{{invoice.total_price}} f cfa</td>
-                            </tr>
-                            <tr>
-                                <td>Video Call Booking</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">$0</td>
-                                <td class="text-end">$250</td>
-                            </tr>
-                            <tr>
-                                <td>Video Call Booking</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">$0</td>
-                                <td class="text-end">$250</td>
-                            </tr>
-                            <tr>
-                                <td>Video Call Booking</td>
-                                <td class="text-center">1</td>
-                                <td class="text-center">$0</td>
-                                <td class="text-end">$250</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div> 
-                    <div class="col-md-6 col-xl-4 ms-auto">
-                        <div class="table-responsive">
-                        <table class="invoice-table-two table">
-                            <tbody>
-                            
-                            <tr>
-                                <th>TVA:</th>
-                                <td>
-                                <span>{{invoice.vat}} %</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Total Glogal:</th>
-                                <td>
-                                <span>1000 f cfa</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!--<div class="other-info">
-                    <h4>Other information</h4>
-                    <p class="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
-                </div>-->
-                </div>
-            </div>
-            </div>
-        
+    <div class="payment-info">
+        <p>Mode de paiement: {{ invoice.payment_mode }}</p>
+        <p>Date de paiement: {{ invoice.payment_date }}</p>
     </div>
-
-</div>
-
-
-{% endblock %}
-
-
-
-{% block extra_javascript %}
-<script src="{% static 'admin/plugins/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'admin/plugins/datatables/datatables.min.js' %}"></script>
-
-<script src="{% static 'admin/js/moment.min.js' %}"></script>
-<script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
-
-<script src="{% static 'admin/plugins/select2/js/select2.min.js' %}"></script>
-
-<script src="{% static 'admin/js/script.js' %}"></script>
-{% endblock %}
+    <div class="invoice-items">
+        <table>
+            <tr>
+                <th>Nom Produit</th>
+                <th>Quantite</th>
+                <th>Prix Unitaire</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>{{invoice.description}}</td>
+                <td>{{invoice.quantity}}</td>
+                <td>{{invoice.unity_price}} f cfa</td>
+                <td>50.00 f cfa</td>
+            </tr>
+            <tr>
+                <td>Item 2</td>
+                <td>1</td>
+                <td>30.00 f cfa</td>
+                <td>30.00 f cfa</td>
+            </tr>
+            <tr>
+                <td>Item 3</td>
+                <td>3</td>
+                <td>15.00 f cfa</td>
+                <td>45.00 f cfa</td>
+            </tr>
+            <tr>
+                <td>Item 4</td>
+                <td>2</td>
+                <td>20.00 f cfa</td>
+                <td>40.00 f cfa</td>
+            </tr>
+            <tr>
+                <td>Item 5</td>
+                <td>2</td>
+                <td>20.00 f cfa</td>
+                <td>40.00 f cfa</td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="invoice-total">
+        <table>
+            <tr>
+                <th>Sous Total:</th>
+                <td><strong style="text-align: right;">{{invoice.sub_total}} f cfa</strong></td>
+            </tr>
+            <tr>
+                <th>Taxe:</th>
+                <td><strong style="text-align: right;">{{invoice.vat}} %</strong></td>
+            </tr>
+            <tr>
+                <th>Total:</th>
+                <td><strong style="text-align: right;">{{invoice.total}} f cfa</strong></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div class="delivery-info">
+        <p>Date d'emission: {{ invoice.timestamp|date:"j F, Y" }}</p><br>
+        <p>Nom Personel: {{ invoice.doc_name }}</p>
+        <p>Telephone Personel: {{ invoice.doc_phone }}</p>
+    </div><br>
+    <div class="signature">
+        <p>Signature: {{ company_name }}</p>
+    </div>
+</body>
+</html>

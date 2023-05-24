@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Invoice{% endblock %}
+{% block title %}Facture{% endblock %}
 
 
 {% block extra_css %}
@@ -74,10 +74,8 @@
                                                     data-bs-target="#invoiceDeleteModal-{{ forloop.counter }}">
                                                     <i class="feather-trash-2 me-1"></i> Supprimer
                                                 </a>
-                                                <a class="text-success" href="{% url 'show_invoice' invoice.id %}">
-                                                    <i class="feather-eye"></i> Voir
-                                                </a>
-                                                <a class="text-success" href="{% url 'invoice_pdf' invoice.id  %}">
+                                                
+                                                <a class="text-success" href="{% url 'generate_pdf' invoice.id  %}">
                                                     <i class="feather-download"></i> Télécharger
                                                 </a>
                                             </div>
