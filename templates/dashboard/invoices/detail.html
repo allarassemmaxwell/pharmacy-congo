@@ -1,0 +1,73 @@
+{% load static %}
+
+<div class="modal fade contentmodal" id="details-{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content doctor-profile">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i
+                        class="feather-x-circle"></i></button>
+            </div>
+            <div class="modal-body">
+                    <div class="member-wrapper">
+                        <!-- <h5>Détails</h5> -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mem-info">
+                                    <h6>Nom Client</h6>
+                                    <p>{{ invoice.customer_name }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="mem-info">
+                                    <h6>Type de Facture</h6>
+                                    <p>{{ invoice.invoice_type }}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+               
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Mode de Paiement</h6>
+                                <p>{{ invoice.payment_mode }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Date de Paiement</h6>
+                                <p>{{ invoice.payment_date }}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="member-wrapper">
+                    <!-- <h5>Détails</h5> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Total(cfa)</h6>
+                                <p>{{ invoice.total }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mem-info">
+                                <h6>Facture Emis Par</h6>
+                                <p>{{ invoice.doc_name }}</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>

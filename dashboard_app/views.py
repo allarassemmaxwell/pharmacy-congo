@@ -1585,7 +1585,7 @@ def issue_items_view(request, id):
         update_total   = instance.unity_price * instance.quantity
         instance.total = update_total
 
-        messages.success(request, "Issued SUCCESSFULLY. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
+        messages.success(request, "Produit Délivré avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + " stocké au magasin")
         instance.save()
 
         return redirect('stock_detail', id=instance.id)
@@ -1600,18 +1600,6 @@ def issue_items_view(request, id):
     template = "dashboard/stock/add_issue.html"
     return render(request, template, context)
     # return render(request, "add_items.html", context)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1644,7 +1632,7 @@ def receive_items_view(request, id):
         instance.save()
 
 
-        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
+        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name} stocké au magasin")
         return redirect('stock_detail', id=instance.id)
 
     context = {
@@ -1675,7 +1663,7 @@ def reorder_level_view(request, id):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        messages.success(request, "Niveau de réapprovisionnement pour " + str(stocks.item_name) + " est mis à jour en " + str(stocks.reorder_level))
+        messages.success(request, "Niveau de réapprovisionnement pour " + str(stocks.item_name) + " est mis à jour à " + str(stocks.reorder_level))
         return redirect("stock")
     
     context = {
