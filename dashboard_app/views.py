@@ -2178,10 +2178,10 @@ def invoice_add_view(request):
             invoice = form.save(commit=False)
 
             # Calculate the total
-            invoice.total = invoice.unity_price * invoice.quantity
-
+            total = Decimal(invoice.unity_price * invoice.quantity)
+            invoice.total = total
             # Save the object
-            invoice.save()
+            form.save()
 
             messages.success(request, _("Facture créée avec succès."))
             return redirect('invoice')
