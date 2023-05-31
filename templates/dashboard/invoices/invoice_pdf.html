@@ -187,9 +187,117 @@
             <p>Addresse Client: {{ invoice.customer_address }}</p>
         </div>
     </div>
-    <div class="payment-info">
-        <p>Mode de paiement: {{ invoice.payment_mode }}</p>
-        <p>Date de paiement: {{ invoice.payment_date }}</p>
+</div>
+
+
+    
+<div class="content">
+
+    <div class="container-fluid">
+        
+            <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="invoice-content">
+                <div class="invoice-item">
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="invoice-logo">
+                        <img src="/static/assets/img/logsup.png" style="height: 70px; width:70px" alt="logo">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="invoice-details">
+                        <strong>Num Commande: </strong>#00124 <br>
+                        <strong>Délivré:</strong> {{invoice.issued_date}}
+                        </p>
+                    </div>
+                    </div>
+                </div>
+                <div class="invoice-item">
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="invoice-info">
+                        <strong class="customer-text">Type de Facturation: {{invoice.invoice_type}}</strong>
+                        <p class="invoice-details invoice-details-two"> {{invoice.doc_name}} <br> {{invoice.doc_phone }}, <br> {{invoice.doc_address}} <br>
+                        </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="invoice-info invoice-info2">
+                        <strong class="customer-text">Facture à</strong>
+                        <p class="invoice-details">{{invoice.customer_name }} <br> {{invoice.customer_phone}}, <br> {{invoice.customer_address}} <br>
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="invoice-item">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="invoice-info">
+                        <strong class="customer-text">Mode de paiement</strong>
+                        <p class="invoice-details invoice-details-two"> {{invoice.payment_mode}} <br> {{invoice.payment_date }} <br>
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="invoice-item invoice-table-wrap">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                        <table class="invoice-table table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Designation</th>
+                                <th class="text-center">Quantite</th>
+                                <th class="text-center">Prix</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                
+                            <tr>
+                                <td>{{invoice.description}}</td>
+                                <td class="text-center">{{invoice.quantity}}</td>
+                                <td class="text-center">{{invoice.unity_price}} f cfa</td>
+                                <td class="text-end">{{invoice.total}} f cfa</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div> 
+                    <div class="col-md-6 col-xl-4 ms-auto">
+                        <div class="table-responsive">
+                        <table class="invoice-table-two table">
+                            <tbody>
+                            
+                            <tr>
+                                <th>TVA:</th>
+                                <td>
+                                <span>{{invoice.vat}} %</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total Glogal:</th>
+                                <td>
+                                <span>1000 f cfa</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!--<div class="other-info">
+                    <h4>Other information</h4>
+                    <p class="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
+                </div>-->
+                </div>
+            </div>
+            </div>
+        
     </div>
     <div class="invoice-items">
         <table>
