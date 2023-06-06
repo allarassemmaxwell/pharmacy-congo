@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Invoice{% endblock %}
+{% block title %}Facture{% endblock %}
 
 
 {% block extra_css %}
@@ -57,10 +57,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% include 'dashboard/modal/invoice-delete.html' with invoice=invoice %}
                                     {% for invoice in invoices %}
+                                    {% include 'dashboard/modal/invoice-delete.html' with invoice=invoice %}
+                                    {% include 'dashboard/invoices/detail.html' with invoice=invoice %}
                                     <tr>
-                                        <td>{{ invoice.customer_name }}</td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                {% if invoice.customer_name %}
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal"><span>{{ invoice.customer_name }}</span>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" class="text-danger"><span>Facture n'existe pas</span>
+                                                    </a>
+                                                {% endif %}
+                                            </h2>
+                                        </td>
                                         <td>{{ invoice.get_invoice_type_display }}</td>
                                         <td>{{ invoice.payment_mode }}</td>
                                         <td>{{ invoice.payment_date }}</td>
@@ -74,10 +85,8 @@
                                                     data-bs-target="#invoiceDeleteModal-{{ forloop.counter }}">
                                                     <i class="feather-trash-2 me-1"></i> Supprimer
                                                 </a>
-                                                <a class="text-success" href="{% url 'show_invoice' invoice.id %}">
-                                                    <i class="feather-eye"></i> Voir
-                                                </a>
-                                                <a class="text-success" href="{% url 'invoice_pdf' invoice.id  %}">
+                                                
+                                                <a class="text-success" href="{% url 'generate_pdf' invoice.id  %}">
                                                     <i class="feather-download"></i> Télécharger
                                                 </a>
                                             </div>

@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from io import BytesIO
 from xhtml2pdf import pisa
 import os
+from django.views.generic import View
 from django.template.loader import get_template
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -25,6 +26,10 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus.tables import Table
 import tempfile
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerError
+import re
+import io
+from urllib.parse import quote
 
 
 
@@ -1580,7 +1585,7 @@ def issue_items_view(request, id):
         update_total   = instance.unity_price * instance.quantity
         instance.total = update_total
 
-        messages.success(request, "Issued SUCCESSFULLY. " + str(instance.quantity) + " " + str(instance.item_name) + "s now left in Store")
+        messages.success(request, "Produit Délivré avec succès. " + str(instance.quantity) + " " + str(instance.item_name) + " stocké au magasin")
         instance.save()
 
         return redirect('stock_detail', id=instance.id)
@@ -1595,18 +1600,6 @@ def issue_items_view(request, id):
     template = "dashboard/stock/add_issue.html"
     return render(request, template, context)
     # return render(request, "add_items.html", context)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1639,7 +1632,7 @@ def receive_items_view(request, id):
         instance.save()
 
 
-        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name}s now in Store")
+        messages.success(request, f"Reçu avec succès. {instance.quantity} {instance.item_name} stocké au magasin")
         return redirect('stock_detail', id=instance.id)
 
     context = {
@@ -1670,7 +1663,7 @@ def reorder_level_view(request, id):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        messages.success(request, "Niveau de réapprovisionnement pour " + str(stocks.item_name) + " est mis à jour en " + str(stocks.reorder_level))
+        messages.success(request, "Niveau de réapprovisionnement pour " + str(stocks.item_name) + " est mis à jour à " + str(stocks.reorder_level))
         return redirect("stock")
     
     context = {
@@ -2263,25 +2256,49 @@ def invoice_update_view(request, id):
 
 # 👉 to generate pdf
 
-def invoice_pdf_view(request, id):
-    invoice = get_object_or_404(Invoice, id=id)
-    context = {'invoice': invoice}
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        invoice = get_object_or_404(Invoice, id=id)
 
-    html = render_to_string('dashboard/invoices/invoice_pdf.html', context)
-    pdf_data = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+        context = {
+            'invoice': invoice
+        }
 
-    if pdf_data is not None:
-        response = HttpResponse(content_type='application/pdf')
-        invoice_name = invoice[0].customer_name  # Assuming item_name is an attribute of Stock model
-        filename = f"invoice_{invoice_name}.pdf"
-        response['Content-Disposition'] = f'filename="{filename}"'
-        response.write(pdf_data)
+        pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        customer_name = invoice.customer_name.replace(" ", "_")  # Replace spaces with underscores
+        response['Content-Disposition'] = f'inline; filename="{customer_name}.pdf"'  # Use 'inline' instead of 'attachment'
         return response
 
-    return HttpResponse("Error generating PDF", status=500)
 
-    
-    
+# def invoice_pdf_view(request, id):
+#     invoice = get_object_or_404(Invoice, id=id)
+#     context = {'invoice': invoice}
+#     template_name = 'dashboard/invoices/invoice_pdf.html'
+
+#     html = render_to_string(template_name, context, request=request)
+#     pdf_data = pisa.CreatePDF(html)
+
+#     if pdf_data:
+#         response = HttpResponse(content_type='application/pdf')
+#         invoice_name = slugify(invoice.customer_name)
+#         filename = f"invoice_{invoice_name}.pdf"
+#         response['Content-Disposition'] = 'attachment; filename="{}"'.format(quote(filename))
+#         response.write(pdf_data)
+#         return response
+
+#     return HttpResponse("Error generating PDF", status=500)
+
+
+
+
+
+
+
+
+
+
     # invoice = get_object_or_404(Invoice, id=id)
     # context = {'invoice': invoice}
 

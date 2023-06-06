@@ -143,7 +143,8 @@ urlpatterns = [
     path('invoice/add/', invoice_add_view, name="invoice_add"),
     path('invoice/delete/<int:id>/', invoice_delete_view, name="invoice_delete"),
     path('invoice/update/<int:id>/', invoice_update_view, name="invoice_update"),
-    path('invoice_pdf/<int:id>/', invoice_pdf_view, name="invoice_pdf"),
+    # path('invoice_pdf/<int:id>/', invoice_pdf_view, name="invoice_pdf"),
+    path('generate-pdf/<int:id>', GeneratePdf.as_view(), name='generate_pdf'),
     
     
     

@@ -8,24 +8,25 @@ from django.template.loader import get_template
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 from .models import Invoice
-import xhtml2pdf.pisa as pisa
+
 import uuid
 from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpResponse
 
 
-def html2pdf(template_source, context_dict={}):
-    template = get_template(template_source)
+
+def html2pdf(template_src, context_dict={}):
+    template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
-
-    pdf = pisa.pisaDocument(html, result)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
     if not pdf.err:
         response = HttpResponse(result.getvalue(), content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="output.pdf"'
+        customer_name = context_dict.get('invoice').customer_name
+        response['Content-Disposition'] = f'attachment; filename="{customer_name}.pdf"'
         return response
-
-    return HttpResponse("Error generating PDF", status=500)
-
+    return None
 
 
 
