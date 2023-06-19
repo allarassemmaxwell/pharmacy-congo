@@ -336,7 +336,6 @@ class Product(models.Model):
     image         = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_image")
     brand_name    = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
     genetic_name  = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
-    # producer      = models.CharField(_("Nom du Fabrican"), max_length=255, null=False, blank=False, unique=True)
     description   = models.TextField(_("Description"), null=False, blank=False)
     active        = models.BooleanField(_("Est actif"), default=True)
     timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
@@ -455,13 +454,54 @@ class Patient(models.Model):
 
 
 
+
+
+
+class InvoiceSale(models.Model):
+    PAYMENT_CHOICES=(
+        ("Carte Bancaire", "Carte Bancaire"),
+        ("chèques", "chèques"),
+        ("Cash", "Cash"),
+        ("En Attente", "En Attente"),
+    )
+    
+    INVOICE_CHOICES=(
+        ("Facture", "Facture"),
+        ("Reçu", "Reçu"),   
+    )
+    reference    = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    seller       = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name="invoice_seller")  
+    payment_mode = models.CharField(_("Mode de Paiement"), max_length=100, choices=PAYMENT_CHOICES, null=True, blank=True)
+    invoice_type = models.CharField(_("Type de Facturation"), max_length=100, choices=INVOICE_CHOICES, null=True, blank=True)
+    payment_date = models.DateField(_("Date de paiement"), blank=True, null=True)
+    vat          = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
+    total        = models.DecimalField(_("Total Produit par Ligne (cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
+    sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
+    global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
+    description  = models.CharField(_("Designation du Produit"), max_length=255, null=False, blank=False, unique=True)
+    active       = models.BooleanField(_("Est actif"), default=True)
+    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+
+    def __str__(self):
+        return self.reference
+    class Meta:
+        ordering = ('-timestamp',)
+
+
+
+
+
+
+
+
 # SALE MODEL
 class Sale(models.Model):
+    invoice     = models.ForeignKey(InvoiceSale, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_invoice") 
     product     = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
+    # unity_price = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=False)
     quantity    = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
-    unity_price = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=False)
     total       = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
-    recu        = models.FileField(_("Fichier(pdf,image)"), upload_to="Recu/%Y/%m/%d/", null=False, blank=False)
     active      = models.BooleanField(_("Est actif"), default=True)
     timestamp   = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated     = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)

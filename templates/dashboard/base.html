@@ -24,6 +24,13 @@
     <link rel="stylesheet" href="{% static 'admin/plugins/daterangepicker/daterangepicker.css' %}">
 
     <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+
+    {% if env_name == 'production' %}
+      <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    {% else %}
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    {% endif %}
+
     {% block extra_css %} {% endblock %}
 </head>
 
@@ -62,6 +69,14 @@
     <script src="{% static 'admin/plugins/daterangepicker/daterangepicker.js' %}"></script>
 
     <script src="{% static 'admin/js/script.js' %}"></script>
+
+
+    <!-- IMPORT VUE JS -->
+    <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
+    <!-- IMPORT VUE AXIOS  -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- IMPORT VUE MOMENT -->
+    <script src="https://unpkg.com/moment@2.26.0/moment.js"></script>
 
     {% block extra_javascript %}{% endblock %}
 </body>

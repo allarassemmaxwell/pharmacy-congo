@@ -5,7 +5,7 @@
 
 
 {% block content %}
-<div class="page-wrapper">
+<div class="page-wrapper" id="ad_sale">
     <div class="content container-fluid">
 
         <div class="page-header">
@@ -18,7 +18,54 @@
             </div>
         </div>
 
+
         <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Example</h4>
+
+
+
+
+                        <form class="repeater" v-on:submit.prevent="save">
+                            <div data-repeater-list="group-a">
+                                <div data-repeater-item class="row">
+                                    <div class="mb-4 col-lg-4">
+                                        <label class="form-label" for="name">Produit</label>
+                                        <select class="form-select" v-model="product">
+                                            <option>-- Select --</option>
+                                            <option v-for="product_l in product_list" :value="product_l.id">[[ product_l.name ]]</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-4 col-lg-4">
+                                        <label class="form-label" for="resume">Quantité</label>
+                                        <input type="number" v-model.number="quantity" class="form-control">
+                                        
+                                    </div>
+
+                                    <div class="col-lg-3 col-sm-4 align-self-center">
+                                        <div class="d-grid">
+                                            <input data-repeater-delete type="button" class="btn btn-primary mb-2" value="Delete"/>
+                                        </div>    
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            <input data-repeater-create type="button" class="btn btn-success mt-2 mt-sm-0" value="Add"/>
+
+                            <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="row">
             <div class="col-md-12">
                 <h5 class="mb-3">Ajouter une vente</h5>
                 <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
@@ -33,24 +80,172 @@
                                 {{ form.quantity|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.unity_price|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.recu|as_crispy_field }}
-                            </div>
-                        </div>
+
                     </div>
                     <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
                 </form>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </div>
 
 
+{% endblock %}
+
+
+
+{% block extra_javascript %}
+<!-- form repeater js -->
+    <script src="{% static 'admin/js/jquery.repeater.min.js' %}"></script>
+
+    <script src="{% static 'admin/js/form-repeater.int.js' %}"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+
+
+    <script>
+        var keywordVue = new Vue({
+            el: '#ad_sale',
+            delimiters: ['[[', ']]'],
+            data () {
+                return { 
+                    organization: "{{organization}}",
+                    name: '',
+                   
+                    product_list: [],
+                    // product: [],
+                    quantity: [],
+                    product: [], 
+
+                    amount: 0.00,
+                    payment_method: '',
+                    position_top_price: 0.00,
+                    position_middle_price: 0.00,
+                    position_bottom_price: 0.00,
+
+                    global_price: 0.00,
+                    continent_price: 0.00,
+                    country_price: 0.00,
+
+                    hideGlobal: true,
+                    hideContinent: true,
+                    hideCountry: true,
+                    is_agree: false,
+
+                    ToDate: new Date().toISOString().split('T')[0],
+                    diffTime: new Date(),
+                    diffDays: new Date(), 
+                }
+            },
+            created() {
+                console.log("Data and other function is available but not HTML: ");
+                this.productList()
+            },
+            computed: {
+                    
+            },
+            mounted() {
+                console.log('Mounted');
+            },
+            methods: {
+                // TOAST MESSAGES 
+                error(message, title='Error') {
+                    toastr.error(message)
+                },
+                success(message, title='Success') {
+                    toastr.success(message)
+                },
+                info(message, title="Info") {
+                    toastr.info(message)
+                },
+
+                addList: function () {
+                  this.product.push({ a: 'Welcome Pakainfo!' });
+                }, 
+                
+
+
+
+                // PRODUCT LIST 
+                async productList() {
+                    axios({
+                        url: "{% url 'api_product_list' %}",
+                        method: "get"
+                    }).then((response) => {
+                        this.product_list = response.data
+                    });
+                },
+
+
+
+
+                // SAVE SKILL 
+                save(event) {
+                    console.log("===== Tes =====");
+                    // console.log();
+                    // console.log(this.quantity);
+                    console.log(event);
+                    // if (this.name == '') {
+                    //     this.confirm("Name is required.")
+                    //     return;
+                    // }
+                    // else if (this.file_type == '') {
+                    //     this.error("File(Image/Video) is required")
+                    //     return;
+                    // }
+                    // else if (!this.position_top && !this.position_middle && !this.position_bottom) {
+                    //     this.error("One position(Top, Middle, Bottom) should be picked.")
+                    //     return;
+                    // }
+
+
+
+
+                    // CALCULATE THE TOTAL AMOUNT AND MULTIPLY WITH THE DATES
+                    // this.amount = parseFloat(this.position_top_price+this.position_middle_price+this.position_bottom_price+this.global_price+this.continent_price+this.country_price)
+
+                    // data = {
+                    //     organization: this.organization,
+                    //     universal: this.global,
+                    //     ad_top: this.position_top,
+                    //     ad_middle: this.position_middle,
+                    //     ad_bottom: this.position_bottom,
+                    //     continent: this.continents,
+                    //     country: this.countries,
+                    //     name: this.name,
+                    // }
+
+
+                    // axios({
+                    //         url: "/",
+                    //         method: "post",
+                    //         headers: {
+                    //             "Content-Type": "multipart/form-data",
+                    //             "X-CSRFToken": "{{ csrf_token }}",
+                    //         },
+                    //         data: data,
+                    //     }).then((response) => {
+                    //         if (response.status == 201) {
+                    //             if (response.data.payment_method == 'PAYPAL') {
+                    //                 window.location.href = "/"
+                    //             } else if(response.data.payment_method == 'ECOBANK') {
+                    //                 window.location.href = "/"
+                    //             }else {
+                    //                 this.error("Unknown payment method.")
+                    //                 return;
+                    //             }
+                    //         }else {
+                    //             this.error("An error occurred.")
+                    //             return;
+                    //         }
+                            
+                    //     }).catch(function (error) {console.log(error);}
+                    // );
+                },
+            },
+        })
+    </script>
 {% endblock %}

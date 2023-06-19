@@ -160,6 +160,9 @@ urlpatterns = [
     path('notification/', notification_view, name="notification"),
 
 
+    path('api/products/', productList, name="api_product_list"),
+
+
 ]
 
 
