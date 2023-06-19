@@ -783,13 +783,12 @@ class SaleForm(forms.ModelForm):
         fields = [
             "product",
             "quantity",
-            "unity_price",
-            "recu"
+            # "unity_price",
         ]
         widgets = {
             'product':     forms.Select(attrs={'class': 'form-control'}),
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            # 'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
         }
 
 

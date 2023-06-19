@@ -1955,8 +1955,11 @@ def sale_view(request):
 @login_required
 def sale_add_view(request):
     if request.method == 'POST':
+        print("==== TEST 1 =====")
         form = SaleForm(request.POST, request.FILES)
         if form.is_valid():
+            print("==== TEST 2 =====")
+            print(form)
             obj = form.save(commit=False)
             obj.total = obj.unity_price * obj.quantity
             obj.save()
@@ -2587,6 +2590,26 @@ def global_notification_view(request):
     return {'GLOBAL_NOTIFICATIONS': notifications}
 
 
+
+
+
+
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import  Response
+from rest_framework.decorators import api_view, permission_classes
+from .serializers import *
+# =========================================================
+#                         PRODUCT 
+# =========================================================
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated, ])
+def productList(request):
+    if request.method == 'GET':
+        data = Product.objects.filter(active=True)
+        serializer = ProductSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
 
 
 
