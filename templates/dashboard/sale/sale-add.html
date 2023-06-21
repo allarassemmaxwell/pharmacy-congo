@@ -23,69 +23,47 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Example</h4>
+                        <h4 class="card-title">Vente de Produit</h4>
 
 
-
-
-                        <form class="repeater" v-on:submit.prevent="save">
+                        <form class="repeater" method="post" action="{% url 'sale_add' %}">
+                            {% csrf_token %}
+                            {{ formset.management_form }}
                             <div data-repeater-list="group-a">
+                                {% for form in formset %}
                                 <div data-repeater-item class="row">
                                     <div class="mb-4 col-lg-4">
-                                        <label class="form-label" for="name">Produit</label>
-                                        <select class="form-select" v-model="product">
+                                        <label class="form-label" for="id_product_{{ forloop.counter0 }}">Produit</label>
+                                        <select class="form-select" name="form-{{ forloop.counter0 }}-product" id="id_product_{{ forloop.counter0 }}">
                                             <option>-- Select --</option>
-                                            <option v-for="product_l in product_list" :value="product_l.id">[[ product_l.name ]]</option>
+                                            {% for product in form.product.field.queryset %}
+                                                <option value="{{ product.id }}" {% if form.product.value == product.id %}selected{% endif %}>{{ product.name }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
-
                                     <div class="mb-4 col-lg-4">
-                                        <label class="form-label" for="resume">Quantité</label>
-                                        <input type="number" v-model.number="quantity" class="form-control">
-                                        
+                                        <label class="form-label" for="id_quantity_{{ forloop.counter0 }}">Quantité</label>
+                                        <input type="number" class="form-control" name="form-{{ forloop.counter0 }}-quantity" id="id_quantity_{{ forloop.counter0 }}" value="{{ form.quantity.value }}">
                                     </div>
-
                                     <div class="col-lg-3 col-sm-4 align-self-center">
                                         <div class="d-grid">
                                             <input data-repeater-delete type="button" class="btn btn-primary mb-2" value="Delete"/>
                                         </div>    
                                     </div>
-                                    
                                 </div>
-                                
+                                {% endfor %}
                             </div>
                             <input data-repeater-create type="button" class="btn btn-success mt-2 mt-sm-0" value="Add"/>
-
                             <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
                         </form>
+                        
+                        
+
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <h5 class="mb-3">Ajouter une vente</h5>
-                <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.product|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.quantity|as_crispy_field }}
-                            </div>
-                        </div>
-
-                    </div>
-                    <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
-                </form>
-            </div>
-        </div> -->
 
     </div>
 </div>
