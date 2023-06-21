@@ -5,6 +5,8 @@ from django.utils.translation import activate, gettext_lazy as _
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.forms import formset_factory
+
 # from django.urls import reverse
 from django.http import Http404
 import csv
@@ -1951,25 +1953,46 @@ def sale_view(request):
 
 
 
-# SALE ADD VIEW 
+# SALE ADD VIEW
 @login_required
 def sale_add_view(request):
+    SaleFormSet = formset_factory(SaleForm, extra=1)
+
     if request.method == 'POST':
-        print("==== TEST 1 =====")
-        form = SaleForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("==== TEST 2 =====")
-            print(form)
-            obj = form.save(commit=False)
-            obj.total = obj.unity_price * obj.quantity
-            obj.save()
-            messages.success(request, _("Vente créé avec succès."))
+        formset = SaleFormSet(request.POST, prefix='sales')
+        if formset.is_valid():
+            for form in formset:
+                obj = form.save(commit=False)
+                obj.total = obj.unity_price * obj.quantity
+                obj.save()
+            messages.success(request, _("Ventes créées avec succès."))
             return redirect('sale')
     else:
-        form = SaleForm()
-    context  = {'form': form}
+        formset = SaleFormSet(prefix='sales')
+
+    context = {'formset': formset}
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
+
+
+# @login_required
+# def sale_add_view(request):
+#     if request.method == 'POST':
+#         print("==== TEST 1 =====")
+#         form = SaleForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             print("==== TEST 2 =====")
+#             print(form)
+#             obj = form.save(commit=False)
+#             obj.total = obj.unity_price * obj.quantity
+#             obj.save()
+#             messages.success(request, _("Vente créé avec succès."))
+#             return redirect('sale')
+#     else:
+#         form = SaleForm()
+#     context  = {'form': form}
+#     template = "dashboard/sale/sale-add.html"
+#     return render(request, template, context)
 
 
 
