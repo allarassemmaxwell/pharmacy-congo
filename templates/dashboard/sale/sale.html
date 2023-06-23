@@ -49,9 +49,10 @@
                             <table class="datatable table table-borderless hover-table" id="data-table">
                                 <thead class="thead-light">
                                     <tr>
+                                        <th>Référence</th>
                                         <th>Produit</th>
                                         <th>Prix unitaire</th>
-                                        <th>Quantite</th>
+                                        <th>Quantité</th>
                                         <th>Total</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -62,28 +63,37 @@
                                     {% include 'dashboard/modal/sale-delete.html' with sale=sale %}
                                     {% include 'dashboard/sale/detail.html' with sale=sale %}
                                     <tr>
+                                        <td>{{ sale.reference }}</td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
-                                                <span>{{sale.product}}</span>
+                                                <span>{{ sale.product.name|title }}</span>
                                                 </a>
                                             </h2>
                                         </td>
-                                        <td>{{ sale.unity_price }}f cfa</td>
+                                        <td>{{ sale.product.unity_price }}f cfa</td>
                                         <td>{{ sale.quantity }}</td>
                                         <td>{{ sale.total }}f cfa</td>
                                        
                                         <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         
                                         <td class="text-end">
-                                            <div class="actions">
-                                                <a href="{{ sale.update_url }}" class="text-black">
-                                                    <i class="feather-edit-3 me-1"></i> Modifier
+                                            <div class="dropdown card-widgets float-start">
+                                                <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="feather-menu"></i>
+                                                    <!-- <i class="mdi mdi-dots-vertical"></i> -->
                                                 </a>
-                                                <a class="text-danger" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#saleDeleteModal-{{ forloop.counter }}">
-                                                    <i class="feather-trash-2 me-1"></i> Supprimer
-                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-start">
+                                                    <a href="{{ sale.update_url }}" class="dropdown-item">
+                                                        <i class="feather-edit-3 me-1"></i> Modifier
+                                                    </a>
+                                                    <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#saleDeleteModal-{{ forloop.counter }}">
+                                                        <i class="feather-trash-2 me-1"></i> Supprimer
+                                                    </a>
+                                                    <a href="" class="dropdown-item">
+                                                        <i class="feather-download"></i> Télécharger
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

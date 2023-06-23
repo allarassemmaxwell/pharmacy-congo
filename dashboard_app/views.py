@@ -1959,13 +1959,18 @@ def sale_add_view(request):
     SaleFormSet = formset_factory(SaleForm, extra=1)
 
     if request.method == 'POST':
-        formset = SaleFormSet(request.POST, prefix='sales')
-        if formset.is_valid():
-            for form in formset:
-                obj = form.save(commit=False)
-                obj.total = obj.unity_price * obj.quantity
-                obj.save()
-            messages.success(request, _("Ventes créées avec succès."))
+        form = SaleForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.reference = random_string(7)
+            obj.seller = request.user
+            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
+            if obj.invoice_type == "Facture":
+                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
+            elif obj.invoice_type == "Reçu":
+                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
+            obj.save()
+            messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
     else:
         formset = SaleFormSet(prefix='sales')
@@ -1973,26 +1978,6 @@ def sale_add_view(request):
     context = {'formset': formset}
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
-
-
-# @login_required
-# def sale_add_view(request):
-#     if request.method == 'POST':
-#         print("==== TEST 1 =====")
-#         form = SaleForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             print("==== TEST 2 =====")
-#             print(form)
-#             obj = form.save(commit=False)
-#             obj.total = obj.unity_price * obj.quantity
-#             obj.save()
-#             messages.success(request, _("Vente créé avec succès."))
-#             return redirect('sale')
-#     else:
-#         form = SaleForm()
-#     context  = {'form': form}
-#     template = "dashboard/sale/sale-add.html"
-#     return render(request, template, context)
 
 
 
@@ -2026,7 +2011,11 @@ def sale_update_view(request, id):
         form = SaleForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.total = obj.unity_price * obj.quantity
+            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
+            if obj.invoice_type == "Facture":
+                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
+            elif obj.invoice_type == "Reçu":
+                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
             obj.save()
             messages.success(request, _("Vente mise à jour avec succès."))
             return redirect('sale')

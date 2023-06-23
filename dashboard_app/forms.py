@@ -158,6 +158,33 @@ class ProductCategoryForm(forms.ModelForm):
 
 
 
+# PRODUCT CATEGORY FORM
+class InvoiceSaleForm(forms.ModelForm):
+    class Meta:
+        model  = InvoiceSale
+        fields = [
+            "seller",
+            "payment_mode",
+            "invoice_type",
+            "payment_date",
+            "vat",
+            "total",
+            "sub_total",
+            "global_total",
+            "description"
+        ]
+        widgets = {
+            # 'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description':  forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        }
+
+
+
+
+
+
+
+
 
 # SERVICE CATEGORY FORM
 class ServiceCategoryForm(forms.ModelForm):
@@ -772,23 +799,28 @@ class PatientForm(forms.ModelForm):
 
 
 
-
 # SALE  FORM
 class SaleForm(forms.ModelForm):
     class Meta:
         model  = Sale
         labels = {
-            'product': ('Produit'),
+            'product': ("Produit"),
         }
         fields = [
+            "payment_mode",
+            "invoice_type",
+            "payment_date",
             "product",
             "quantity",
-            # "unity_price",
+            "vat",
+            "description",
         ]
         widgets = {
             'product':     forms.Select(attrs={'class': 'form-control'}),
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            # 'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
         }
 
 

@@ -16,7 +16,7 @@
             
                         <div class="doc-info">
                             <h6>Produit</h6>
-                            <p>{{sale.product}}</p>
+                            <p>{{ sale.product.name|title }}</p>
                         </div>
                     </div>
                 </div>
@@ -26,12 +26,12 @@
                         <div class="col-sm-4">
                             <div class="mem-info">
                                 <h6>Prix Unitaire</h6>
-                                <p>{{ sale.unity_price }}f cfa</p>
+                                <p>{{ sale.product.unity_price }}f cfa</p>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="mem-info">
-                                <h6>Quantite</h6>
+                                <h6>Quantité</h6>
                                 <p><span>{{ sale.quantity }}</span></p>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                         <div class="col-sm-4">
                             <div class="mem-info">
                                 <h6>Date</h6>
-                                    <p>{{ sale.timestamp|date:"d M Y" }}</p>
+                                <p>{{ sale.timestamp|date:"d M Y" }}</p>
                             </div>
                         </div>
                        
