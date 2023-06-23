@@ -28,6 +28,7 @@
                                 {{ form.product|as_crispy_field }}
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group form-focus">
                                 {{ form.quantity|as_crispy_field }}
@@ -35,7 +36,30 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-focus">
-                                {{ form.unity_price|as_crispy_field }}
+                                {{ form.vat|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.payment_date|as_crispy_field }}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.payment_mode|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-focus">
+                                {{ form.invoice_type|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group form-focus">
+                                {{ form.description|as_crispy_field }}
                             </div>
                         </div>
                     </div>

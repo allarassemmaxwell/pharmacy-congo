@@ -1955,15 +1955,18 @@ def sale_view(request):
 @login_required
 def sale_add_view(request):
     if request.method == 'POST':
-        print("==== TEST 1 =====")
         form = SaleForm(request.POST, request.FILES)
         if form.is_valid():
-            print("==== TEST 2 =====")
-            print(form)
             obj = form.save(commit=False)
-            obj.total = obj.unity_price * obj.quantity
+            obj.reference = random_string(7)
+            obj.seller = request.user
+            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
+            if obj.invoice_type == "Facture":
+                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
+            elif obj.invoice_type == "Reçu":
+                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
             obj.save()
-            messages.success(request, _("Vente créé avec succès."))
+            messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
     else:
         form = SaleForm()
@@ -2003,7 +2006,11 @@ def sale_update_view(request, id):
         form = SaleForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.total = obj.unity_price * obj.quantity
+            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
+            if obj.invoice_type == "Facture":
+                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
+            elif obj.invoice_type == "Reçu":
+                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
             obj.save()
             messages.success(request, _("Vente mise à jour avec succès."))
             return redirect('sale')
