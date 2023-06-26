@@ -642,6 +642,9 @@ class AppointmentSymptomForm(forms.ModelForm):
 
 
 
+
+
+
 # APPOINTMENT FORM
 class AppointmentForm(forms.ModelForm):
     class Meta:
