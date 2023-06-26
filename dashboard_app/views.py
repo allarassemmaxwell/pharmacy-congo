@@ -1966,7 +1966,20 @@ def sale_add_view(request):
             obj.seller = request.user
             obj.total  = Decimal(obj.product.unity_price * obj.quantity)
             if obj.invoice_type == "Facture":
-                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
+                print("======= ADD YOUR FACTURE FUNCTION HERE ======= ")
+                # def get(self, request, *args, **kwargs):
+                #     id = kwargs.get('id')
+                # sale = get_object_or_404(Sale, id=id)
+
+                # context = {
+                #     'sale': sale
+                # }
+
+                # pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+                # response = HttpResponse(pdf, content_type='application/pdf')
+                # product = sale.product.replace(" ", "_")  # Replace spaces with underscores
+                # response['Content-Disposition'] = f'inline; filename="{product}.pdf"'  # Use 'inline' instead of 'attachment'
+                # return response
             elif obj.invoice_type == "Reçu":
                 print("======= ADD YOUR RECU FUNCTION HERE ======= ")
             obj.save()
