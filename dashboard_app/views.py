@@ -1956,10 +1956,8 @@ def sale_view(request):
 # SALE ADD VIEW
 @login_required
 def sale_add_view(request):
-    SaleFormSet = formset_factory(SaleForm, extra=1)
-
     if request.method == 'POST':
-        form = SaleForm(request.POST, request.FILES)
+        form = SaleForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.reference = random_string(7)
@@ -1973,9 +1971,9 @@ def sale_add_view(request):
             messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
     else:
-        formset = SaleFormSet(prefix='sales')
+        form = SaleForm()
 
-    context = {'formset': formset}
+    context = {'form': form}
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
 
