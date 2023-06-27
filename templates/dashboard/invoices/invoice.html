@@ -16,6 +16,7 @@
 
 {% block content %}
 
+
 <div class="page-wrapper">
 
     <div class="content container-fluid">
@@ -24,7 +25,7 @@
                 <div class="col-md-12 d-flex justify-content-end">
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
-                    <a href="{% url 'invoice_add' %}" class="btn btn-primary btn-add">
+                    <a href="{% url 'add-invoice' %}" class="btn btn-primary btn-add">
                         <i class="feather-plus-square me-1"></i> Ajouter Facture
                     </a>
                 </div>
@@ -104,7 +105,7 @@
         </div>
 
     </div>
-</div>
+</div> 
 
 
 

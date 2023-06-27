@@ -923,41 +923,29 @@ class FridgeForm(forms.ModelForm):
 
 
 
-# INVOICE FORM
+#INVOICE FORM
 class InvoiceForm(forms.ModelForm):
     class Meta:
-        model  = Invoice
-        # exclude = ['issued_date']
+        model = Invoice
         fields = [
-            "customer_name",
-            "customer_phone",
-            "customer_address",
-            "doc_name",
-            "doc_phone",
-            "doc_address",
-            "payment_mode",
-            "unity_price",
-            "quantity",
-            "vat",
-            "description",
-            "payment_date",
+            "customer",
+            "save_by",
+            "invoice_date_time",
+            "total",
+            "last_updated_date",
+            "paid",
             "invoice_type",
-           
+            "comments",
         ]
         widgets = {
-            'customer_name':       forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_phone':       forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_address':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_name':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_phone':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_address':       forms.TextInput(attrs={'class': 'form-control'}),
-            'description':       forms.TextInput(attrs={'class': 'form-control'}),
-            'payment_mode':      forms.Select(attrs={'class': 'form-control'}),
-            'unity_price':      forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'vat':    forms.NumberInput(attrs={'class': 'form-control'}),
-            # 'issued_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'customer': forms.Select(attrs={'class': 'form-control'}),
+            'save_by': forms.Select(attrs={'class': 'form-control'}),
+            'invoice_date_time': forms.DateInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            # 'total': forms.NumberInput(attrs={'class': 'form-control'}),
+            'last_updated_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'invoice_type': forms.Select(attrs={'class': 'form-control'}),
-           
+            'comments': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+

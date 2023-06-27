@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from . import views
 # from .api import *
 urlpatterns = [
     # ==================================================
@@ -138,13 +139,20 @@ urlpatterns = [
     
     
     # Invoice management
-    path('invoice/', invoice_view, name="invoice"),
-    path('show_invoice/<int:id>', show_invoice_view, name="show_invoice"),
-    path('invoice/add/', invoice_add_view, name="invoice_add"),
-    path('invoice/delete/<int:id>/', invoice_delete_view, name="invoice_delete"),
-    path('invoice/update/<int:id>/', invoice_update_view, name="invoice_update"),
-    # path('invoice_pdf/<int:id>/', invoice_pdf_view, name="invoice_pdf"),
-    path('generate-pdf/<int:id>', GeneratePdf.as_view(), name='generate_pdf'),
+    # path('invoice/', invoice_view, name="invoice"),
+    path('invoice/', invoice_view, name='invoice'),
+    # path('add-customer', add_customer_view, name='add-customer'),
+    path('add-invoice', add_invoice_view, name='add-invoice'),
+    # path('view-invoice/<int:pk>', invoice_visualization_view, name='view-invoice'),
+    # path('invoice-pdf/<int:pk>', views.get_invoice_pdf, name="invoice-pdf"),
+    
+    
+    # path('show_invoice/<int:id>', show_invoice_view, name="show_invoice"),
+    # path('invoice/add/', invoice_add_view, name="invoice_add"),
+    # path('invoice/delete/<int:id>/', invoice_delete_view, name="invoice_delete"),
+    # path('invoice/update/<int:id>/', invoice_update_view, name="invoice_update"),
+    # # path('invoice_pdf/<int:id>/', invoice_pdf_view, name="invoice_pdf"),
+    # path('generate-pdf/<int:id>', GeneratePdf.as_view(), name='generate_pdf'),
     
     
     
