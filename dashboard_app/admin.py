@@ -298,14 +298,24 @@ admin.site.register(Notificaty, NotificatyAdmin)
 
 
 #  INVOICE ADMIN
-class InvoiceAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['customer_name', 'payment_date', 'payment_mode']
-    list_display_links  = ['customer_name',]
-    list_filter         = ['active']
-    search_fields       = ['customer_name', 'payment_date', 'payment_mode',]
-    list_per_page       = 50
-    class Meta:
-        model = Invoice
-admin.site.register(Invoice, InvoiceAdmin)
+class AdminCustomer(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'address', 'sex', 'age', 'city', 'zip_code')
+# class InvoiceAdmin(admin.ModelAdmin):
+#     date_hierarchy      = 'timestamp'
+#     list_display        = ['customer_name', 'payment_date', 'payment_mode']
+#     list_display_links  = ['customer_name',]
+#     list_filter         = ['active']
+#     search_fields       = ['customer_name', 'payment_date', 'payment_mode',]
+#     list_per_page       = 50
+#     class Meta:
+#         model = Invoice
+# admin.site.register(Invoice, InvoiceAdmin)
 
+
+class AdminInvoice(admin.ModelAdmin):
+    list_display = ('customer', 'save_by', 'invoice_date_time', 'total', 'last_updated_date', 'paid', 'invoice_type')    
+
+
+admin.site.register(Customer, AdminCustomer)
+admin.site.register(Invoice, AdminInvoice)
+admin.site.register(Article)
