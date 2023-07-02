@@ -930,9 +930,7 @@ class InvoiceForm(forms.ModelForm):
         fields = [
             "customer",
             "save_by",
-            "invoice_date_time",
             "total",
-            "last_updated_date",
             "paid",
             "invoice_type",
             "comments",
@@ -940,9 +938,9 @@ class InvoiceForm(forms.ModelForm):
         widgets = {
             'customer': forms.Select(attrs={'class': 'form-control'}),
             'save_by': forms.Select(attrs={'class': 'form-control'}),
-            'invoice_date_time': forms.DateInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            # 'invoice_date_time': forms.DateInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
             # 'total': forms.NumberInput(attrs={'class': 'form-control'}),
-            'last_updated_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            # 'last_updated_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'invoice_type': forms.Select(attrs={'class': 'form-control'}),
             'comments': forms.Textarea(attrs={'class': 'form-control'}),

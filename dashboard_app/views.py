@@ -2164,6 +2164,7 @@ def fridge_update_view(request, id):
 
 # INVOICE MANAGEMENT
 
+
 # INVOICE VIEW 
 @login_required
 def invoice_view(request):
