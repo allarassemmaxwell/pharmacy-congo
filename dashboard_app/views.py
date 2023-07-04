@@ -2228,7 +2228,7 @@ def invoice_view(request):
 @login_required
 def add_customer_view(request):
     """ add new customer """
-    template_name = 'add_customer.html'
+    template_name = 'dashboard/invoices/customer_add.html'
     if request.method == 'GET':
         return render(request, template_name)
 
@@ -2295,57 +2295,23 @@ def invoice_visualization_view(request, pk):
 # INVOICE ADD VIEW 
 @login_required
 def add_invoice_view(request):
-    """ add a new invoice view """
     template_name = 'dashboard/invoices/invoice-add.html'
-    customers = Customer.objects.select_related('save_by').all()
-    context = {
-        'customers': customers
-    }
-    if request.method == 'GET':
-        return render(request, template_name, context)
+    form = InvoiceForm()
 
     if request.method == 'POST':
-        items = []
+        form = InvoiceForm(request.POST)
 
-        try: 
-            customer = request.POST.get('customer')
-            invoice_type = request.POST.get('invoice_type')
-            articles = request.POST.getlist('article')
-            quantities = request.POST.getlist('qty')
-            units = request.POST.getlist('unit')
-            totals_a = request.POST.getlist('total-a')
-            total = request.POST.get('total')
-            comment = request.POST.get('commment')
-
-            invoice_object = {
-                'customer_id': customer,
-                'save_by': request.user,
-                'total': total,
-                'invoice_type': invoice_type,
-                'comments': comment
-            }
-
-            with transaction.atomic():
-                invoice = Invoice.objects.create(**invoice_object)
-
-                for index, article in enumerate(articles):
-                    data = Article(
-                        invoice_id=invoice.id,
-                        name=article,
-                        quantity=quantities[index],
-                        unit_price=units[index],
-                        total=totals_a[index],
-                    )
-                    items.append(data)
-
-                Article.objects.bulk_create(items)
-
+        if form.is_valid():
+            form.save()
             messages.success(request, "Data saved successfully.")
+            return redirect('invoice_list')  # Redirect to the invoice list view after successful form submission
+        else:
+            messages.error(request, "Sorry, an error occurred while processing the form.")
 
-        except Exception as e:
-            messages.error(request, f"Sorry, the following error has occurred: {e}.")
-
-        return render(request, template_name, context)
+    context = {
+        'form': form
+    }
+    return render(request, template_name, context)
 
     # if request.method == 'POST':
     #     form = InvoiceForm(request.POST, request.FILES)

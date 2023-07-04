@@ -925,10 +925,15 @@ class FridgeForm(forms.ModelForm):
 
 #INVOICE FORM
 class InvoiceForm(forms.ModelForm):
+    product_name = forms.CharField(label="Nom Produit", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    product_quantity = forms.IntegerField(label="Quantity", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    product_unit_price = forms.DecimalField(label="Unit Price", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    
     class Meta:
         model = Invoice
         fields = [
             "customer",
+            "product",
             "save_by",
             "total",
             "paid",
@@ -937,13 +942,39 @@ class InvoiceForm(forms.ModelForm):
         ]
         widgets = {
             'customer': forms.Select(attrs={'class': 'form-control'}),
+            'product': forms.Select(attrs={'class': 'form-control'}),
             'save_by': forms.Select(attrs={'class': 'form-control'}),
-            # 'invoice_date_time': forms.DateInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            # 'total': forms.NumberInput(attrs={'class': 'form-control'}),
-            # 'last_updated_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control'}),
             'paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'invoice_type': forms.Select(attrs={'class': 'form-control'}),
             'comments': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['product_name'].initial = self.instance.product.name
+            self.fields['product_quantity'].initial = self.instance.product.quantity
+            self.fields['product_unit_price'].initial = self.instance.product.unity_price
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        product = instance.product
+
+        if not product:
+            product = Product()
+
+        product.name = self.cleaned_data['product_name']
+        product.quantity = self.cleaned_data['product_quantity']
+        product.unity_price = self.cleaned_data['product_unit_price']
+        product.save()
+
+        instance.product = product
+
+        if commit:
+            instance.save()
+
+        return instance
+
 
 

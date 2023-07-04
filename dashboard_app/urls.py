@@ -141,7 +141,7 @@ urlpatterns = [
     # Invoice management
     # path('invoice/', invoice_view, name="invoice"),
     path('invoice/', invoice_view, name='invoice'),
-    # path('add-customer', add_customer_view, name='add-customer'),
+    path('add-customer', add_customer_view, name='add-customer'),
     path('add-invoice', add_invoice_view, name='add-invoice'),
     # path('view-invoice/<int:pk>', invoice_visualization_view, name='view-invoice'),
     # path('invoice-pdf/<int:pk>', views.get_invoice_pdf, name="invoice-pdf"),
