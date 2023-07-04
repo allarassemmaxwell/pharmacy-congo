@@ -886,7 +886,8 @@ class Invoice(models.Model):
         ('I', _('INVOICE'))
     )
     
-    customer =  models.ForeignKey(Customer, on_delete=models.CASCADE, null=False, blank=False, related_name="customer")
+    customer =  models.ForeignKey(Patient, on_delete=models.CASCADE, null=False, blank=False, related_name="customer")
+    product =  models.ForeignKey(Product, on_delete=models.CASCADE, null=False, blank=False, related_name="product")
     save_by = models.ForeignKey(User, on_delete=models.PROTECT)
     invoice_date_time = models.DateTimeField(auto_now_add=True)
     total = models.DecimalField(max_digits=10000, decimal_places=2)

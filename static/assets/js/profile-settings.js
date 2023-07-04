@@ -45,32 +45,34 @@
         $(this).closest('.experience-cont').remove();
         return false;
     });
+
+    
     $(".add-experience").on('click', function() {
         var experiencecontent = '<div class="row form-row experience-cont">' +
           '<div class="col-12 col-md-10 col-lg-11">' +
           '<div class="row form-row">' +
           '<div class="col-12 col-md-6 col-lg-4">' +
           '<div class="form-group">' +
-          '<label>Nom Produit</label>' + // Changed 'Hospital Name' to 'Nom Produit'
-          '<input type="text" class="form-control">' +
+          '<label for="id_product_name">Nom Produit</label>' +
+          '<input type="text" class="form-control" name="product_name">' +
           '</div>' +
           '</div>' +
           '<div class="col-12 col-md-6 col-lg-4">' +
           '<div class="form-group">' +
-          '<label>Quantity</label>' + // Changed 'From' to 'Quantity'
-          '<input type="text" class="form-control">' +
+          '<label for="id_product_quantity">Quantity</label>' +
+          '<input type="text" class="form-control" name="product_quantity">' +
           '</div>' +
           '</div>' +
           '<div class="col-12 col-md-6 col-lg-4">' +
           '<div class="form-group">' +
-          '<label>Unit Price</label>' + // Changed 'To' to 'Unit Price'
-          '<input type="text" class="form-control">' +
+          '<label for="id_product_unit_price">Unit Price</label>' +
+          '<input type="text" class="form-control" name="product_unit_price">' +
           '</div>' +
           '</div>' +
           '<div class="col-12 col-md-6 col-lg-4">' +
           '<div class="form-group">' +
-          '<label>Total</label>' + // Changed 'Designation' to 'Total'
-          '<input type="text" class="form-control">' +
+          '<label for="id_total">Total</label>' +
+          '<input type="text" class="form-control" name="total">' +
           '</div>' +
           '</div>' +
           '</div>' +
@@ -79,7 +81,8 @@
           '</div>';
         $(".experience-info").append(experiencecontent);
         return false;
-      });
+    });
+    
           
     $(".awards-info").on('click', '.trash', function() {
         $(this).closest('.awards-cont').remove();
