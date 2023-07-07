@@ -33,6 +33,16 @@ class UserAdmin(DjangoUserAdmin):
 
 
 
+class InvoiceSaleAdmin(admin.ModelAdmin):
+    list_display        = ['reference', 'sub_total', 'global_total', 'timestamp', 'updated']
+    list_display_links  = ['reference',]
+    list_filter         = ['reference']
+    search_fields       = ['reference']
+    list_per_page       = 50
+    class Meta:
+        model = InvoiceSale
+admin.site.register(InvoiceSale, InvoiceSaleAdmin)
+
 
 
 
@@ -259,10 +269,10 @@ admin.site.register(Patient, PatientAdmin)
 #  SALE ADMIN
 class SaleAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['product', 'quantity', 'total', 'timestamp', 'updated']
-    list_display_links  = ['product',]
-    list_filter         = ['product']
-    search_fields       = ['product']
+    list_display        = ['invoice', 'product', 'timestamp', 'updated']
+    list_display_links  = ['invoice',]
+    list_filter         = ['invoice', 'product']
+    search_fields       = ['invoice', 'product__name']
     list_per_page       = 50
     class Meta:
         model = Sale

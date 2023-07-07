@@ -460,7 +460,7 @@ class Patient(models.Model):
 class InvoiceSale(models.Model):
     PAYMENT_CHOICES=(
         ("Carte Bancaire", "Carte Bancaire"),
-        ("chèques", "chèques"),
+        ("Chèques", "Chèques"),
         ("Cash", "Cash"),
         ("En Attente", "En Attente"),
     )
@@ -469,24 +469,30 @@ class InvoiceSale(models.Model):
         ("Facture", "Facture"),
         ("Reçu", "Reçu"),   
     )
-    reference    = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    reference    = models.CharField(_("Référence"), max_length=255, null=True, blank=True, editable=True, unique=True)
     seller       = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name="invoice_seller")  
     payment_mode = models.CharField(_("Mode de Paiement"), max_length=100, choices=PAYMENT_CHOICES, null=True, blank=True)
     invoice_type = models.CharField(_("Type de Facturation"), max_length=100, choices=INVOICE_CHOICES, null=True, blank=True)
     payment_date = models.DateField(_("Date de paiement"), blank=True, null=True)
     vat          = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
-    total        = models.DecimalField(_("Total Produit par Ligne (cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
-    sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
-    global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
-    description  = models.CharField(_("Designation du Produit"), max_length=255, null=False, blank=False, unique=True)
+    sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
+    global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
     active       = models.BooleanField(_("Est actif"), default=True)
     timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
 
     def __str__(self):
         return self.reference
+
+    def delete_url(self):
+        return reverse("sale_delete", args=[str(self.reference)])
+
+    def update_url(self):
+        return reverse("sale_update", args=[str(self.reference)])
+
     class Meta:
         ordering = ('-timestamp',)
+        # verbose_name_plural = _('Invoice Sales')
 
 
 
@@ -497,37 +503,16 @@ class InvoiceSale(models.Model):
 
 # SALE MODEL
 class Sale(models.Model):
-    PAYMENT_CHOICES=(
-        ("Carte Bancaire", "Carte Bancaire"),
-        ("Chèques", "Chèques"),
-        ("Cash", "Cash"),
-        ("En Attente", "En Attente"),
-    )
-    
-    INVOICE_CHOICES=(
-        ("Facture", "Facture"),
-        ("Reçu", "Reçu"),   
-    )
-    reference    = models.CharField(_("Référence"), max_length=255, null=True, blank=True, editable=False, unique=True)
-    seller       = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name="user_seller")  
-    payment_mode = models.CharField(_("Mode de Paiement"), max_length=100, choices=PAYMENT_CHOICES, null=True, blank=True)
-    invoice_type = models.CharField(_("Type de Facturation"), max_length=100, choices=INVOICE_CHOICES, null=True, blank=True)
-    payment_date = models.DateField(_("Date de paiement"), blank=True, null=True)
     invoice      = models.ForeignKey(InvoiceSale, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_invoice") 
     product      = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
     quantity     = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
-    vat          = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
-    sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
-    global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=False)
     total        = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
-    description  = models.CharField(_("Designation du Produit"), max_length=255, null=True, blank=False)
-
     active       = models.BooleanField(_("Est actif"), default=True)
     timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
-        return self.reference
+        return self.product.name
     
     def delete_url(self):
         return reverse("sale_delete", args=[str(self.id)])

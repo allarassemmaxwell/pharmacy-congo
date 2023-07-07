@@ -20,49 +20,56 @@
 
         <div class="row">
             <div class="col-md-12">
+                
                 <h5 class="mb-3">Mettre à jour une vente</h5>
-                <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <form class="custom-validation" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group form-focus">
-                                {{ form.product|as_crispy_field }}
+                                {{ invoice.payment_mode|as_crispy_field }}
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group form-focus">
-                                {{ form.quantity|as_crispy_field }}
+                                {{ invoice.invoice_type|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group form-focus">
-                                {{ form.vat|as_crispy_field }}
+                                {{ invoice.vat|as_crispy_field }}
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group form-focus">
-                                {{ form.payment_date|as_crispy_field }}
+                                {{ invoice.payment_date|as_crispy_field }}
                             </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.payment_mode|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.invoice_type|as_crispy_field }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ form.description|as_crispy_field }}
-                            </div>
-                        </div>
+                        </div><hr>
                     </div>
+                    {{ formset.management_form }}
+
+                                  
+                    <div class="row">
+                        {% for form in formset.forms %}
+                            {% for error in form.errors %}
+                                <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ form.product|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ form.quantity|as_crispy_field }}
+                                </div>
+                            </div> 
+                                  
+                        {% endfor %}
+                    </div>
+                                    
                     <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>
                 </form>
             </div>

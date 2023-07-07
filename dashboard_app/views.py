@@ -5,7 +5,7 @@ from django.utils.translation import activate, gettext_lazy as _
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 
 # from django.urls import reverse
 from django.http import Http404
@@ -1948,7 +1948,7 @@ def appointment_prescription_delete_view(request, id):
 
 @login_required
 def sale_view(request):
-    sales    = Sale.objects.all()
+    sales    = InvoiceSale.objects.all()
     context  = {'sales': sales}
     template = "dashboard/sale/sale.html"
     return render(request, template, context)
@@ -1958,40 +1958,40 @@ def sale_view(request):
 
 
 
+
 # SALE ADD VIEW
 @login_required
 def sale_add_view(request):
-    if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.reference = random_string(7)
-            obj.seller = request.user
-            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
-            if obj.invoice_type == "Facture":
-                print("======= ADD YOUR FACTURE FUNCTION HERE ======= ")
-                # def get(self, request, *args, **kwargs):
-                #     id = kwargs.get('id')
-                # sale = get_object_or_404(Sale, id=id)
+    invoice = InvoiceSaleForm(request.POST)
+    formset = SaleFormSet(request.POST)
 
-                # context = {
-                #     'sale': sale
-                # }
+    if request.method == "POST":
+        if invoice.is_valid() and formset.is_valid():
+            obj_invoice  = invoice.save(commit=False)
+            obj_invoice.reference = random_string(10)
+            obj_invoice.seller    = request.user
+            obj_invoice.save()
+            sub_total    = 0
 
-                # pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
-                # response = HttpResponse(pdf, content_type='application/pdf')
-                # product = sale.product.replace(" ", "_")  # Replace spaces with underscores
-                # response['Content-Disposition'] = f'inline; filename="{product}.pdf"'  # Use 'inline' instead of 'attachment'
-                # return response
-            elif obj.invoice_type == "Reçu":
-                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
-            obj.save()
+            obj_form_set = formset.save(commit=False)
+            for obj_input in obj_form_set:
+                obj_input.invoice = obj_invoice
+                obj_input.total   = Decimal(obj_input.product.unity_price * obj_input.quantity)
+                sub_total += obj_input.total
+                obj_input.save()
+            obj_invoice.sub_total = sub_total
+            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.save()
             messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
     else:
-        form = SaleForm()
+        invoice = InvoiceSaleForm()
+        formset = SaleFormSet()
 
-    context = {'form': form}
+    context = {
+        'invoice': invoice,
+        'formset': formset
+    }
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
 
@@ -2005,8 +2005,10 @@ def sale_add_view(request):
 
 @login_required
 def sale_delete_view(request, id=None):
-    sale = get_object_or_404(Sale, id=id)
-    sale.delete()
+    invoice = get_object_or_404(InvoiceSale, reference=id)
+    sales = Sale.objects.filter(invoice=invoice)
+    for sale in sales: sale.delete()
+    invoice.delete()
     messages.success(request, _("Vente supprimée avec succès."))
     return redirect('sale')
 
@@ -2022,22 +2024,34 @@ def sale_delete_view(request, id=None):
 
 @login_required
 def sale_update_view(request, id):
-    obj  = get_object_or_404(Sale, id=id)
-    if request.method == 'POST':
-        form = SaleForm(request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
-            if obj.invoice_type == "Facture":
-                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
-            elif obj.invoice_type == "Reçu":
-                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
-            obj.save()
-            messages.success(request, _("Vente mise à jour avec succès."))
+    obj_invoice  = get_object_or_404(InvoiceSale, reference=id)
+    invoice = InvoiceSaleForm(request.POST, instance=obj_invoice)
+    formset = SaleFormSet(request.POST, instance=obj_invoice)
+
+    if request.method == "POST":
+        if invoice.is_valid() and formset.is_valid():
+            obj_invoice  = invoice.save(commit=False)
+            sub_total    = 0
+
+            obj_form_set = formset.save(commit=False)
+            for obj_input in obj_form_set:
+                obj_input.total   = Decimal(obj_input.product.unity_price * obj_input.quantity)
+                sub_total += obj_input.total
+                obj_input.save()
+            obj_invoice.sub_total = sub_total
+            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.save()
+            messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
+
     else:
-        form = SaleForm(instance=obj)
-    context  = {'form': form}
+        invoice = InvoiceSaleForm(instance=obj_invoice)
+        formset = SaleFormSet(instance=obj_invoice)
+
+    context = {
+        'invoice': invoice,
+        'formset': formset
+    }
     template = "dashboard/sale/sale-update.html"
     return render(request, template, context)
 

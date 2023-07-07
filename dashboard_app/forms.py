@@ -21,6 +21,12 @@ from .models import *
 from landing_app.models import *
 
 
+from django.forms.models import (
+    inlineformset_factory, 
+    formset_factory, 
+    modelform_factory, 
+    modelformset_factory
+)
 
 
 
@@ -155,28 +161,6 @@ class ProductCategoryForm(forms.ModelForm):
 
 
 
-
-
-
-# PRODUCT CATEGORY FORM
-class InvoiceSaleForm(forms.ModelForm):
-    class Meta:
-        model  = InvoiceSale
-        fields = [
-            "seller",
-            "payment_mode",
-            "invoice_type",
-            "payment_date",
-            "vat",
-            "total",
-            "sub_total",
-            "global_total",
-            "description"
-        ]
-        widgets = {
-            # 'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description':  forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
-        }
 
 
 
@@ -802,6 +786,35 @@ class PatientForm(forms.ModelForm):
 
 
 
+
+# PRODUCT CATEGORY FORM
+class InvoiceSaleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InvoiceSaleForm, self).__init__(*args, **kwargs)
+        self.fields['payment_mode'].required = True
+        self.fields['invoice_type'].required = True
+        # self.fields['payment_date'].required = True
+    class Meta:
+        model  = InvoiceSale
+        fields = [
+            "payment_mode",
+            "invoice_type",
+            "payment_date",
+            "vat"
+        ]
+        widgets = {
+            'payment_mode': forms.Select(attrs={'class': 'form-control'}),
+            'invoice_type': forms.Select(attrs={'class': 'form-control'}),
+            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
 # SALE  FORM
 class SaleForm(forms.ModelForm):
     class Meta:
@@ -810,22 +823,29 @@ class SaleForm(forms.ModelForm):
             'product': ("Produit"),
         }
         fields = [
-            "payment_mode",
-            "invoice_type",
-            "payment_date",
             "product",
             "quantity",
-            "vat",
-            "description",
         ]
         widgets = {
-            'product':     forms.Select(attrs={'class': 'form-control'}),
-            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
+            'product':  forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
         }
-
+SaleFormSet = inlineformset_factory(
+    InvoiceSale,
+    Sale,
+    form=SaleForm,
+    min_num=1,
+    # extra=1,
+#     # max_num=5,
+#     # fk_name=None,
+#     # fields=None, exclude=None, can_order=False,
+#     can_delete=False, 
+#     # can_delete_extra=True,
+#     # max_num=None, formfield_callback=None,
+#     # widgets=None, validate_max=False, localized_fields=None,
+#     # labels=None, help_texts=None, error_messages=None,
+#     # min_num=None, validate_min=False, field_classes=None
+)
 
 
 
