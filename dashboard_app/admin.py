@@ -33,6 +33,16 @@ class UserAdmin(DjangoUserAdmin):
 
 
 
+class InvoiceSaleAdmin(admin.ModelAdmin):
+    list_display        = ['reference', 'sub_total', 'global_total', 'timestamp', 'updated']
+    list_display_links  = ['reference',]
+    list_filter         = ['reference']
+    search_fields       = ['reference']
+    list_per_page       = 50
+    class Meta:
+        model = InvoiceSale
+admin.site.register(InvoiceSale, InvoiceSaleAdmin)
+
 
 
 
@@ -259,10 +269,10 @@ admin.site.register(Patient, PatientAdmin)
 #  SALE ADMIN
 class SaleAdmin(admin.ModelAdmin):
     date_hierarchy      = 'timestamp'
-    list_display        = ['product', 'quantity', 'total', 'timestamp', 'updated']
-    list_display_links  = ['product',]
-    list_filter         = ['product']
-    search_fields       = ['product']
+    list_display        = ['invoice', 'product', 'timestamp', 'updated']
+    list_display_links  = ['invoice',]
+    list_filter         = ['invoice', 'product']
+    search_fields       = ['invoice', 'product__name']
     list_per_page       = 50
     class Meta:
         model = Sale
@@ -298,14 +308,24 @@ admin.site.register(Notificaty, NotificatyAdmin)
 
 
 #  INVOICE ADMIN
-class InvoiceAdmin(admin.ModelAdmin):
-    date_hierarchy      = 'timestamp'
-    list_display        = ['customer_name', 'payment_date', 'payment_mode']
-    list_display_links  = ['customer_name',]
-    list_filter         = ['active']
-    search_fields       = ['customer_name', 'payment_date', 'payment_mode',]
-    list_per_page       = 50
-    class Meta:
-        model = Invoice
-admin.site.register(Invoice, InvoiceAdmin)
+class AdminCustomer(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'address', 'sex', 'age', 'city', 'zip_code')
+# class InvoiceAdmin(admin.ModelAdmin):
+#     date_hierarchy      = 'timestamp'
+#     list_display        = ['customer_name', 'payment_date', 'payment_mode']
+#     list_display_links  = ['customer_name',]
+#     list_filter         = ['active']
+#     search_fields       = ['customer_name', 'payment_date', 'payment_mode',]
+#     list_per_page       = 50
+#     class Meta:
+#         model = Invoice
+# admin.site.register(Invoice, InvoiceAdmin)
 
+
+class AdminInvoice(admin.ModelAdmin):
+    list_display = ('customer', 'save_by', 'invoice_date_time', 'total', 'last_updated_date', 'paid', 'invoice_type')    
+
+
+admin.site.register(Customer, AdminCustomer)
+admin.site.register(Invoice, AdminInvoice)
+admin.site.register(Article)

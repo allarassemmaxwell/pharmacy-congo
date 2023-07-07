@@ -5,12 +5,17 @@ from django.utils.translation import activate, gettext_lazy as _
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
 
 # from django.urls import reverse
 from django.http import Http404
 import csv
 # from uuid import UUID
+
+# 👉 add utils for pagination
+from .utils import pagination, get_invoice
+
+from django.db import transaction
 
 # for PDF
 from .pdf import html2pdf
@@ -1943,7 +1948,7 @@ def appointment_prescription_delete_view(request, id):
 
 @login_required
 def sale_view(request):
-    sales    = Sale.objects.all()
+    sales    = InvoiceSale.objects.all()
     context  = {'sales': sales}
     template = "dashboard/sale/sale.html"
     return render(request, template, context)
@@ -1953,27 +1958,40 @@ def sale_view(request):
 
 
 
+
 # SALE ADD VIEW
 @login_required
 def sale_add_view(request):
-    if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.reference = random_string(7)
-            obj.seller = request.user
-            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
-            if obj.invoice_type == "Facture":
-                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
-            elif obj.invoice_type == "Reçu":
-                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
-            obj.save()
+    invoice = InvoiceSaleForm(request.POST)
+    formset = SaleFormSet(request.POST)
+
+    if request.method == "POST":
+        if invoice.is_valid() and formset.is_valid():
+            obj_invoice  = invoice.save(commit=False)
+            obj_invoice.reference = random_string(10)
+            obj_invoice.seller    = request.user
+            obj_invoice.save()
+            sub_total    = 0
+
+            obj_form_set = formset.save(commit=False)
+            for obj_input in obj_form_set:
+                obj_input.invoice = obj_invoice
+                obj_input.total   = Decimal(obj_input.product.unity_price * obj_input.quantity)
+                sub_total += obj_input.total
+                obj_input.save()
+            obj_invoice.sub_total = sub_total
+            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.save()
             messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
     else:
-        form = SaleForm()
+        invoice = InvoiceSaleForm()
+        formset = SaleFormSet()
 
-    context = {'form': form}
+    context = {
+        'invoice': invoice,
+        'formset': formset
+    }
     template = "dashboard/sale/sale-add.html"
     return render(request, template, context)
 
@@ -1987,8 +2005,10 @@ def sale_add_view(request):
 
 @login_required
 def sale_delete_view(request, id=None):
-    sale = get_object_or_404(Sale, id=id)
-    sale.delete()
+    invoice = get_object_or_404(InvoiceSale, reference=id)
+    sales = Sale.objects.filter(invoice=invoice)
+    for sale in sales: sale.delete()
+    invoice.delete()
     messages.success(request, _("Vente supprimée avec succès."))
     return redirect('sale')
 
@@ -2004,22 +2024,34 @@ def sale_delete_view(request, id=None):
 
 @login_required
 def sale_update_view(request, id):
-    obj  = get_object_or_404(Sale, id=id)
-    if request.method == 'POST':
-        form = SaleForm(request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.total  = Decimal(obj.product.unity_price * obj.quantity)
-            if obj.invoice_type == "Facture":
-                print("======= ADD YOUR FACTURE FUNCTION HERE =======")
-            elif obj.invoice_type == "Reçu":
-                print("======= ADD YOUR RECU FUNCTION HERE ======= ")
-            obj.save()
-            messages.success(request, _("Vente mise à jour avec succès."))
+    obj_invoice  = get_object_or_404(InvoiceSale, reference=id)
+    invoice = InvoiceSaleForm(request.POST, instance=obj_invoice)
+    formset = SaleFormSet(request.POST, instance=obj_invoice)
+
+    if request.method == "POST":
+        if invoice.is_valid() and formset.is_valid():
+            obj_invoice  = invoice.save(commit=False)
+            sub_total    = 0
+
+            obj_form_set = formset.save(commit=False)
+            for obj_input in obj_form_set:
+                obj_input.total   = Decimal(obj_input.product.unity_price * obj_input.quantity)
+                sub_total += obj_input.total
+                obj_input.save()
+            obj_invoice.sub_total = sub_total
+            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.save()
+            messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
+
     else:
-        form = SaleForm(instance=obj)
-    context  = {'form': form}
+        invoice = InvoiceSaleForm(instance=obj_invoice)
+        formset = SaleFormSet(instance=obj_invoice)
+
+    context = {
+        'invoice': invoice,
+        'formset': formset
+    }
     template = "dashboard/sale/sale-update.html"
     return render(request, template, context)
 
@@ -2138,17 +2170,106 @@ def fridge_update_view(request, id):
 
 
 
+
+
+
+
+
+
 # INVOICE MANAGEMENT
+
 
 # INVOICE VIEW 
 @login_required
 def invoice_view(request):
-    invoices = Invoice.objects.all()
-    context  = {'invoices': invoices}
-    template = "dashboard/invoices/invoice.html"
-    return render(request, template, context)
+    """ Main view """
+    templates_name = 'dashboard/invoices/invoice.html'
+    invoices = Invoice.objects.select_related('customer', 'save_by').all().order_by('-invoice_date_time')
+    context = {
+        'invoices': invoices
+    }
+    if request.method == 'GET':
+        items = pagination(request, invoices)
+        context['invoices'] = items
+        return render(request, templates_name, context)
+    
+    if request.method == 'POST':
+        # modify an invoice
+        if request.POST.get('id_modified'):
+            paid = request.POST.get('modified')
+            try: 
+                obj = Invoice.objects.get(id=request.POST.get('id_modified'))
+                if paid == 'True':
+                    obj.paid = True
+                else:
+                    obj.paid = False 
+                obj.save() 
+                messages.success(request,  _("Change made successfully.")) 
+            except Exception as e:   
+                messages.error(request, f"Sorry, the following error has occured {e}.")
+        
+        # deleting an invoice    
+        if request.POST.get('id_supprimer'):
+            try:
+                obj = Invoice.objects.get(pk=request.POST.get('id_supprimer'))
+                obj.delete()
+                messages.success(request, _("The deletion was successful."))   
+            except Exception as e:
+                messages.error(request, f"Sorry, the following error has occured {e}.")
+
+        items = pagination(request, invoices)
+        context['invoices'] = items
+        return render(request, templates_name, context)
+    # invoices = Invoice.objects.all()
+    # context  = {'invoices': invoices}
+    # template = "dashboard/invoices/invoice.html"
+    # return render(request, template, context)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# ADD CUSTOMER
+@login_required
+def add_customer_view(request):
+    """ add new customer """
+    template_name = 'dashboard/invoices/customer_add.html'
+    if request.method == 'GET':
+        return render(request, template_name)
+
+    if request.method == 'POST':
+        data = {
+            'name': request.POST.get('name'),
+            'email': request.POST.get('email'),
+            'phone': request.POST.get('phone'),
+            'address': request.POST.get('address'),
+            'sex': request.POST.get('sex'),
+            'age': request.POST.get('age'),
+            'city': request.POST.get('city'),
+            'zip_code': request.POST.get('zip'),
+            'save_by': request.user
+        }
+
+        try:
+            created = Customer.objects.create(**data)
+            if created:
+                messages.success(request, "Customer registered successfully.")
+            else:
+                messages.error(request, "Sorry, please try again. The sent data is corrupt.")
+
+        except Exception as e:
+            messages.error(request, f"Sorry, our system is detecting the following issues: {e}.")
+
+        return render(request, template_name)
 
 
 
@@ -2158,11 +2279,21 @@ def invoice_view(request):
 
 # SHOW INVOICE VIEW 
 @login_required
-def show_invoice_view(request, id):
-    invoice = get_object_or_404(Invoice, id=id)
-    context = {'invoice': invoice}
-    template = "dashboard/invoices/invoice_pdf.html"
-    return render(request, template, context)
+def invoice_visualization_view(request, pk):
+    """ This view helps to visualize the invoice """
+    template_name = 'invoice.html'
+    context = get_invoice(pk)
+    return render(request, template_name, context)
+
+# def show_invoice_view(request, id):
+#     invoice = get_object_or_404(Invoice, id=id)
+#     context = {'invoice': invoice}
+#     template = "dashboard/invoices/invoice_pdf.html"
+#     return render(request, template, context)
+
+
+
+
 
 
 
@@ -2177,26 +2308,63 @@ def show_invoice_view(request, id):
 
 # INVOICE ADD VIEW 
 @login_required
-def invoice_add_view(request):
+def add_invoice_view(request):
+    template_name = 'dashboard/invoices/invoice-add.html'
+    form = InvoiceForm()
+
     if request.method == 'POST':
-        form = InvoiceForm(request.POST, request.FILES)
+        form = InvoiceForm(request.POST)
+
         if form.is_valid():
-            invoice = form.save(commit=False)
-
-            # Calculate the total
-            total = Decimal(invoice.unity_price * invoice.quantity)
-            invoice.total = total
-            # Save the object
             form.save()
+            messages.success(request, "Data saved successfully.")
+            return redirect('invoice_list')  # Redirect to the invoice list view after successful form submission
+        else:
+            messages.error(request, "Sorry, an error occurred while processing the form.")
 
-            messages.success(request, _("Facture créée avec succès."))
-            return redirect('invoice')
-    else:
-        form = InvoiceForm()
+    context = {
+        'form': form
+    }
+    return render(request, template_name, context)
 
-    context = {'form': form}
-    template = "dashboard/invoices/invoice-add.html"
-    return render(request, template, context)
+    # if request.method == 'POST':
+    #     form = InvoiceForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         invoice = form.save(commit=False)
+
+    #         # Calculate the total
+    #         total = Decimal(invoice.unity_price * invoice.quantity)
+    #         invoice.total = total
+    #         # Save the object
+    #         form.save()
+
+    #         messages.success(request, _("Facture créée avec succès."))
+    #         return redirect('invoice')
+    # else:
+    #     form = InvoiceForm()
+
+    # context = {'form': form}
+    # template = "dashboard/invoices/invoice-add.html"
+    # return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2229,24 +2397,24 @@ def invoice_delete_view(request, id):
 
 
 # INVOICE UPDATE VIEW FUNCTION
-@login_required
-def invoice_update_view(request, id):
-    obj  = get_object_or_404(Invoice, id=id)
-    if request.method == 'POST':
-        form = InvoiceForm(request.POST, instance=obj)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _("Facture mis à jour avec succès."))
-            return redirect('invoice')
-    else:
-        form = InvoiceForm(instance=obj)
-    # image  = obj.product_image.file
-    context  = { 
-        'form': form,
-        # 'image': image
-    }
-    template = "dashboard/invoices/invoice-update.html"
-    return render(request, template, context)
+# @login_required
+# def invoice_update_view(request, id):
+#     obj  = get_object_or_404(Invoice, id=id)
+#     if request.method == 'POST':
+#         form = InvoiceForm(request.POST, instance=obj)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, _("Facture mis à jour avec succès."))
+#             return redirect('invoice')
+#     else:
+#         form = InvoiceForm(instance=obj)
+#     # image  = obj.product_image.file
+#     context  = { 
+#         'form': form,
+#         # 'image': image
+#     }
+#     template = "dashboard/invoices/invoice-update.html"
+#     return render(request, template, context)
 
 
 
@@ -2268,21 +2436,48 @@ def invoice_update_view(request, id):
 
 
 # 👉 to generate pdf
+@login_required
+def get_invoice_pdf(request, *args, **kwargs):
+    """ generate pdf file from html file """
 
-class GeneratePdf(View):
-    def get(self, request, *args, **kwargs):
-        id = kwargs.get('id')
-        invoice = get_object_or_404(Invoice, id=id)
+    pk = kwargs.get('pk')
+    context = get_invoice(pk)
+    context['date'] = datetime.datetime.today()
+    # get html file
+    template = get_template('invoice-pdf.html')
+    # render html with context variables
+    html = template.render(context)
+    # options of pdf format 
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+    # generate pdf 
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
 
-        context = {
-            'invoice': invoice
-        }
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = "attachment"
 
-        pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        customer_name = invoice.customer_name.replace(" ", "_")  # Replace spaces with underscores
-        response['Content-Disposition'] = f'inline; filename="{customer_name}.pdf"'  # Use 'inline' instead of 'attachment'
-        return response
+    return response
+
+
+# class GeneratePdf(View):
+#     def get(self, request, *args, **kwargs):
+#         id = kwargs.get('id')
+#         invoice = get_object_or_404(Invoice, id=id)
+
+#         context = {
+#             'invoice': invoice
+#         }
+
+#         pdf = html2pdf('dashboard/invoices/invoice_pdf.html', context)
+#         response = HttpResponse(pdf, content_type='application/pdf')
+#         customer_name = invoice.customer_name.replace(" ", "_")  # Replace spaces with underscores
+#         response['Content-Disposition'] = f'inline; filename="{customer_name}.pdf"'  # Use 'inline' instead of 'attachment'
+#         return response
 
 
 # def invoice_pdf_view(request, id):
@@ -2312,21 +2507,6 @@ class GeneratePdf(View):
 
 
 
-    # invoice = get_object_or_404(Invoice, id=id)
-    # context = {'invoice': invoice}
-
-    # html = render_to_string('dashboard/invoices/invoice_pdf.html', context)
-    # pdf_data = html2pdf('dashboard/invoices/invoice_pdf.html', context)
-
-    # if pdf_data is not None:
-    #     response = HttpResponse(content_type='application/pdf')
-    #     invoice_name = invoice[0].customer_name  # Assuming item_name is an attribute of Stock model
-    #     filename = f"invoice_{invoice_name}.pdf"
-    #     response['Content-Disposition'] = f'filename="{filename}"'
-    #     response.write(pdf_data)
-    #     return response
-
-    # return HttpResponse("Error generating PDF", status=500)
 
 
 

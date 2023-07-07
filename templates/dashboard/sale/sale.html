@@ -50,10 +50,11 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Référence</th>
-                                        <th>Produit</th>
-                                        <th>Prix unitaire</th>
-                                        <th>Quantité</th>
-                                        <th>Total</th>
+                                        <th>Vendeur</th>
+                                        <th>Paiement</th>
+                                        <th>Facturation</th>
+                                        <th>Sous Total</th>
+                                        <th>Total Global</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -63,17 +64,18 @@
                                     {% include 'dashboard/modal/sale-delete.html' with sale=sale %}
                                     {% include 'dashboard/sale/detail.html' with sale=sale %}
                                     <tr>
-                                        <td>{{ sale.reference }}</td>
+                                        <td><a href="{{ sale.update_url }}">{{ sale.reference }}</a></td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
-                                                <span>{{ sale.product.name|title }}</span>
+                                                <span>{{ sale.seller.first_name|title }} {{ sale.seller.last_name|title }}</span>
                                                 </a>
                                             </h2>
                                         </td>
-                                        <td>{{ sale.product.unity_price }}f cfa</td>
-                                        <td>{{ sale.quantity }}</td>
-                                        <td>{{ sale.total }}f cfa</td>
+                                        <td>{{ sale.payment_mode }}</td>
+                                        <td>{{ sale.invoice_type }}</td>
+                                        <td>{% if sale.sub_total %}{{ sale.sub_total }}f cfa{% else %}{% endif %}</td>
+                                        <td>{% if sale.global_total %}{{ sale.global_total }}f cfa{% else %}{% endif %}</td>
                                        
                                         <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         

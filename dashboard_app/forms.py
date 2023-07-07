@@ -21,6 +21,12 @@ from .models import *
 from landing_app.models import *
 
 
+from django.forms.models import (
+    inlineformset_factory, 
+    formset_factory, 
+    modelform_factory, 
+    modelformset_factory
+)
 
 
 
@@ -155,28 +161,6 @@ class ProductCategoryForm(forms.ModelForm):
 
 
 
-
-
-
-# PRODUCT CATEGORY FORM
-class InvoiceSaleForm(forms.ModelForm):
-    class Meta:
-        model  = InvoiceSale
-        fields = [
-            "seller",
-            "payment_mode",
-            "invoice_type",
-            "payment_date",
-            "vat",
-            "total",
-            "sub_total",
-            "global_total",
-            "description"
-        ]
-        widgets = {
-            # 'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description':  forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
-        }
 
 
 
@@ -802,6 +786,35 @@ class PatientForm(forms.ModelForm):
 
 
 
+
+# PRODUCT CATEGORY FORM
+class InvoiceSaleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InvoiceSaleForm, self).__init__(*args, **kwargs)
+        self.fields['payment_mode'].required = True
+        self.fields['invoice_type'].required = True
+        # self.fields['payment_date'].required = True
+    class Meta:
+        model  = InvoiceSale
+        fields = [
+            "payment_mode",
+            "invoice_type",
+            "payment_date",
+            "vat"
+        ]
+        widgets = {
+            'payment_mode': forms.Select(attrs={'class': 'form-control'}),
+            'invoice_type': forms.Select(attrs={'class': 'form-control'}),
+            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+        }
+
+
+
+
+
+
+
 # SALE  FORM
 class SaleForm(forms.ModelForm):
     class Meta:
@@ -810,22 +823,29 @@ class SaleForm(forms.ModelForm):
             'product': ("Produit"),
         }
         fields = [
-            "payment_mode",
-            "invoice_type",
-            "payment_date",
             "product",
             "quantity",
-            "vat",
-            "description",
         ]
         widgets = {
-            'product':     forms.Select(attrs={'class': 'form-control'}),
-            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':30}),
+            'product':  forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
         }
-
+SaleFormSet = inlineformset_factory(
+    InvoiceSale,
+    Sale,
+    form=SaleForm,
+    min_num=1,
+    # extra=1,
+#     # max_num=5,
+#     # fk_name=None,
+#     # fields=None, exclude=None, can_order=False,
+#     can_delete=False, 
+#     # can_delete_extra=True,
+#     # max_num=None, formfield_callback=None,
+#     # widgets=None, validate_max=False, localized_fields=None,
+#     # labels=None, help_texts=None, error_messages=None,
+#     # min_num=None, validate_min=False, field_classes=None
+)
 
 
 
@@ -923,41 +943,58 @@ class FridgeForm(forms.ModelForm):
 
 
 
-# INVOICE FORM
+#INVOICE FORM
 class InvoiceForm(forms.ModelForm):
+    product_name = forms.CharField(label="Nom Produit", widget=forms.TextInput(attrs={'class': 'form-control'}))
+    product_quantity = forms.IntegerField(label="Quantity", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    product_unit_price = forms.DecimalField(label="Unit Price", widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    
     class Meta:
-        model  = Invoice
-        # exclude = ['issued_date']
+        model = Invoice
         fields = [
-            "customer_name",
-            "customer_phone",
-            "customer_address",
-            "doc_name",
-            "doc_phone",
-            "doc_address",
-            "payment_mode",
-            "unity_price",
-            "quantity",
-            "vat",
-            "description",
-            "payment_date",
+            "customer",
+            "product",
+            "save_by",
+            "total",
+            "paid",
             "invoice_type",
-           
+            "comments",
         ]
         widgets = {
-            'customer_name':       forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_phone':       forms.TextInput(attrs={'class': 'form-control'}),
-            'customer_address':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_name':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_phone':       forms.TextInput(attrs={'class': 'form-control'}),
-            'doc_address':       forms.TextInput(attrs={'class': 'form-control'}),
-            'description':       forms.TextInput(attrs={'class': 'form-control'}),
-            'payment_mode':      forms.Select(attrs={'class': 'form-control'}),
-            'unity_price':      forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            'vat':    forms.NumberInput(attrs={'class': 'form-control'}),
-            # 'issued_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'customer': forms.Select(attrs={'class': 'form-control'}),
+            'product': forms.Select(attrs={'class': 'form-control'}),
+            'save_by': forms.Select(attrs={'class': 'form-control'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control'}),
+            'paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'invoice_type': forms.Select(attrs={'class': 'form-control'}),
-           
+            'comments': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['product_name'].initial = self.instance.product.name
+            self.fields['product_quantity'].initial = self.instance.product.quantity
+            self.fields['product_unit_price'].initial = self.instance.product.unity_price
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        product = instance.product
+
+        if not product:
+            product = Product()
+
+        product.name = self.cleaned_data['product_name']
+        product.quantity = self.cleaned_data['product_quantity']
+        product.unity_price = self.cleaned_data['product_unit_price']
+        product.save()
+
+        instance.product = product
+
+        if commit:
+            instance.save()
+
+        return instance
+
+
+

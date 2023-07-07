@@ -19,88 +19,113 @@
         <div class="row">
             <div class="col-md-12">
                 <h5 class="mb-3">Ajouter une Facture</h5>
-                <form class="custom-validation" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group form-focus">
-                                {{ form.customer_name|as_crispy_field }}
+               <!--👉 To add elements-->
+               <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Information Facture</h4>
+                    <div class="row form-row justify-content-center">
+              
+                      <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="{{ form.customer.id_for_label }}">Customer</label>
+                              {{ form.customer }}
                             </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="{{ form.invoice_type.id_for_label }}">Invoice Type</label>
+                              {{ form.invoice_type }}
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.customer_phone|as_crispy_field }}
+                        <div class="card" id="wrapper">
+                          <div class="card-body">
+                            <h4 class="card-title">Ajouter Elements</h4>
+                            <div class="experience-info">
+                              <div class="row form-row experience-cont">
+                                <div class="col-12 col-md-10 col-lg-11">
+                                  <div class="row form-row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                      <div class="form-group">
+                                        <label for="article-1">#1 Item name </label>
+                                        <input required name="article" type="text" class="form-control" id="article-1">
+                                      </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                      <div class="form-group">
+                                        <label for="qty-1"> Quantity </label>
+                                        <input required name="qty" type="number" min="1" step="0.1" class="form-control" id="qty-1">
+                                      </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                      <div class="form-group">
+                                        <label for="unit-1"> Unit Price </label>
+                                        <input required name="unit" type="number" min="1" step="0.1" onchange="handleChangeSingleArticle(this.id)" class="form-control" id="unit-1">
+                                      </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                      <div class="form-group">
+                                        <label for="total-a-1"> Total </label>
+                                        <input required name="total-a" type="number" min="1" step="0.1" readonly class="form-control"
+                                        id="total-a-1">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.customer_address|as_crispy_field }}
+                            <div class="add-more">
+                              <a href="javascript:void(0);" class="add-experience">
+                                <i id="btn-add" class="fa fa-plus-circle"></i> Ajouter Plus
+                              </a>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.doc_name|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.doc_phone|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.doc_address|as_crispy_field }}
-                            </div>
+                          </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.description|as_crispy_field }}
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label for="total"> Total </label>
+                              <input value="0" type="number" step="0.1" name="total" readonly class="form-control" id="total">
                             </div>
+                          </div>
+            
                         </div>
-                        
-
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.unity_price|as_crispy_field }}
+                        <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Commentaire</h4>
+                            <div class="form-group mb-0">
+                              <label for="comment"> Comments </label>
+                              <textarea class="form-control" name="comment" id="comment" cols="30" rows="1"></textarea>
                             </div>
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.quantity|as_crispy_field }}
-                            </div>
+                        <div class="submit-section submit-btn-bottom">
+                          <button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
                         </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.vat|as_crispy_field }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.payment_mode|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.invoice_type|as_crispy_field }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ form.payment_date|as_crispy_field }}
-                            </div>
-                        </div>
-                        
-                    
+                      </form>
+                      
+              
                     </div>
-                    <button type="submit" class="btn btn-primary save-btn">Ajouter</button>
-                </form>
+                  </div>
+                </div>
+              </div>
+              
+
             </div>
+
+            
         </div>
 
     </div>
 </div>
+
+
+
 
 
 {% endblock %}
