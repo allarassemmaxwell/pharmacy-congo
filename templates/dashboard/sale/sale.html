@@ -92,6 +92,9 @@
                                                     <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#saleDeleteModal-{{ forloop.counter }}">
                                                         <i class="feather-trash-2 me-1"></i> Supprimer
                                                     </a>
+                                                    <a href="{% url 'sale_visualization' id=sale.id %}" class="dropdown-item">
+                                                        <i class="feather-eye"></i> Visualiser
+                                                    </a>
                                                     <a href="" class="dropdown-item">
                                                         <i class="feather-download"></i> Télécharger
                                                     </a>

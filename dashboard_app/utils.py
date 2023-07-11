@@ -1,6 +1,7 @@
 from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 
 from .models import *
+from django.shortcuts import get_object_or_404
 
 def pagination(request, invoices):
     # default_page 
@@ -19,12 +20,15 @@ def pagination(request, invoices):
 
 
 
-def get_invoice(pk):
-    """ get invoice fonction """
-    obj = Invoice.objects.get(pk=pk)
-    articles = obj.article_set.all()
+def get_sale_invoice(id):
+    """ get invoice function """
+
+    sale = InvoiceSale.objects.get(id=id)
+
+    # sales = obj.sale_set.all()
+
     context = {
-        'obj': obj,
-        'articles': articles
+        'sale': sale
     }
+
     return context

@@ -13,7 +13,7 @@ import csv
 # from uuid import UUID
 
 # 👉 add utils for pagination
-from .utils import pagination, get_invoice
+from .utils import pagination, get_sale_invoice
 
 from django.db import transaction
 
@@ -2064,6 +2064,64 @@ def sale_update_view(request, id):
 
 
 
+# SHOW SALE  VISUALISATION 
+@login_required
+def sale_visualization_view(request, id):
+    """ This view helps to visualize the invoice """
+    template_name = 'dashboard/sale/sale-viz.html'
+    
+    context = get_sale_invoice(id)
+
+    
+    return render(request, template_name, context)
+
+
+
+
+
+
+
+
+
+def get_sale_pdf_view(request, id):
+    """ Generate PDF file from HTML file """
+    context = get_sale_invoice(id)
+    context['date'] = datetime.datetime.today()
+
+    # Get HTML file
+    template = get_template('dashboard/sale/sale-pdf.html')
+    # Render HTML with context variables
+    html = template.render(context)
+
+    # Options for PDF format
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+
+    # Generate PDF
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="sale_{id}.pdf"'
+    response.write(pdf)
+
+    return response
+
+
+
+
+
+
+
+
+
+
+
+
 # NOTIFICATION   FUNCTION
 @login_required
 def notification_view(request):
@@ -2277,13 +2335,7 @@ def add_customer_view(request):
 
 
 
-# SHOW INVOICE VIEW 
-@login_required
-def invoice_visualization_view(request, pk):
-    """ This view helps to visualize the invoice """
-    template_name = 'invoice.html'
-    context = get_invoice(pk)
-    return render(request, template_name, context)
+
 
 # def show_invoice_view(request, id):
 #     invoice = get_object_or_404(Invoice, id=id)
@@ -2435,33 +2487,33 @@ def invoice_delete_view(request, id):
 
 
 
-# 👉 to generate pdf
-@login_required
-def get_invoice_pdf(request, *args, **kwargs):
-    """ generate pdf file from html file """
+# # 👉 to generate pdf
+# @login_required
+# def get_invoice_pdf(request, *args, **kwargs):
+#     """ generate pdf file from html file """
 
-    pk = kwargs.get('pk')
-    context = get_invoice(pk)
-    context['date'] = datetime.datetime.today()
-    # get html file
-    template = get_template('invoice-pdf.html')
-    # render html with context variables
-    html = template.render(context)
-    # options of pdf format 
-    options = {
-        'page-size': 'Letter',
-        'encoding': 'UTF-8',
-        "enable-local-file-access": ""
-    }
-    # generate pdf 
-    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
-    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+#     pk = kwargs.get('pk')
+#     context = get_invoice(pk)
+#     context['date'] = datetime.datetime.today()
+#     # get html file
+#     template = get_template('invoice-pdf.html')
+#     # render html with context variables
+#     html = template.render(context)
+#     # options of pdf format 
+#     options = {
+#         'page-size': 'Letter',
+#         'encoding': 'UTF-8',
+#         "enable-local-file-access": ""
+#     }
+#     # generate pdf 
+#     wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+#     config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
 
-    pdf = pdfkit.from_string(html, False, options, configuration=config)
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = "attachment"
+#     pdf = pdfkit.from_string(html, False, options, configuration=config)
+#     response = HttpResponse(pdf, content_type='application/pdf')
+#     response['Content-Disposition'] = "attachment"
 
-    return response
+#     return response
 
 
 # class GeneratePdf(View):

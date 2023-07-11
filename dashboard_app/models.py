@@ -458,28 +458,28 @@ class Patient(models.Model):
 
 
 class InvoiceSale(models.Model):
-    PAYMENT_CHOICES=(
+    PAYMENT_CHOICES = (
         ("Carte Bancaire", "Carte Bancaire"),
         ("Chèques", "Chèques"),
         ("Cash", "Cash"),
         ("En Attente", "En Attente"),
     )
     
-    INVOICE_CHOICES=(
+    INVOICE_CHOICES = (
         ("Facture", "Facture"),
         ("Reçu", "Reçu"),   
     )
-    reference    = models.CharField(_("Référence"), max_length=255, null=True, blank=True, editable=True, unique=True)
-    seller       = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name="invoice_seller")  
+    reference = models.CharField(_("Référence"), max_length=255, null=True, blank=True, editable=True, unique=True)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name="invoice_seller")
     payment_mode = models.CharField(_("Mode de Paiement"), max_length=100, choices=PAYMENT_CHOICES, null=True, blank=True)
     invoice_type = models.CharField(_("Type de Facturation"), max_length=100, choices=INVOICE_CHOICES, null=True, blank=True)
     payment_date = models.DateField(_("Date de paiement"), blank=True, null=True)
-    vat          = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
-    sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
+    vat = models.DecimalField(_("TVA du Produit"), decimal_places=2, max_digits=7, null=True, blank=True)
+    sub_total = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
     global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
-    active       = models.BooleanField(_("Est actif"), default=True)
-    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    active = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
 
     def __str__(self):
         return self.reference
@@ -492,8 +492,12 @@ class InvoiceSale(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
-        # verbose_name_plural = _('Invoice Sales')
 
+    # @property
+    # def get_total(self):
+    #     sales = self.sale_set.all()   
+    #     total = sum(sale.get_total for sale in sales)
+    #     return total
 
 
 
