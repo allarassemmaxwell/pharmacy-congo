@@ -127,6 +127,8 @@ urlpatterns = [
     path('sale/add/', sale_add_view, name="sale_add"),
     path('sale/delete/<str:id>/', sale_delete_view, name="sale_delete"),
     path('sale/update/<str:id>/', sale_update_view, name="sale_update"),
+    path('sale/<str:id>/', sale_visualization_view, name='sale_visualization'),
+    path('sale-pdf/<str:id>/', get_sale_pdf_view, name="sale_pdf"),
     
     
     # fridge management
