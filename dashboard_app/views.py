@@ -2039,7 +2039,7 @@ def sale_update_view(request, id):
                 sub_total += obj_input.total
                 obj_input.save()
             obj_invoice.sub_total = sub_total
-            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.global_total = Decimal((1+(obj_invoice.vat)/100)*sub_total)
             obj_invoice.save()
             messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')
@@ -2106,7 +2106,7 @@ def get_sale_pdf_view(request, id):
     pdf = pdfkit.from_string(html, False, options, configuration=config)
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="sale_{id}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="vente_{id}.pdf"'
     response.write(pdf)
 
     return response

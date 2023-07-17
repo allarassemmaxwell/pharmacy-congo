@@ -95,8 +95,9 @@
                                                     <a href="{% url 'sale_visualization' id=sale.id %}" class="dropdown-item">
                                                         <i class="feather-eye"></i> Visualiser
                                                     </a>
-                                                    <a href="" class="dropdown-item">
-                                                        <i class="feather-download"></i> Télécharger
+                                                    
+                                                    <a href="{% url 'sale_pdf' id=sale.id %}" class="dropdown-item">
+                                                        <i class="feather-download"></i> Telecharger
                                                     </a>
                                                 </div>
                                             </div>
