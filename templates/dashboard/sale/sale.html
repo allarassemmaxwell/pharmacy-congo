@@ -64,7 +64,7 @@
                                     {% include 'dashboard/modal/sale-delete.html' with sale=sale %}
                                     {% include 'dashboard/sale/detail.html' with sale=sale %}
                                     <tr>
-                                        <td><a href="{{ sale.update_url }}">{{ sale.reference }}</a></td>
+                                        <td>{{ sale.reference }}</td>
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
@@ -86,18 +86,18 @@
                                                     <!-- <i class="mdi mdi-dots-vertical"></i> -->
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-start">
-                                                    <a href="{{ sale.update_url }}" class="dropdown-item">
+                                                    <!-- <a href="{{ sale.update_url }}" class="dropdown-item">
                                                         <i class="feather-edit-3 me-1"></i> Modifier
-                                                    </a>
-                                                    <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#saleDeleteModal-{{ forloop.counter }}">
-                                                        <i class="feather-trash-2 me-1"></i> Supprimer
-                                                    </a>
+                                                    </a> -->
+                                                    
                                                     <a href="{% url 'sale_visualization' id=sale.id %}" class="dropdown-item">
                                                         <i class="feather-eye"></i> Visualiser
                                                     </a>
-                                                    
                                                     <a href="{% url 'sale_pdf' id=sale.id %}" class="dropdown-item">
                                                         <i class="feather-download"></i> Telecharger
+                                                    </a>
+                                                    <a  class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#saleDeleteModal-{{ forloop.counter }}">
+                                                        <i class="feather-trash-2 me-1"></i> Supprimer
                                                     </a>
                                                 </div>
                                             </div>

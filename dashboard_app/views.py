@@ -1958,7 +1958,6 @@ def sale_view(request):
 
 
 
-
 # SALE ADD VIEW
 @login_required
 def sale_add_view(request):
@@ -1980,7 +1979,7 @@ def sale_add_view(request):
                 sub_total += obj_input.total
                 obj_input.save()
             obj_invoice.sub_total = sub_total
-            obj_invoice.global_total = Decimal((1+obj_invoice.vat)*sub_total)
+            obj_invoice.global_total = Decimal((1+Decimal(obj_invoice.vat/100))*sub_total)
             obj_invoice.save()
             messages.success(request, _("Vente créée avec succès."))
             return redirect('sale')

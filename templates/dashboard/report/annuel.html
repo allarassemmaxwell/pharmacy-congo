@@ -187,7 +187,6 @@
                                         <th>Quantity</th>
                                         <th>Prix Unitaire</th>
                                         <th>Total</th>
-                                        <th>Reçu(pdf,image)</th>
                                         <th>Date de vente</th>
                                     </tr>
                                 </thead>
@@ -196,9 +195,8 @@
                                         <tr>
                                             <td>{{ sale.product }}</td>
                                             <td>{{ sale.quantity }}</td>
-                                            <td>{{ sale.unity_price }}</td>
-                                            <td>{{ sale.total }}</td>
-                                            <td><a href="{{ sale.recu.url }}">Ouvrir le fichier</a></td>
+                                            <td>{{ sale.product.unity_price }}</td>
+                                            <td>{{ sale.total }}fcfa</td>
                                             <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         </tr>
                                     {% endfor %}

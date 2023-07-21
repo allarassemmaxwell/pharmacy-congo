@@ -806,7 +806,7 @@ class InvoiceSaleForm(forms.ModelForm):
             'payment_mode': forms.Select(attrs={'class': 'form-control'}),
             'invoice_type': forms.Select(attrs={'class': 'form-control'}),
             'payment_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'vat':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
+            'vat':    forms.NumberInput(attrs={'step': 1, 'class': 'form-control'}),
         }
 
 
