@@ -30,7 +30,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Ventes</h5>
+                                <h5 class="card-title">Consommations</h5>
                             </div>
                             <div class="col-auto d-flex">
                                 
@@ -85,7 +85,7 @@
                                                 labels: {{ chart_labels|safe }},
                                                 datasets: [
                                                     {
-                                                        label: "Revenu Annuel (f cfa)",
+                                                        label: "Consommation Annuelle",
                                                         data: {{ chart_data|safe }},
                                                         backgroundColor: [
                                                             'rgba(255, 99, 132, 0.2)',
@@ -137,8 +137,8 @@
                                             </div>
                                            <div class="media-body ps-3">
 
-                                            <h4 class="font-size-20">F cfa {{ total_amount }}</h4>
-                                            <p class="text-muted">Montant total</a>
+                                            <h4 class="font-size-20">{{ total_amount }}</h4>
+                                            <p class="text-muted">Consommation totale</a>
                                             </p>
 
                                            </div>
@@ -157,7 +157,7 @@
                                             </div>
                                             <div class="media-body ps-3">
                                                 <h4 class="font-size-20">{{ products_sales | length}}</h4>
-                                            <p class="text-muted">Produit Vendu</p>
+                                            <p class="text-muted">Produit Consommé</p>
                                             </div>
                                         </div>
 
@@ -185,9 +185,9 @@
                                     <tr>
                                         <th>Produit</th>
                                         <th>Quantity</th>
-                                        <th>Prix Unitaire</th>
+                                        <th>Dose / Cible</th>
                                         <th>Total</th>
-                                        <th>Date de vente</th>
+                                        <th>Date de consommation</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -196,7 +196,7 @@
                                             <td>{{ sale.product }}</td>
                                             <td>{{ sale.quantity }}</td>
                                             <td>{{ sale.product.unity_price }}</td>
-                                            <td>{{ sale.total }}fcfa</td>
+                                            <td>{{ sale.total }}</td>
                                             <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         </tr>
                                     {% endfor %}

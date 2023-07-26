@@ -25,7 +25,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'sale_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter une Vente
+                        <i class="feather-plus-square me-1"></i> Ajouter une Commande
                     </a>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Ventes</h5>
+                                <h5 class="card-title">Consommations</h5>
                             </div>
                         </div>
                     </div>
@@ -74,8 +74,8 @@
                                         </td>
                                         <td>{{ sale.payment_mode }}</td>
                                         <td>{{ sale.invoice_type }}</td>
-                                        <td>{% if sale.sub_total %}{{ sale.sub_total }}f cfa{% else %}{% endif %}</td>
-                                        <td>{% if sale.global_total %}{{ sale.global_total }}f cfa{% else %}{% endif %}</td>
+                                        <td>{% if sale.sub_total %}{{ sale.sub_total }}{% else %}{% endif %}</td>
+                                        <td>{% if sale.global_total %}{{ sale.global_total }}{% else %}{% endif %}</td>
                                        
                                         <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         
