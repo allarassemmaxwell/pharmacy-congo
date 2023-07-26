@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Rendez-Vous{% endblock %}
+{% block title %}Expression de Besoins {% endblock %}
 
 
 {% block extra_css %}
@@ -25,7 +25,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/patient/">Tableau de bord</a></div>
                     <a href="{% url 'patient:appointment_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter un Rendez-Vous
+                        <i class="feather-plus-square me-1"></i> Ajouter une Expression de Besoins 
                     </a>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Rendez-Vous</h5>
+                                <h5 class="card-title">Expression de Besoins </h5>
                             </div>
                         </div>
                     </div>

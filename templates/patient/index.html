@@ -33,7 +33,7 @@
                                 <img src="{% static 'admin/img/icon/calendar.png' %}" alt="User Image">
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title"><a href="{% url 'patient:appointment' %}">Rendez-vous</a></h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:appointment' %}">Expression de Besoins</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ appointment_count }}</p>
                                 </div>
@@ -50,7 +50,7 @@
                                 <i class="feather-users"></i>
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title"><a href="{% url 'patient:symptom' %}">Symptôme</a></h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:symptom' %}">Intrants</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ symptoms_count }}</p>
                                 </div>
@@ -67,7 +67,7 @@
                                 <i class="feather-edit"></i>
                             </span>
                             <div class="dash-count">
-                                <h5 class="dash-title"><a href="{% url 'patient:prescription' %}">Ordonnance</a></h5>
+                                <h5 class="dash-title"><a href="{% url 'patient:prescription' %}">Bon de Commande</a></h5>
                                 <div class="dash-counts">
                                     <p>{{ prescription_count }}</p>
                                 </div>

@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Service{% endblock %}
+{% block title %}Déploiement{% endblock %}
 
 
 {% block extra_css %}
@@ -25,7 +25,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'service_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter un Service
+                        <i class="feather-plus-square me-1"></i> Ajouter Type d'approvisionnement
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Services</h5>
+                                <h5 class="card-title">Type d'approvisionnent</h5>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Nom</th>
-                                        <th>Catégorie</th>
+                                        <th>Structures</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>

@@ -191,9 +191,9 @@
                                                     <tr>
                                                         <th scope="col">#</th>
                                                         <th scope="col">Produit</th>
-                                                        <th scope="col">Prix unitaire</th>
+                                                        <th scope="col">Dose / Cible</th>
                                                         <th scope="col">Quantité</th>
-                                                        <th scope="col">Total</th>
+                                                        <th scope="col">Total dose</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -201,9 +201,9 @@
                                                     <tr>
                                                         <th scope="row">{{ forloop.counter }}</th>
                                                         <td>{{product.product.name|title}}</td>
-                                                        <td>{{product.product.unity_price}}f cfa</td>
+                                                        <td>{{product.product.unity_price}}</td>
                                                         <td>{{product.quantity}}</td>
-                                                        <td>{{product.total}}f cfa</td>
+                                                        <td>{{product.total}}</td>
                                                     </tr>
                                                     {% endfor %}
                                                     <tr>
@@ -212,12 +212,12 @@
                                                             <h5 class="text-success"><strong>{{sale.vat}}</strong></h5>
                                                         </td>   
                                                         <td colspan="2">
-                                                            <p>Sous Total (cfa)<br></p>
-                                                            <h5 class="text-success"><strong>{{sale.sub_total}} FCFA</strong></h5>
+                                                            <p>Sous Total <br></p>
+                                                            <h5 class="text-success"><strong>{{sale.sub_total}}/strong></h5>
                                                         </td>           
                                                         <td>
-                                                            <p>Total Global (cfa)<br></p>
-                                                            <h5 class="text-success"><strong>{{sale.global_total}} FCFA</strong></h5>
+                                                            <p>Total Global <br></p>
+                                                            <h5 class="text-success"><strong>{{sale.global_total}}</strong></h5>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -230,7 +230,7 @@
                             </div>
         
                             <div class="invoice-footer">
-                                Merci pour votre achat {% now "d M Y" %} .
+                                Merci pour votre Commande {% now "d M Y" %} .
                             </div>
         
                         </div>

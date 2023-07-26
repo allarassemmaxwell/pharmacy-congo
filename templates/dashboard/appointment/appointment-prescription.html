@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Prescription{% endblock %}
+{% block title %}Bon de Commande{% endblock %}
 
 
 {% block extra_css %}
@@ -25,7 +25,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'appointment_prescription_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter une Prescription
+                        <i class="feather-plus-square me-1"></i> Ajouter un Bon de Commande
                     </a>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Prescription</h5>
+                                <h5 class="card-title">Bon de Commande</h5>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                         <th>Nom & Prenom</th>
                                         <th>Poids</th>
                                         <th>Température</th>
-                                        <th>Prix payé</th>
+                                        <th>Dose / Cible</th>
                                         <th>Date/Heure</th>
                                         <th>Validé le</th>
                                         <th>Par</th>
@@ -73,7 +73,7 @@
                                         </td>
                                         <td>{{ prescription.weight }} kg</td>
                                         <td>{{ prescription.body_temperature }} %c</td>
-                                        <td>{{ prescription.price }}f cfa</td>
+                                        <td>{{ prescription.price }} </td>
                                         <td>{{ prescription.appointment.date }}/ {{ prescription.appointment.hour }}</td>
                                         <td>{{ prescription.timestamp|date:"d M Y" }}</td>
                                         <td>{{ prescription.received_by.first_name }} {{ prescription.received_by.last_name }}</td>

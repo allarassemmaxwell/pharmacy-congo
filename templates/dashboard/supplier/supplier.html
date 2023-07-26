@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Fournisseur{% endblock %}
+{% block title %}Donateur{% endblock %}
 
 
 {% block extra_css %}
@@ -26,7 +26,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'supplier_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter un Fournisseur
+                        <i class="feather-plus-square me-1"></i> Ajouter un Donateur
                     </a>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Fournisseurs</h5>
+                                <h5 class="card-title">Donateurs</h5>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Ajouter une vente{% endblock %}
+{% block title %}Ajouter une Consommation{% endblock %}
 
 
 {% block extra_css %}
@@ -23,14 +23,14 @@
                 <div class="col-md-12 d-flex justify-content-end">
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
-                    <div class="doc-badge me-3"><a href="/dashboard/sale/">Ventes</a></div>
+                    <div class="doc-badge me-3"><a href="/dashboard/sale/">Consommations</a></div>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <h5 class="mb-3">Ajouter une vente</h5>
+                <h5 class="mb-3">Ajouter une Consommation</h5>
                 <form class="custom-validation" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">

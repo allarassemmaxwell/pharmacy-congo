@@ -79,10 +79,10 @@
                                     <tr>
                                         <th>Nom Produit</th>
                                         <th>Catégorie</th>
-                                        <th>Fournisseur</th>
+                                        <th>Donateur</th>
                                         <th>Quantité en Stock</th>
-                                        <th>Prix Unitaire</th>
-                                        <th>Total</th>
+                                        <th>Dose / Cible</th>
+                                        <th>Total dose</th>
                                         <th>Niveau de Réapprovisionnement</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -115,8 +115,8 @@
                                                 <a href="{% url 'stock_detail' stock.id  %}">{{ stock.quantity }}</a>
                                             {% endif %}
                                         </td>
-                                        <td>{{ stock.unity_price }} f cfa</td>
-                                        <td>{{ stock.total }} f cfa</td>
+                                        <td>{{ stock.unity_price }} </td>
+                                        <td>{{ stock.total }} </td>
                                         <td style="text-align: center;">
                                             <a href="{% url 'reorder_level' stock.id  %}">{{ stock.reorder_level }} </a>
                                         </td>

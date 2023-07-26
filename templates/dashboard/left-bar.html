@@ -7,27 +7,27 @@
                     <li class="">
                         <a href="{% url 'dashboard' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
-                    <li class="menu-title"><span>Produits</span></li>
+                    <li class="menu-title"><span>Vaccins</span></li>
                     <li class="">
-                        <a href="{% url 'product_category' %}"><i class="feather-airplay"></i> <span>Catégorie</span></a>
+                        <a href="{% url 'product_category' %}"><i class="feather-airplay"></i> <span>Formes</span></a>
                     </li>
                     <li class="">
                         <a href="{% url 'product_image' %}"><i class="feather-image"></i> <span>Image</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'product' %}"><i class="feather-gift"></i> <span>Produit</span></a>
+                        <a href="{% url 'product' %}"><i class="feather-gift"></i> <span>Vaccins</span></a>
                     </li>
 
 
 
                     <li class="menu-title">
-                        <span>Service</span>
+                        <span>Déploiement</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'service_category' %}"><i class="feather-compass"></i> <span>Catégorie</span></a>
+                        <a href="{% url 'service_category' %}"><i class="feather-compass"></i> <span>Structure</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'service' %}"><i class="feather-clipboard"></i> <span>Service</span></a>
+                        <a href="{% url 'service' %}"><i class="feather-clipboard"></i> <span>Type d'approvisionnement</span></a>
                     </li>
 
                     <li class="menu-title">
@@ -40,12 +40,12 @@
                     </li>
 
                     <li class="">
-                        <a href="{% url 'patient' %}"><i class="feather-user-plus"></i> <span>Patient </span></a>
+                        <a href="{% url 'patient' %}"><i class="feather-user-plus"></i> <span>District Sanitaire</span></a>
                     </li>
 
                     <li class="menu-title"><span>Gestion Stock</span></li>
                     <li class="">
-                        <a href="{% url 'supplier' %}"><i class="feather-truck"></i> <span>Fournisseur</span></a>
+                        <a href="{% url 'supplier' %}"><i class="feather-truck"></i> <span>Donateur</span></a>
                     </li>
 
                     <li class="">
@@ -58,23 +58,23 @@
                     
 
                     <li class="menu-title">
-                        <span>Rendez-vous</span>
+                        <span>Expression de Besoins</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Symptôme</span></a>
+                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Rendez-vous</span></a>
+                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Ordonnance</span></a>
+                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
                     </li>
 
                     <li class="menu-title">
-                        <span>Ventes</span>
+                        <span>Consommations</span>
                     </li>
                     <li class="">
-                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Vente</span></a>
+                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Consommation</span></a>
                     </li>
 
 
@@ -133,13 +133,13 @@
                         <a href="{% url 'patient:home' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:appointment' %}"><i class="feather-calendar"></i> <span>Rendez-vous </span></a>
+                        <a href="{% url 'patient:appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:symptom' %}"><i class="feather-eye"></i> <span>Symptôme </span></a>
+                        <a href="{% url 'patient:symptom' %}"><i class="feather-eye"></i> <span>Intrants </span></a>
                     </li>
                     <li class="">
-                        <a href="{% url 'patient:prescription' %}"><i class="feather-edit"></i> <span>Ordonnance </span></a>
+                        <a href="{% url 'patient:prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande </span></a>
                     </li>
                 {% endif %}
                 

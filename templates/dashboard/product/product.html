@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Produits{% endblock %}
+{% block title %}Vaccins{% endblock %}
 
 
 {% block extra_css %}
@@ -25,7 +25,7 @@
                     <div class="doc-badge me-3"><a href="/">Accueil</a></div>
                     <div class="doc-badge me-3"><a href="/dashboard/">Tableau de bord</a></div>
                     <a href="{% url 'product_add' %}" class="btn btn-primary btn-add">
-                        <i class="feather-plus-square me-1"></i> Ajouter Produit
+                        <i class="feather-plus-square me-1"></i> Ajouter Vaccin
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div class="card-header border-bottom-0">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="card-title">Produits</h5>
+                                <h5 class="card-title">Vaccins</h5>
                             </div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Nom</th>
-                                        <th>Catégorie</th>
-                                        <th>Prix unitaire</th>
+                                        <th>Forme</th>
+                                        <th>Dose / Cible</th>
                                         <th>Quantité</th>
                                         <th>Date</th>
                                         <th>Action</th>
@@ -75,7 +75,7 @@
                                             </h2>
                                         </td>
                                         <td>{{ product.category.name|title }}</td>
-                                        <td>{{ product.unity_price }}f cfa</td>
+                                        <td>{{ product.unity_price }}</td>
                                         <td>{{ product.quantity }}</td>
                                         <td>{{ product.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
