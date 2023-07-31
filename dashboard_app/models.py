@@ -80,8 +80,8 @@ class UserManager(BaseUserManager):
 
 
 ROLE = (
-    ("Patient", _("Patient")),
-    ("Docteur", _("Docteur")),
+    ("Patient", _("Gestionnaire de District")),
+    ("Docteur", _("Point focal PEV Département")),
     ("Admin", _("Admin")),
 )
 
