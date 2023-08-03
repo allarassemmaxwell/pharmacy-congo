@@ -59,7 +59,11 @@
                                                 Effacer le filtre
                                             </a>
                                             {% endif %}
-                                        </div>
+                                        </div><br>
+                                        <!-- Add the button for downloading the PDF -->
+                                        <a href="{% url 'rapport_annuel_pdf' %}?year={{ request.GET.year }}" class="btn btn-primary waves-effect waves-light me-1">
+                                            Télécharger le rapport PDF
+                                        </a>
                                     </div>
                                 </form>
                                 
@@ -85,7 +89,7 @@
                                                 labels: {{ chart_labels|safe }},
                                                 datasets: [
                                                     {
-                                                        label: "Consommation Annuelle",
+                                                        label: "Niveau de Consommation Annuel",
                                                         data: {{ chart_data|safe }},
                                                         backgroundColor: [
                                                             'rgba(255, 99, 132, 0.2)',

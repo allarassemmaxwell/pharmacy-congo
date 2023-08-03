@@ -66,7 +66,11 @@
                                                     Effacer le filtre
                                                 </a>
                                             {% endif %}
-                                        </div>
+                                        </div><br>
+                                        <!-- Add the button for downloading the PDF -->
+                                        <a href="{% url 'rapport_mensuel_pdf' %}?month={{ request.GET.month }}" class="btn btn-primary waves-effect waves-light me-1">
+                                            Télécharger le rapport PDF
+                                        </a>
                                     </div>
                                 </form>
                                 
@@ -91,7 +95,7 @@
                                                 labels: {{ chart_labels|safe }},
                                                 datasets: [
                                                     {
-                                                        label: "Consommation Mensuelle",
+                                                        label: "Niveau de Consommation Mensuel",
                                                         data: {{ chart_data|safe }},
                                                         backgroundColor: [
                                                             'rgba(255, 99, 132, 0.2)',

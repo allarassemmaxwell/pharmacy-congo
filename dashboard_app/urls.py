@@ -145,6 +145,13 @@ urlpatterns = [
     path('rapport-mensuel/', rapport_mensuel_view, name="rapport_mensuel"), 
     path('rapport-annuel/', rapport_annuel_view, name="rapport_annuel"),
     
+    # For PDF Rapport 
+    path('rapport-quotidien-pdf/', get_rapport_quotidien_pdf_view, name="rapport_quotidien_pdf"),
+    path('rapport-hebdomadaire-pdf/', get_rapport_hebdomadaire_pdf_view, name="rapport_hebdomadaire_pdf"),
+    path('rapport-mensuel-pdf/', get_rapport_mensuel_pdf_view, name="rapport_mensuel_pdf"),
+    path('rapport-annuel-pdf/', get_rapport_annuel_pdf_view, name="rapport_annuel_pdf"),
+    
+    
     # Liens d'acces a la Notification,  add, detail, mise a jour et suppression
     
     path('notification/', notification_view, name="notification"),

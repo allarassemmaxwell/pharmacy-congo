@@ -19,7 +19,7 @@ def pagination(request, invoices):
         return items_page    
 
 
-
+# Get sale invoice
 def get_sale_invoice(id):
     """ get invoice function """
 
@@ -29,6 +29,73 @@ def get_sale_invoice(id):
 
     context = {
         'sale': sale
+    }
+
+    return context
+
+
+
+
+# Get rapport quotidien
+def get_rapport_quotidien(request):
+    """ get rapport quotidien pdf function """
+    sales = Sale.objects.all() 
+
+    context = {
+        'sales': sales 
+    }
+
+    return context
+
+
+
+
+
+
+
+# Get rapport hebdomadaire
+def get_rapport_hebdomadaire(request):
+    """ get rapport hebdomadaire pdf function """
+    sales = Sale.objects.all() 
+
+    context = {
+        'sales': sales 
+    }
+
+    return context
+
+
+
+
+
+
+
+
+# Get rapport mensuel
+def get_rapport_mensuel(request):
+    """ get rapport mensuel pdf function """
+    sales = Sale.objects.all() 
+
+    context = {
+        'sales': sales 
+    }
+
+    return context
+
+
+
+
+
+
+
+
+# Get rapport annuel
+def get_rapport_annuel(request):
+    """ get rapport annuel pdf function """
+    sales = Sale.objects.all() 
+
+    context = {
+        'sales': sales 
     }
 
     return context

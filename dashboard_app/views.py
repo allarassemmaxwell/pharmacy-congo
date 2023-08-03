@@ -13,7 +13,7 @@ import csv
 # from uuid import UUID
 
 # 👉 add utils for pagination
-from .utils import pagination, get_sale_invoice
+from .utils import pagination, get_sale_invoice, get_rapport_quotidien, get_rapport_hebdomadaire
 
 from django.db import transaction
 
@@ -767,7 +767,7 @@ def patient_add_view(request):
             patient = form.save(commit=False)
             patient.reg_no = random_string(10)
             patient.save()
-            messages.success(request, _("Patient créé avec succès."))
+            messages.success(request, _("Centre de Santé créé avec succès."))
             return redirect('patient')
     else:
         form = PatientForm()
@@ -797,11 +797,11 @@ def patient_update_view(request, slug=None):
         patient_form = PatientForm(request.POST, request.FILES, instance=obj)
         if not user_boolean and patient_form.is_valid():
             patient_form.save()
-            messages.success(request, _("Patient(e) modifié(e) avec succès."))
+            messages.success(request, _("Centre de Santé modifié avec succès."))
             return redirect('patient')
         else:
             user_form.save()
-            messages.success(request, _("Patient(e) modifié(e) avec succès."))
+            messages.success(request, _("Centre de Santé modifié avec succès."))
             return redirect('patient')
     else:
         user_form    = UserUpdateForm(instance=obj.user)
@@ -829,7 +829,7 @@ def patient_update_view(request, slug=None):
 def patient_delete_view(request, slug=None):
     patient = get_object_or_404(Patient, slug=slug, active=True)
     patient.delete()
-    messages.success(request, _("Patient(e) supprimé(e) avec succès."))
+    messages.success(request, _("Centre de Santé supprimé avec succès."))
     return redirect('patient')
 
 
@@ -843,7 +843,7 @@ def patient_user_delete_view(request, slug=None):
     patient.save()
     user.delete()
     user.save()
-    messages.success(request, _("Patient(e) supprimé(e) avec succès."))
+    messages.success(request, _("Centre de Santé supprimé avec succès."))
     return redirect('patient')
 
 
@@ -984,7 +984,7 @@ def service_add_view(request):
         form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Service créé avec succès."))
+            messages.success(request, _("Type d'approvisionnement créé avec succès."))
             return redirect('service')
     else:
         form = ServiceForm()
@@ -1004,7 +1004,7 @@ def service_add_view(request):
 def service_delete_view(request, slug=None):
     service = get_object_or_404(Service, slug=slug, active=True)
     service.delete()
-    messages.success(request, _("Service supprimé avec succès."))
+    messages.success(request, _("Type d'approvisionnement supprimé avec succès."))
     return redirect('service')
 
 
@@ -1020,7 +1020,7 @@ def service_update_view(request, slug=None):
         form = ServiceForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Service mis à jour avec succès."))
+            messages.success(request, _("Type d'approvisionnement mis à jour avec succès."))
             return redirect('service')
     else:
         form = ServiceForm(instance=obj)
@@ -1046,7 +1046,7 @@ def service_category_view(request):
         form = ServiceCategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Catégorie créée avec succès."))
+            messages.success(request, _("Structure créée avec succès."))
             return redirect('service_category')
     else:
         form = ServiceCategoryForm()
@@ -1067,7 +1067,7 @@ def service_category_view(request):
 def service_category_delete_view(request, slug=None):
     category = get_object_or_404(ServiceCategory, slug=slug, active=True)
     category.delete()
-    messages.success(request, _("Catégorie supprimée avec succès."))
+    messages.success(request, _("Structure supprimée avec succès."))
     return redirect('service_category')
 
 
@@ -1082,7 +1082,7 @@ def service_category_update_view(request, slug=None):
         form = ServiceCategoryForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Catégorie mise à jour avec succès"))
+            messages.success(request, _("Structure mise à jour avec succès"))
             return redirect('service_category')
     else:
         form = ServiceCategoryForm(instance=obj)
@@ -1241,7 +1241,7 @@ def product_category_view(request):
         form = ProductCategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Catégorie créée avec succès."))
+            messages.success(request, _("Formes créée avec succès."))
             return redirect('product_category')
     else:
         form = ProductCategoryForm()
@@ -1264,7 +1264,7 @@ def product_category_view(request):
 def product_category_delete_view(request, slug=None):
     caregory = get_object_or_404(ProductCategory, slug=slug, active=True)
     caregory.delete()
-    messages.success(request, _("Catégorie supprimée avec succès."))
+    messages.success(request, _("Formes supprimée avec succès."))
     return redirect('product_category')
 
 
@@ -1287,7 +1287,7 @@ def product_category_update_view(request, slug=None):
     form = ProductCategoryForm(request.POST or None, instance=obj)
     if form.is_valid():
         form.save()
-        messages.success(request, _("Catégorie mise à jour avec succès."))
+        messages.success(request, _("Formes mise à jour avec succès."))
         return redirect('product_category')
     context = {'form': form}
     template = "dashboard/product/category-update.html"
@@ -1325,7 +1325,7 @@ def supplier_add_view(request):
             supplier = form.save(commit=False)
             supplier.created_by = request.user
             form.save()
-            messages.success(request, _("Fournisseur créé avec succès."))
+            messages.success(request, _("Donateur créé avec succès."))
             return redirect('supplier')
     else:
         form = SupplierForm()
@@ -1347,7 +1347,7 @@ def supplier_add_view(request):
 def supplier_delete_view(request, slug=None):
     supplier = get_object_or_404(Supplier, slug=slug)
     supplier.delete()
-    messages.success(request, _("Fournisseur supprimé avec succès."))
+    messages.success(request, _("Donateur supprimé avec succès."))
     return redirect('supplier')
 
 
@@ -1366,7 +1366,7 @@ def supplier_update_view(request, slug=None):
         form = SupplierForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Fournisseur mis à jour avec succès."))
+            messages.success(request, _("Donateur mis à jour avec succès."))
             return redirect('supplier')
     else:
         form = SupplierForm(instance=obj)
@@ -1704,7 +1704,7 @@ def appointment_symptom_view(request):
         form = AppointmentSymptomForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Symptoms créé avec succès."))
+            messages.success(request, _("Intrant créé avec succès."))
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm()
@@ -1729,7 +1729,7 @@ def appointment_symptom_view(request):
 def appointment_symptom_delete_view(request, slug=None):
     appointmentSymptom = get_object_or_404(AppointmentSymptom, slug=slug)
     appointmentSymptom.delete()
-    messages.success(request, _("Symptôme supprimé avec succès."))
+    messages.success(request, _("Intrant supprimé avec succès."))
     return redirect('appointment_symptom')
 
 
@@ -1749,7 +1749,7 @@ def appointment_symptom_update_view(request, slug=None):
         form = AppointmentSymptomForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Symptôme mis à jour avec succès."))
+            messages.success(request, _("Intrant mis à jour avec succès."))
             return redirect('appointment_symptom')
     else:
         form = AppointmentSymptomForm(instance=obj)
@@ -1793,7 +1793,7 @@ def appointment_add_view(request):
             appointment = form.save()
             subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
             Notificaty.objects.create(appointment=appointment, subject=subject)
-            messages.success(request, _("Rendez-Vous créé avec succès."))
+            messages.success(request, _("Expression de besoin créé avec succès."))
             return redirect('appointment')
     else:
         form = AppointmentForm()
@@ -1817,7 +1817,7 @@ def appointment_update_view(request, id):
         form = AppointmentForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Rendez-vous Symptôme mis à jour avec succès."))
+            messages.success(request, _("Expression de besoin mis à jour avec succès."))
             return redirect('appointment')
     else:
         form = AppointmentForm(instance=obj)
@@ -1839,7 +1839,7 @@ def appointment_update_view(request, id):
 def appointment_delete_view(request, id=None):
     appointment = get_object_or_404(Appointment, id=id)
     appointment.delete()
-    messages.success(request, _("Rendez-vous supprimé avec succès."))
+    messages.success(request, _("Expression de besoin supprimé avec succès."))
     if request.user.role == "Patient":
        return redirect('patient:appointment')
     else:
@@ -1890,7 +1890,7 @@ def appointment_prescription_add_view(request):
         form = AppointmentPrescriptionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Prescription créé avec succès."))
+            messages.success(request, _("Bon de commande créé avec succès."))
             return redirect('appointment_prescription')
     else:
         form = AppointmentPrescriptionForm()
@@ -1911,7 +1911,7 @@ def appointment_prescription_update_view(request, id):
         form = AppointmentPrescriptionForm(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Prescription mise à jour avec succès."))
+            messages.success(request, _("Bon de commande mise à jour avec succès."))
             return redirect('appointment_prescription')
     else:
         form = AppointmentPrescriptionForm(instance=obj)
@@ -1932,7 +1932,7 @@ def appointment_prescription_update_view(request, id):
 def appointment_prescription_delete_view(request, id):
     appointment = get_object_or_404(AppointmentPrescription, id=id, active=True)
     appointment.delete()
-    messages.success(request, _("Prescription supprimée avec succès."))
+    messages.success(request, _("Bon de commande supprimée avec succès."))
     return redirect('appointment_prescription')
 
 
@@ -1981,7 +1981,7 @@ def sale_add_view(request):
             obj_invoice.sub_total = sub_total
             obj_invoice.global_total = Decimal((1+Decimal(obj_invoice.vat/100))*sub_total)
             obj_invoice.save()
-            messages.success(request, _("Vente créée avec succès."))
+            messages.success(request, _("Consommation créée avec succès."))
             return redirect('sale')
     else:
         invoice = InvoiceSaleForm()
@@ -2008,7 +2008,7 @@ def sale_delete_view(request, id=None):
     sales = Sale.objects.filter(invoice=invoice)
     for sale in sales: sale.delete()
     invoice.delete()
-    messages.success(request, _("Vente supprimée avec succès."))
+    messages.success(request, _("Consommation supprimée avec succès."))
     return redirect('sale')
 
 
@@ -2040,7 +2040,7 @@ def sale_update_view(request, id):
             obj_invoice.sub_total = sub_total
             obj_invoice.global_total = Decimal((1+(obj_invoice.vat)/100)*sub_total)
             obj_invoice.save()
-            messages.success(request, _("Vente créée avec succès."))
+            messages.success(request, _("Consommation mis a jour avec succès."))
             return redirect('sale')
 
     else:
@@ -2082,6 +2082,7 @@ def sale_visualization_view(request, id):
 
 
 
+# Sale pdf
 
 def get_sale_pdf_view(request, id):
     """ Generate PDF file from HTML file """
@@ -2120,6 +2121,264 @@ def get_sale_pdf_view(request, id):
 
 
 
+# Rapport Quotidien PDF
+def get_sales_of_the_day(date):
+    # Assuming you have a model called 'Sale' with a 'timestamp' field representing the sale timestamp
+    # Fetch the sales based on the specified date (assuming the 'timestamp' field is of type DateTimeField)
+    start_of_day = datetime.combine(date, datetime.min.time())
+    end_of_day = datetime.combine(date, datetime.max.time())
+    sales = Sale.objects.filter(timestamp__range=(start_of_day, end_of_day))
+    return sales
+
+
+def get_rapport_quotidien_pdf_view(request):
+    """ Generate PDF file from HTML file """
+    date_str = request.GET.get('day')  # Get the 'day' parameter from the request's GET data
+
+    try:
+        date = datetime.strptime(date_str, '%d-%m-%Y').date()  # Parse the date in 'dd-mm-yyyy' format
+    except ValueError:
+        # Handle any invalid date format from the user if necessary
+        date = date.today()
+
+    # Fetch the sales of the day based on the specified date
+    sales = get_sales_of_the_day(date)
+
+    context = {
+        'sales': sales,
+        'date': date.strftime('%d-%m-%Y'),  # Convert the date back to the 'dd-mm-yyyy' format for display
+    }
+
+    # Get HTML file
+    template = get_template('dashboard/report/rapport-quotidien-pdf.html')
+    # Render HTML with context variables
+    html = template.render(context)
+
+    # Options for PDF format
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+
+    # Generate PDF
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="rapport_quotidien.pdf"'
+    response.write(pdf)
+
+    return response
+
+
+
+
+
+
+
+
+
+# Rapport Hebdomadaire PDF
+def get_sales_of_the_week(start_of_week, end_of_week):
+    # Assuming you have a model called 'Sale' with a 'timestamp' field representing the sale timestamp
+    # Fetch the sales based on the specified week (assuming the 'timestamp' field is of type DateTimeField)
+    sales = Sale.objects.filter(timestamp__range=(start_of_week, end_of_week))
+    return sales
+
+
+def get_rapport_hebdomadaire_pdf_view(request):
+    """ Generate PDF file from HTML file """
+    date_str = request.GET.get('week')  # Get the 'week' parameter from the request's GET data
+
+    try:
+        date = datetime.strptime(date_str, '%d-%m-%Y').date()  # Parse the date in 'dd-mm-yyyy' format
+    except ValueError:
+        # Handle any invalid date format from the user if necessary
+        date = date.today()
+
+    # Calculate the start and end of the week based on the specified date
+    start_of_week = date - timedelta(days=date.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+
+    # Fetch the sales of the week based on the specified dates
+    sales = get_sales_of_the_week(start_of_week, end_of_week)
+
+    context = {
+        'sales': sales,
+        'date': start_of_week.strftime('%d-%m-%Y'),  # Convert the start date of the week back to the 'dd-mm-yyyy' format for display
+        'end_date': end_of_week.strftime('%d-%m-%Y'),  # Convert the end date of the week back to the 'dd-mm-yyyy' format for display
+    }
+
+    # Get HTML file
+    template = get_template('dashboard/report/rapport-hebdomadaire-pdf.html')
+    # Render HTML with context variables
+    html = template.render(context)
+
+    # Options for PDF format
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+
+    # Generate PDF
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="rapport_hebdomadaire.pdf"'
+    response.write(pdf)
+
+    return response
+
+
+
+
+
+
+
+
+
+
+
+# Rapport Mensuel PDF
+def get_sales_of_the_month(start_of_month, end_of_month):
+    # Assuming you have a model called 'Sale' with a 'timestamp' field representing the sale timestamp
+    # Fetch the sales based on the specified month (assuming the 'timestamp' field is of type DateTimeField)
+    sales = Sale.objects.filter(timestamp__range=(start_of_month, end_of_month))
+    return sales
+
+
+def get_rapport_mensuel_pdf_view(request):
+    """ Generate PDF file from HTML file """
+    date_str = request.GET.get('month')  # Get the 'month' parameter from the request's GET data
+
+    try:
+        date = datetime.strptime(date_str, '%m-%Y').date()  # Parse the date in 'mm-yyyy' format
+    except ValueError:
+        # Handle any invalid date format from the user by using the current date
+        date = datetime.now().date()
+
+    # Calculate the start and end of the month based on the specified date
+    start_of_month = date.replace(day=1)
+    next_month = start_of_month.replace(month=start_of_month.month + 1, day=1)
+    end_of_month = next_month - timedelta(days=1)
+
+    # Fetch the sales of the month based on the specified dates
+    sales = get_sales_of_the_month(start_of_month, end_of_month)
+
+    context = {
+        'sales': sales,
+        'date': start_of_month.strftime('%d-%m-%Y'),  # Convert the start date of the month back to the 'dd-mm-yyyy' format for display
+        'end_date': end_of_month.strftime('%d-%m-%Y'),  # Convert the end date of the month back to the 'dd-mm-yyyy' format for display
+    }
+
+    # Get HTML file
+    template = get_template('dashboard/report/rapport-mensuel-pdf.html')
+    # Render HTML with context variables
+    html = template.render(context)
+
+    # Options for PDF format
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+
+    # Generate PDF
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="rapport_mensuel.pdf"'
+    response.write(pdf)
+
+    return response
+
+
+
+
+
+
+
+
+
+
+
+# Rapport Annuel PDF
+def get_sales_of_the_year(start_of_year, end_of_year):
+    # Assuming you have a model called 'Sale' with a 'timestamp' field representing the sale timestamp
+    # Fetch the sales based on the specified year (assuming the 'timestamp' field is of type DateTimeField)
+    sales = Sale.objects.filter(timestamp__range=(start_of_year, end_of_year))
+    return sales
+
+
+def get_rapport_annuel_pdf_view(request):
+    """ Generate PDF file for Annual Sales Report """
+    date_str = request.GET.get('year')  # Get the 'year' parameter from the request's GET data
+
+    try:
+        date = datetime.strptime(date_str, '%Y').date()  # Parse the date in 'yyyy' format
+    except ValueError:
+        # Handle any invalid date format from the user by using the current date
+        date = datetime.now().date()
+
+    # Calculate the start and end of the year based on the specified date
+    start_of_year = date.replace(month=1, day=1)
+    end_of_year = date.replace(month=12, day=31)
+
+    # Fetch the sales of the year based on the specified dates
+    sales = get_sales_of_the_year(start_of_year, end_of_year)
+
+    context = {
+        'sales': sales,
+        'date': start_of_year.strftime('%d-%m-%Y'),  # Convert the start date of the year back to the 'dd-mm-yyyy' format for display
+        'end_date': end_of_year.strftime('%d-%m-%Y'),  # Convert the end date of the year back to the 'dd-mm-yyyy' format for display
+    }
+
+    # Get HTML file
+    template = get_template('dashboard/report/rapport-annuel-pdf.html')
+    # Render HTML with context variables
+    html = template.render(context)
+
+    # Options for PDF format
+    options = {
+        'page-size': 'Letter',
+        'encoding': 'UTF-8',
+        "enable-local-file-access": ""
+    }
+
+    # Generate PDF
+    wkhtmltopdf_path = 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'  # Replace with the actual path to wkhtmltopdf executable
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdf = pdfkit.from_string(html, False, options, configuration=config)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="rapport_annuel.pdf"'
+    response.write(pdf)
+
+    return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # NOTIFICATION   FUNCTION
 @login_required
@@ -2128,7 +2387,6 @@ def notification_view(request):
     context  = {'notifications': notifications}
     template = "dashboard/notification/notification.html"
     return render(request, template, context)
-
 
 
 
@@ -2281,6 +2539,12 @@ def rapport_quotidien_view(request):
     
     template = "dashboard/report/quotidien.html"
     return render(request, template, context)
+
+
+
+
+
+
 
 
 
