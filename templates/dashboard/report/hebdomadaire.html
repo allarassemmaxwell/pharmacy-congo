@@ -59,7 +59,11 @@
                                                 Effacer le filtre
                                             </a>
                                             {% endif %}
-                                        </div>
+                                        </div><br>
+                                        <!-- Add the button for downloading the PDF -->
+                                        <a href="{% url 'rapport_hebdomadaire_pdf' %}?week={{ request.GET.week }}" class="btn btn-primary waves-effect waves-light me-1">
+                                            Télécharger le rapport PDF
+                                        </a>
                                     </div>
                                 </form>
                                 
@@ -83,7 +87,7 @@
                                                 labels: {{ chart_labels|safe }},
                                                 datasets: [
                                                     {
-                                                        label: "Consommation Hebdomadaire",
+                                                        label: "Niveau de Consommation Hebdomadaire",
                                                         data: {{ chart_data|safe }},
                                                         backgroundColor: [
                                                             'rgba(255, 99, 132, 0.2)',
@@ -194,7 +198,7 @@
                                             <td>{{ sale.product }}</td>
                                             <td>{{ sale.quantity }}</td>
                                             <td>{{ sale.product.unity_price }}</td>
-                                            <td>{{ sale.total }}fcfa</td>
+                                            <td>{{ sale.total }}</td>
                                             <td>{{ sale.timestamp|date:"d M Y" }}</td>
                                         </tr>
                                     {% endfor %}
