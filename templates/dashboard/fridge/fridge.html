@@ -52,7 +52,8 @@
                                         <th>Marque</th>
                                         <th>Code PQS</th>
                                         <th>Date D'acquisition</th>
-                                        <th>Prix</th>
+                                        <th>Capacité nette (litre)</th>
+                                        <th>Température de Stockage</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -78,7 +79,8 @@
                                         <td>{{ fridge.marque|truncatechars:25 }}</td>
                                         <td>{{ fridge.code_pqs|truncatechars:25 }}</td>
                                         <td>{{ fridge.date_acquisition }}</td>
-                                        <td>{{ fridge.price }}f cfa</td>
+                                        <td>{{ fridge.price }} l</td>
+                                        <td>{{ fridge.temperature }} °C</td>
                                         <td>{{ fridge.timestamp|date:"d M Y" }}</td>
                                         <td class="text-end">
                                             <div class="actions">

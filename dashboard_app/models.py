@@ -512,6 +512,7 @@ class InvoiceSale(models.Model):
 # SALE MODEL
 class Sale(models.Model):
     invoice      = models.ForeignKey(InvoiceSale, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_invoice") 
+    user         = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     product      = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
     quantity     = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
     total        = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
@@ -789,7 +790,8 @@ class Fridge(models.Model):
     code_pqs         = models.CharField(_("Code PQS"), max_length=255, null=False, blank=False, unique=True)
     date_acquisition = models.DateField(_("Date Acquisition"), blank=True, null=True)
     photo            = models.ImageField(_("Image"), upload_to="Service/%Y/%m/%d/", null=True, blank=True)
-    price            = models.DecimalField(_("Prix Frigidaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    price            = models.DecimalField(_("Capacité nette (litre)"), decimal_places=2, max_digits=7, null=True, blank=True)
+    temperature      = models.DecimalField(_("Température de Stockage"), decimal_places=2, max_digits=7, null=True, blank=True)
     state            = models.CharField(_("Etat du Frigidaire"), max_length=100, choices=STATE_CHOICES, null=True, blank=True)
     fix_number       = models.PositiveIntegerField(_("Nombre de Reparation"), null=True, blank=False, default=1)
     energy           = models.CharField(_("Energie Utilisée"), max_length=100, choices=ENERGY_CHOICES, null=True, blank=True)

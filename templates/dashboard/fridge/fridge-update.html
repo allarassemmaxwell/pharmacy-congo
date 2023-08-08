@@ -64,9 +64,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-focus">
+                                {{ form.temperature|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-focus">
                                 {{ form.photo|as_crispy_field }}
                             </div>
                         </div>
+                        
                     
                     </div>
                     <button type="submit" class="btn btn-primary save-btn">Mettre à jour</button>

@@ -56,20 +56,31 @@
                                             Veuillez saisir une date valide au format jj-mm-aaaa.
                                         </div>
                                     </div>
+                                    <!-- Filter by role -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Filtrer par Rôle</label>
+                                        <select name="role" id="role" class="form-select">
+                                            <option value="">Tous les rôles</option>
+                                            <option value="Patient">Gestionnaire de District</option>
+                                            <option value="Docteur">Point focal PEV Département</option>
+                                            <option value="Admin">Admin</option>
+                                            <!-- Add more roles as needed -->
+                                        </select>
+                                    </div>
                                     
                                     <div class="mb-0">
                                         <div>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
                                                 Filtrer
                                             </button>
-                                            {% if request.GET.day %}
+                                            {% if request.GET.day or request.GET.role %}
                                                 <a href="{% url 'rapport_quotidien' %}" class="btn btn-secondary waves-effect waves-light me-1">
                                                     Effacer le filtre
                                                 </a>
                                             {% endif %}
                                         </div><br>
                                         <!-- Add the button for downloading the PDF -->
-                                        <a href="{% url 'rapport_quotidien_pdf' %}?day={{ request.GET.day }}" class="btn btn-primary waves-effect waves-light me-1">
+                                        <a href="{% url 'rapport_quotidien_pdf' %}?day={{ request.GET.day }}{% if request.GET.role %}&role={{ request.GET.role }}{% endif %}" class="btn btn-primary waves-effect waves-light me-1">
                                             Télécharger le rapport PDF
                                         </a>
                                     </div>
