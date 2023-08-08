@@ -47,25 +47,41 @@
                                             <input name="year" id="year" type="text" class="form-control" placeholder="dd-mm-yyyy" data-date-format="dd-mm-yyyy" data-date-container='#datepicker2' data-provide="datepicker" data-date-autoclose="true">
                                             <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                         </div><!-- input-group -->
+                                        <div class="invalid-feedback">
+                                            Veuillez saisir une date valide au format jj-mm-aaaa.
+                                        </div>
                                     </div>
-                                    
+                                    <!-- Filter by role -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Filtrer par Rôle</label>
+                                        <select name="role" id="role" class="form-select">
+                                            <option value="">Tous les rôles</option>
+                                            <option value="Patient">Gestionnaire de District</option>
+                                            <option value="Docteur">Point focal PEV Département</option>
+                                            <option value="Admin">Admin</option>
+                                            <!-- Add more roles as needed -->
+                                        </select>
+                                    </div>
+                                
                                     <div class="mb-0">
                                         <div>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
                                                 Filtrer
                                             </button>
-                                            {% if request.GET.year %}
+                                            {% if request.GET.year or request.GET.role %}
                                             <a href="{% url 'rapport_annuel' %}" class="btn btn-secondary waves-effect waves-light me-1">
                                                 Effacer le filtre
                                             </a>
                                             {% endif %}
                                         </div><br>
                                         <!-- Add the button for downloading the PDF -->
-                                        <a href="{% url 'rapport_annuel_pdf' %}?year={{ request.GET.year }}" class="btn btn-primary waves-effect waves-light me-1">
+                                        <a href="{% url 'rapport_annuel_pdf' %}?year={{ request.GET.year }}{% if request.GET.role %}&role={{ request.GET.role }}{% endif %}" class="btn btn-primary waves-effect waves-light me-1">
                                             Télécharger le rapport PDF
                                         </a>
                                     </div>
                                 </form>
+                                
+                                
                                 
                                   
                                 

@@ -2517,10 +2517,19 @@ def rapport_quotidien_view(request):
             day, month, year = map(int, selected_date.split("-"))
         except ValueError:
             pass
+        
+    # Get the selected role from the request parameters
+    user_role = request.GET.get('role')
 
     # Filter the sales for the selected day
     sales = Sale.objects.filter(timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
 
+    if user_role:
+        # Translate the role value to the actual label for filtering
+        users_with_role = User.objects.filter(role=user_role)
+        sales = sales.filter(invoice__seller__in=users_with_role)
+    
+    
     # Calculate the total amount and the sales for each product
     total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
     products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
@@ -2570,12 +2579,20 @@ def rapport_hebdomadaire_view(request):
     else:
         today = timezone.now()
         week_number = today.strftime('%V')
+    
+    # Get the selected role from the request parameters
+    user_role = request.GET.get('role')
 
     # Filter the sales for the selected week
     sales = Sale.objects.filter(
         timestamp__week=week_number,
         active=True
     )
+    
+    if user_role:
+        # Translate the role value to the actual label for filtering
+        users_with_role = User.objects.filter(role=user_role)
+        sales = sales.filter(invoice__seller__in=users_with_role)
 
     # Calculate the total amount and the sales for each product
     total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
@@ -2636,9 +2653,18 @@ def rapport_mensuel_view(request):
         first_day = date(date_obj.year, date_obj.month, 1)
         last_day = calendar.monthrange(date_obj.year, date_obj.month)[1]
         last_day = date(date_obj.year, date_obj.month, last_day)
+        
+    
+    # Get the selected role from the request parameters
+    user_role = request.GET.get('role')
 
     # Filter the sales for the selected month
     sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
+    
+    if user_role:
+        # Translate the role value to the actual label for filtering
+        users_with_role = User.objects.filter(role=user_role)
+        sales = sales.filter(invoice__seller__in=users_with_role)
 
     # Calculate the total amount and the sales for each product
     total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
@@ -2683,9 +2709,20 @@ def rapport_annuel_view(request):
     # Get the first and last day of the year
     first_day = date(year, 1, 1)
     last_day = date(year, 12, 31)
+    
+    # Get the selected role from the request parameters
+    user_role = request.GET.get('role')
+
 
     # Filter the sales for the selected year
     sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
+    
+    if user_role:
+        # Translate the role value to the actual label for filtering
+        users_with_role = User.objects.filter(role=user_role)
+        sales = sales.filter(invoice__seller__in=users_with_role)
+            
+           
 
     # Calculate the total amount and the sales for each product
     total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
