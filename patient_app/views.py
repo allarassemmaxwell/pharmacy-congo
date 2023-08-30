@@ -71,7 +71,7 @@ def appointment_add_view(request):
             hour = form.cleaned_data.get("hour")
             appointment.save()
             subject = "Nouveau rendez-vous le "+str(date)+" à "+str(hour)
-            Notification.objects.create(appointment=appointment, subject=subject)
+            Notificaty.objects.create(appointment=appointment, subject=subject)
             messages.success(request, _("Rendez-Vous créé avec succès."))
             return redirect('patient:appointment')
     else:
