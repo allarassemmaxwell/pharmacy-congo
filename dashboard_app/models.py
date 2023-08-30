@@ -79,11 +79,68 @@ class UserManager(BaseUserManager):
 
 
 
-ROLE = (
-    ("Patient", _("Gestionnaire de District")),
-    ("Docteur", _("Point focal PEV Département")),
-    ("Admin", _("Admin")),
+ROLE = (    
+    ("Admin", _("Administrateur")),
+    ("Département", _("Point focal PEV Département")),
+    ("Gestionnaire", _("Gestionnaire de District")),
+    ("Centre", _("Centre de santé")),
+    ("Patient", _("Patient")),
 )
+
+
+
+
+
+COUNTRY_CHOICES = (
+    ('Congo RDC', 'Congo RDC'),
+)
+
+
+
+
+LOCALITY_CHOICES = (
+    ('Bandundu', 'Bandundu'),
+    ('Baraka', 'Baraka'),
+    ('Beni', 'Beni'),
+    ('Boende', 'Boende'),
+    ('Boma', 'Boma'),
+    ('Bukavu', 'Bukavu'),
+    ('Bunia', 'Bunia'),
+    ('Buta', 'Buta'),
+    ('Butembo', 'Butembo'),
+    ('Gbadolite', 'Gbadolite'),
+    ('Gemena', 'Gemena'),
+    ('Goma', 'Goma'),
+    ('Inongo', 'Inongo'),
+    ('Isiro', 'Isiro'),
+    ('Kabinda', 'Kabinda'),
+    ('Kalemie', 'Kalemie'),
+    ('Kamina', 'Kamina'),
+    ('Kananga', 'Kananga'),
+    ('Kenge', 'Kenge'),
+    ('Kikwit', 'Kikwit'),
+    ('Kindu', 'Kindu'),
+    ('Kisangani', 'Kisangani'),
+    ('Kinshasa', 'Kinshasa'),
+    ('Kolwezi', 'Kolwezi'),
+    ('Likasi', 'Likasi'),
+    ('Lisala', 'Lisala'),
+    ('Lubumbashi', 'Lubumbashi'),
+    ('Lusambo', 'Lusambo'),
+    ('Matadi', 'Matadi'),
+    ('Mbandaka', 'Mbandaka'),
+    ('Mbujimayi', 'Mbujimayi'),
+    ('Muene-Ditu', 'Muene-Ditu'),
+    ('Tshikapa', 'Tshikapa'),
+    ('Uvira', 'Uvira'),
+    ('Zongo', 'Zongo'),
+)
+
+
+
+
+
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     id         = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
@@ -119,20 +176,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
-
 # PROFILE MODEL
-
 class Profile(models.Model):
     STATUS_CHOICES = (
         ('Masculin', 'Masculin'),
         ('Feminin', 'Feminin'),
     )
+
     user 	      = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="user_profile")
     photo         = models.ImageField(_("Photo"), upload_to='Images/%Y/%m/', null=True, blank=True)
     phone         = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
     date_of_birth = models.DateField(_("Date de Naissance"), blank=True, null=True)
-    country       = CountryField(_("Pays"), max_length=255, null=True, blank=True)
-    city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
+    country       = models.CharField(_("Pays"), max_length=100, choices=COUNTRY_CHOICES, null=True, blank=True)
+    city          = models.CharField(_("Ville"), max_length=100, choices=LOCALITY_CHOICES, null=True, blank=True)
     address       = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
     gender        = models.CharField(_("Sexe"), max_length=100, choices=STATUS_CHOICES, null=True, blank=True)
     position      = models.CharField(_("Profession"), max_length=255, null=True, blank=True)
@@ -161,21 +217,21 @@ class Profile(models.Model):
 # SUPPLIER MODEL
 
 class Supplier(models.Model):
-    name            = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    email           = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
-    phone           = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
-    country         = CountryField(_("Pays"), max_length=255, null=True, blank=True)
-    city            = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
-    address         = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
-    website         = models.URLField(_("Site Web"), max_length=255, null=True, blank=True)
-    facebook_link   = models.URLField(_("Lien Facebook"), max_length=255, null=True, blank=True)
-    twitter_link    = models.URLField(_("Lien Twitter"), max_length=255, null=True, blank=True)
-    instagram_link  = models.URLField(_("Lien  Instagram"), max_length=255, null=True, blank=True)
-    active          = models.BooleanField(_("Est actif"), default=True)
-    timestamp       = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated         = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    created_by      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="provider_created_by")
-    slug            = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    name           = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    email          = models.EmailField(_("Email"), max_length=255, null=False, blank=False)
+    phone          = models.CharField(_("Numéro de téléphone"), max_length=255, null=True, blank=True)
+    country        = models.CharField(_("Pays"), max_length=100, choices=COUNTRY_CHOICES, null=True, blank=True)
+    city           = models.CharField(_("Ville"), max_length=100, choices=LOCALITY_CHOICES, null=True, blank=True)
+    address        = models.CharField(_("Adresse"), max_length=255, null=True, blank=True)
+    website        = models.URLField(_("Site Web"), max_length=255, null=True, blank=True)
+    facebook_link  = models.URLField(_("Lien Facebook"), max_length=255, null=True, blank=True)
+    twitter_link   = models.URLField(_("Lien Twitter"), max_length=255, null=True, blank=True)
+    instagram_link = models.URLField(_("Lien  Instagram"), max_length=255, null=True, blank=True)
+    active         = models.BooleanField(_("Est actif"), default=True)
+    timestamp      = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated        = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    created_by     = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, blank=False, related_name="provider_created_by")
+    slug           = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
         return self.name
@@ -185,6 +241,10 @@ class Supplier(models.Model):
 
     def update_url(self):
         return reverse("supplier_update", args=[str(self.slug)])
+
+
+
+
 
 
 
@@ -234,7 +294,6 @@ class Stock(models.Model):
     phone_number     = models.CharField(_("Numero de Telephone"), max_length=50, blank=True, null=True)
     created_by       = models.CharField(_("Créé par"), max_length=50, blank=True, null=True)
     reorder_level    = models.IntegerField(_("Niveau de réapprovisionnement"), default='0', blank=True, null=True)
-    # product_stock =  models.CharField(_("Nom Produit"), max_length=255, null=False, blank=False, unique=True)
     quantity         = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
     unity_price      = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
     total            = models.DecimalField(_("Total(cfa)"), decimal_places=2, max_digits=7, null=False, blank=False)
@@ -269,12 +328,12 @@ class Stock(models.Model):
 
 # PRODUCT IMAGE MODEL
 class ProductImage(models.Model):
-    file       = models.FileField(_("Fichier(png, jpeg, jpg)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
-    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    file      = models.FileField(_("Fichier(png, jpeg, jpg)"), upload_to="Product/%Y/%m/%d/", null=False, blank=False)
+    name      = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active    = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
         return self.name
@@ -293,14 +352,15 @@ class ProductImage(models.Model):
 
 
 
-# PRODUCT CATEGORY MODEL
 
+
+# PRODUCT CATEGORY MODEL
 class ProductCategory(models.Model):
-    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    name      = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active    = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return self.name
@@ -326,22 +386,21 @@ class ProductCategory(models.Model):
 
 
 # PRODUCT MODEL
-
 class Product(models.Model):
-    category      = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
-    stock         = models.ForeignKey(Stock, on_delete=models.SET_NULL, blank=True, null=True, related_name="stock")
-    name          = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    unity_price   = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
-    quantity      = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
-    discount      = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=True, blank=True)
-    image         = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_image")
-    brand_name    = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
-    genetic_name  = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
-    description   = models.TextField(_("Description"), null=False, blank=False)
-    active        = models.BooleanField(_("Est actif"), default=True)
-    timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated       = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug          = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    category     = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_category")
+    stock        = models.ForeignKey(Stock, on_delete=models.SET_NULL, blank=True, null=True, related_name="stock")
+    name         = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    unity_price  = models.DecimalField(_("Prix Unitaire"), decimal_places=2, max_digits=7, null=True, blank=True)
+    quantity     = models.PositiveIntegerField(_("Quantité"), null=True, blank=True, default=1)
+    discount     = models.DecimalField(_("Reduction"), decimal_places=2, max_digits=15, null=True, blank=True)
+    image        = models.ForeignKey(ProductImage, on_delete=models.SET_NULL, blank=True, null=True, related_name="product_image")
+    brand_name   = models.CharField(_("Nom Commercial"), max_length=255, null=False, blank=False, unique=True)
+    genetic_name = models.CharField(_("Nom Générique"), max_length=255, null=False, blank=False, unique=True)
+    description  = models.TextField(_("Description"), null=False, blank=False)
+    active       = models.BooleanField(_("Est actif"), default=True)
+    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug         = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return "%s (%s fcfa)"%(self.name, self.unity_price)
@@ -385,8 +444,8 @@ class Patient(models.Model):
     gender        = models.CharField(_("Sexe"), max_length=100, choices=SEXE_CHOICES, null=True, blank=True)
     date_of_birth = models.DateField(_("Date de Naissance"), blank=True, null=True)
     phone         = models.CharField(_("Numéro de téléphone"), max_length=25, null=True, blank=True)
-    country       = CountryField(_("Pays"), max_length=255, null=True, blank=True)
-    city          = models.CharField(_("Ville"), max_length=255, null=True, blank=True)
+    country       = models.CharField(_("Pays"), max_length=100, choices=COUNTRY_CHOICES, null=True, blank=True)
+    city          = models.CharField(_("Ville"), max_length=100, choices=LOCALITY_CHOICES, null=True, blank=True)
     address       = models.CharField(_("Address"), max_length=255, null=True, blank=True)
     active        = models.BooleanField(_("Est actif"), default=True)
     timestamp     = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
@@ -481,6 +540,8 @@ class InvoiceSale(models.Model):
     ])
     sub_total    = models.DecimalField(_("Sous Total (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
     global_total = models.DecimalField(_("Total Global (cfa)"), decimal_places=2, max_digits=7, null=True, blank=True)
+    country      = models.CharField(_("Pays"), max_length=100, choices=COUNTRY_CHOICES, null=True, blank=True)
+    city         = models.CharField(_("Ville"), max_length=100, choices=LOCALITY_CHOICES, null=True, blank=True)
     active       = models.BooleanField(_("Est actif"), default=True)
     timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
@@ -497,11 +558,10 @@ class InvoiceSale(models.Model):
     class Meta:
         ordering = ('-timestamp',)
 
-    # @property
-    # def get_total(self):
-    #     sales = self.sale_set.all()   
-    #     total = sum(sale.get_total for sale in sales)
-    #     return total
+
+
+
+
 
 
 
@@ -511,14 +571,14 @@ class InvoiceSale(models.Model):
 
 # SALE MODEL
 class Sale(models.Model):
-    invoice      = models.ForeignKey(InvoiceSale, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_invoice") 
-    user         = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    product      = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
-    quantity     = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
-    total        = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
-    active       = models.BooleanField(_("Est actif"), default=True)
-    timestamp    = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated      = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    invoice   = models.ForeignKey(InvoiceSale, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_invoice") 
+    user      = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    product   = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=False, null=True, related_name="sale_product")
+    quantity  = models.PositiveIntegerField(_("Quantité"), null=True, blank=False, default=1)
+    total     = models.DecimalField(_("Total"), decimal_places=2, max_digits=15, null=True, blank=True)
+    active    = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
     
     def __str__(self):
         return self.product.name
@@ -541,11 +601,11 @@ class Sale(models.Model):
 
 # APPOINTMENT SYMPTOM MODEL
 class AppointmentSymptom(models.Model):
-    name       = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    active     = models.BooleanField(_("Est actif"), default=True)
-    timestamp  = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
-    updated    = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    slug       = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    name      = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active    = models.BooleanField(_("Est actif"), default=True)
+    timestamp = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return self.name
@@ -580,7 +640,7 @@ class Appointment(models.Model):
         ('Masculin', 'Masculin'),
         ('Feminin', 'Feminin'),
     )
-    HOUR_CHOICES = (
+    HOUR_CHOICES   = (
         ('8h:00mn', '8h:00mn'),
         ('8h:30mn', '8h:30mn'),
         ('9h:00mn', '9h:00mn'),
@@ -673,11 +733,11 @@ class AppointmentPrescription(models.Model):
 
 # BLOG CATEGORY MODEL
 class ServiceCategory(models.Model):
-    name        = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
-    active      = models.BooleanField(_("Active"), default=True)
-    timestamp   = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
-    updated     = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
-    slug        = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
+    name      = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
+    active    = models.BooleanField(_("Active"), default=True)
+    timestamp = models.DateTimeField(_("Created At"), auto_now_add=True, auto_now=False)
+    updated   = models.DateTimeField(_("Updated At"), auto_now_add=False, auto_now=True)
+    slug      = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
 
     def __str__(self):
         return self.name
@@ -777,13 +837,13 @@ class Notificaty(models.Model):
 class Fridge(models.Model):
     STATE_CHOICES=(
         ('Normal','Normal'),
-        ('Probleme_Mineur','Probleme_Mineur'),
-        ('Probleme_Critique','Probleme_Critique'),
+        ('Problème Mineur','Problème Mineur'),
+        ('Problème Critique','Problème Critique'),
     )
     
     ENERGY_CHOICES=(
         ('Solaire','Solaire'),
-        ('Electrique','Electrique'),
+        ('Électrique','Électrique'),
     )
     name             = models.CharField(_("Nom du Frigo"), max_length=255, null=False, blank=False, unique=True)
     marque           = models.CharField(_("Nom"), max_length=255, null=False, blank=False, unique=True)
@@ -798,7 +858,6 @@ class Fridge(models.Model):
     active           = models.BooleanField(_("Est actif"), default=True)
     timestamp        = models.DateTimeField(_("Créé le"), auto_now_add=True, auto_now=False)
     updated          = models.DateTimeField(_("Modifié le"), auto_now_add=False, auto_now=True)
-    # slug             = models.SlugField(_("Slug"), max_length=255, null=True, blank=True, editable=False, unique=False)
     
     def __str__(self):
         return self.name

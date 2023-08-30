@@ -3,22 +3,32 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                {% if request.user.role == 'Admin' or request.user.role == 'Docteur'  %}
+                <!-- ADMINISTRATEUR, DEPARTEMENT, GESTIONNAIRE ET CENTRE -->
+                {% if request.user.role == 'Admin' or request.user.role == 'Département' or request.user.role == 'Gestionnaire' or request.user.role == 'Centre' %}
                     <li class="">
                         <a href="{% url 'dashboard' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
-                    <li class="menu-title"><span>Vaccins</span></li>
+                    
                     <li class="">
-                        <a href="{% url 'product_category' %}"><i class="feather-airplay"></i> <span>Formes</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'product_image' %}"><i class="feather-image"></i> <span>Image</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'product' %}"><i class="feather-gift"></i> <span>Vaccins</span></a>
+                        <a href="{% url 'fridge' %}"><i class="feather-flag"></i> <span>Gestion de Froid</span></a>
                     </li>
 
+                    <li class="menu-title"><span>Gestion Stock</span></li>
+                    <li class="">
+                        <a href="{% url 'supplier' %}"><i class="feather-truck"></i> <span>Donateur</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'stock_category' %}"><i class="feather-copy"></i> <span>Catégorie Stock</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'stock' %}"><i class="feather-database"></i> <span>Stock</span></a>
+                    </li>
+                {% endif %}
 
+                   
+                
+                <!-- ADMINISTRATEUR, DEPARTEMENT ET GESTIONNAIRE -->
+                {% if request.user.role == 'Admin' or request.user.role == 'Département' or request.user.role == 'Gestionnaire' %}
 
                     <li class="menu-title">
                         <span>Déploiement</span>
@@ -30,8 +40,66 @@
                         <a href="{% url 'service' %}"><i class="feather-clipboard"></i> <span>Type d'approvisionnement</span></a>
                     </li>
 
+                    <li class="submenu">
+                        <a href="#"><i class="feather-file-text"></i> <span> Rapport</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'rapport_quotidien' %}">Quotidien</a></li>
+                            <li><a href="{% url 'rapport_hebdomadaire' %}">Hebdomadaire</a></li>
+                            <li><a href="{% url 'rapport_mensuel' %}">Mensuel</a></li>
+                            <li><a href="{% url 'rapport_annuel' %}">Annuellement</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+
+                {% if request.user.role == 'Centre' %}
+
+                    <!-- <li class="menu-title">
+                        <span>Expression de Besoins</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
+                    </li> -->
+
                     <li class="menu-title">
-                        <span></span>
+                        <span>Consommations</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Consommation</span></a>
+                    </li>
+                {% endif %}
+
+
+             
+             
+
+
+
+                <!-- ADMIN ONLY  -->
+                {% if request.user.role == 'Admin' %}
+                    <li class="menu-title"><span>Vaccins</span></li>
+                    <li class="">
+                        <a href="{% url 'product_category' %}"><i class="feather-airplay"></i> <span>Formes</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'product_image' %}"><i class="feather-image"></i> <span>Image</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'product' %}"><i class="feather-gift"></i> <span>Vaccins</span></a>
+                    </li>
+
+                    <li class="menu-title">
+                        <span>Consommations</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Consommation</span></a>
                     </li>
 
 
@@ -43,53 +111,6 @@
                         <a href="{% url 'patient' %}"><i class="feather-user-plus"></i> <span>District Sanitaire</span></a>
                     </li>
 
-                    <li class="menu-title"><span>Gestion Stock</span></li>
-                    <li class="">
-                        <a href="{% url 'supplier' %}"><i class="feather-truck"></i> <span>Donateur</span></a>
-                    </li>
-
-                    <li class="">
-                        <a href="{% url 'stock_category' %}"><i class="feather-copy"></i> <span>Catégorie Stock</span></a>
-                    </li>
-                    
-                    <li class="">
-                        <a href="{% url 'stock' %}"><i class="feather-database"></i> <span>Stock</span></a>
-                    </li>
-                    
-
-                    <li class="menu-title">
-                        <span>Expression de Besoins</span>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
-                    </li>
-
-                    <li class="menu-title">
-                        <span>Consommations</span>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'sale' %}"><i class="feather-dollar-sign"></i> <span>Consommation</span></a>
-                    </li>
-
-
-                    <li class="submenu">
-                        <a href="#"><i class="feather-file-text"></i> <span> Rapport</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul>
-                            <li><a href="{% url 'rapport_quotidien' %}">Quotidien</a></li>
-                            <li><a href="{% url 'rapport_hebdomadaire' %}">Hebdomadaire</a></li>
-                            <li><a href="{% url 'rapport_mensuel' %}">Mensuel</a></li>
-                            <li><a href="{% url 'rapport_annuel' %}">Annuellement</a></li>
-                        </ul>
-                    </li>
-
-
                     <li class="menu-title">
                         <span>Blog</span>
                     </li>
@@ -100,7 +121,6 @@
                         <a href="{% url 'blog' %}"><i class="feather-feather"></i> <span>Blog</span></a>
                     </li>
 
-
                     <li class="menu-title">
                         <span>Newsletter</span>
                     </li>
@@ -110,15 +130,10 @@
                     <li class="">
                         <a href="{% url 'mail_newsletter' %}"><i class="feather-send"></i> <span>Email Envoyé</span></a>
                     </li>
-
-
-                    <li class="menu-title">
+                    <!-- <li class="menu-title">
                         <span></span>
-                    </li>
+                    </li> -->
 
-                    <li class="">
-                        <a href="{% url 'fridge' %}"><i class="feather-flag"></i> <span>Gestion de Froid</span></a>
-                    </li>
 
                     <li class="">
                         <a href="{% url 'testimony' %}"><i class="feather-layers"></i> <span>Témoignage</span></a>
@@ -127,6 +142,11 @@
                         <a href="{% url 'partner' %}"><i class="feather-link"></i> <span>Partenaire</span></a>
                     </li>
                 {% endif %}
+
+
+
+
+
 
                 {% if request.user.role == 'Patient' %}
                     <li class="">

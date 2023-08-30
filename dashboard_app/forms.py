@@ -36,8 +36,8 @@ class CustomSignupForm(UserCreationForm):
     last_name  = forms.CharField(max_length=50, label='Prénom', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email      = forms.EmailField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     i_agree    = forms.BooleanField(label=mark_safe(_("En vous inscrivant, vous acceptez le ... (<a href='/terms-and-conditions/' target='_blank'>Conditions d'utilisation</a>)")), required=True)
-    password1  = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
-    password2  = forms.CharField(label='Password(again)',widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password1  = forms.CharField(label='Mot de passe', widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password2  = forms.CharField(label='Mot de passe(encore)',widget=forms.PasswordInput(attrs={'class':'form-control'}))
     class Meta:
         model  = User
         fields = ['first_name', 'last_name', 'i_agree', 'email', 'password1', 'password2']
@@ -129,7 +129,7 @@ class ProfileForm(forms.ModelForm):
             'phone':         forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'country':       forms.Select(attrs={'class': 'form-control'}),
-            'city':          forms.TextInput(attrs={'class': 'form-control'}),
+            'city':          forms.Select(attrs={'class': 'form-control'}),
             'address':       forms.TextInput(attrs={'class': 'form-control'}),
             'gender':        forms.Select(attrs={'class': 'form-control'}),
             'position':      forms.TextInput(attrs={'class': 'form-control'}),
@@ -210,12 +210,9 @@ class ProductForm(forms.ModelForm):
         ]
         widgets = {
             'name':         forms.TextInput(attrs={'class': 'form-control'}),
-            # 'category':   forms.Select(attrs={'class': 'form-control select2', 'data-toggle':'select2'}),
-            # 'photo':      forms.FileInput(attrs={'class': 'form-control'}),
             'unity_price':  forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'quantity':     forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'discount':     forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            # 'since':      forms.DateInput(attrs={'class': 'form-control', 'data-date-format':'yyyy-mm-dd', 'data-provide':'datepicker', 'data-date-autoclose':'true'}, format='%Y-%m-%d'),
             'brand_name':   forms.TextInput(attrs={'class': 'form-control'}),
             'genetic_name': forms.TextInput(attrs={'class': 'form-control'}),
             'description':  forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
@@ -433,7 +430,7 @@ class SupplierForm(forms.ModelForm):
             'email':          forms.EmailInput(attrs={'class': 'form-control'}),
             'phone':          forms.TextInput(attrs={'class': 'form-control'}),
             'country':        forms.Select(attrs={'class': 'form-control'}),
-            'city':           forms.TextInput(attrs={'class': 'form-control'}),
+            'city':           forms.Select(attrs={'class': 'form-control'}),
             'address':        forms.TextInput(attrs={'class': 'form-control'}),
             'website':        forms.URLInput(attrs={'class': 'form-control'}),
             'facebook_link':  forms.URLInput(attrs={'class': 'form-control'}),
@@ -478,7 +475,7 @@ class StockCategoryForm(forms.ModelForm):
 
 class StockForm(forms.ModelForm):
     class Meta:
-        model = Stock
+        model  = Stock
         labels = {
             'supplier': 'Fournisseur',
         }
@@ -486,26 +483,17 @@ class StockForm(forms.ModelForm):
             "supplier",
             'category', 
             'item_name',
-            # "product_stock",
             "quantity",
             "unity_price",
-            # "total",
             "description",
-            # "active",
         ]
         widgets = {
             'quantity':    forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
             'item_name':  forms.TextInput(attrs={'class': 'form-control'}),
-            # 'product_stock': forms.TextInput(attrs={'class': 'form-control'}),
             'unity_price': forms.NumberInput(attrs={'step': 0.25, 'class': 'form-control'}),
-            # 'total':       forms.NumberInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     super(StockForm, self).__init__(*args, **kwargs)
-    #     self.fields['supplier'].queryset = Supplier.objects.all()
-    #     self.fields['supplier'].label_from_instance = lambda obj: obj.name
 
 
 
@@ -518,7 +506,7 @@ class StockForm(forms.ModelForm):
 class StockSearchForm(forms.ModelForm):
     export_to_CSV = forms.BooleanField(required=False)
     class Meta:
-        model = Stock
+        model  = Stock
         fields = ['category', 'item_name', 'export_to_CSV' ]
         
         widgets = {
@@ -540,7 +528,7 @@ class StockSearchForm(forms.ModelForm):
 # 👉 issue form
 class IssueForm(forms.ModelForm):
     class Meta:
-        model = Stock
+        model  = Stock
         fields = [
             'issue_quantity',
             'issue_to'
@@ -563,8 +551,8 @@ class IssueForm(forms.ModelForm):
 # 👉 receive form
 class ReceiveForm(forms.ModelForm):
     class Meta:
-        model = Stock
-        fields = ['receive_quantity', 'receive_by']
+        model   = Stock
+        fields  = ['receive_quantity', 'receive_by']
         
         widgets = {
             'receive_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -585,8 +573,8 @@ class ReceiveForm(forms.ModelForm):
 # 👉 reorder items form
 class ReorderLevelForm(forms.ModelForm):
     class Meta:
-        model = Stock
-        fields = ['reorder_level']
+        model   = Stock
+        fields  = ['reorder_level']
         
         widgets = {
             'reorder_level': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -609,8 +597,8 @@ class ReorderLevelForm(forms.ModelForm):
 # APPOINTMENT SYMPTOMS FORM
 class AppointmentSymptomForm(forms.ModelForm):
     class Meta:
-        model  = AppointmentSymptom
-        fields = [
+        model   = AppointmentSymptom
+        fields  = [
             "name",
         ]
         widgets = {
@@ -746,14 +734,14 @@ class ContactForm(forms.ModelForm):
 class PatientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PatientForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].required    = True
-        self.fields['last_name'].required = True
-        self.fields['profession'].required    = True
-        self.fields['gender'].required = True
-        self.fields['country'].required = True
-        self.fields['city'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required  = True
+        self.fields['profession'].required = True
+        self.fields['gender'].required     = True
+        self.fields['country'].required    = True
+        self.fields['city'].required       = True
     class Meta:
-        model = Patient
+        model  = Patient
         fields = [
             "first_name",
             "last_name",
@@ -770,9 +758,9 @@ class PatientForm(forms.ModelForm):
             'profession':    forms.TextInput(attrs={'class': 'form-control'}),
             'gender':        forms.Select(attrs={'class': 'form-control'}),
             'country':       forms.Select(attrs={'class': 'form-control'}),
+            'city':          forms.Select(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'phone':         forms.TextInput(attrs={'class': 'form-control'}),
-            'city':          forms.TextInput(attrs={'class': 'form-control'}),
             'address':       forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -930,8 +918,6 @@ class FridgeForm(forms.ModelForm):
             'state':      forms.Select(attrs={'class': 'form-control'}),
             'fix_number': forms.NumberInput(attrs={'step': 1, 'class': 'form-control'}),
             'energy':     forms.Select(attrs={'class': 'form-control'}),
-            # 'photo':      forms.FileInput(attrs={'class': 'form-control'}),
-           
         }
 
 

@@ -50,7 +50,9 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Référence</th>
-                                        <th>Vendeur</th>
+                                        {% if request.user.role == 'Admin' %}
+                                            <th>Vendeur</th>
+                                        {% endif %}
                                         <th>Paiement</th>
                                         <th>Facturation</th>
                                         <th>Sous Total</th>
@@ -65,13 +67,15 @@
                                     {% include 'dashboard/sale/detail.html' with sale=sale %}
                                     <tr>
                                         <td>{{ sale.reference }}</td>
-                                        <td>
-                                            <h2 class="table-avatar">
-                                                <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
-                                                <span>{{ sale.seller.first_name|title }} {{ sale.seller.last_name|title }}</span>
-                                                </a>
-                                            </h2>
-                                        </td>
+                                        {% if request.user.role == 'Admin' %}
+                                            <td>
+                                                <h2 class="table-avatar">
+                                                    <a href="#" data-bs-target="#details-{{ forloop.counter }}" data-bs-toggle="modal" >
+                                                    <span>{{ sale.seller.first_name|title }} {{ sale.seller.last_name|title }}</span>
+                                                    </a>
+                                                </h2>
+                                            </td>
+                                        {% endif %}
                                         <td>{{ sale.payment_mode }}</td>
                                         <td>{{ sale.invoice_type }}</td>
                                         <td>{% if sale.sub_total %}{{ sale.sub_total }}{% else %}{% endif %}</td>

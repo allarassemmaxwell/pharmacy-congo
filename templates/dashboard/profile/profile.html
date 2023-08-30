@@ -56,11 +56,13 @@
                                 {{ profile_form.photo|as_crispy_field }}
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-focus">
-                                {{ profile_form.city|as_crispy_field }}
+                        {% if request.user.role == "Admin" %}
+                            <div class="col-md-6">
+                                <div class="form-group form-focus">
+                                    {{ profile_form.city|as_crispy_field }}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                         <div class="col-md-6">
                             <div class="form-group form-focus">
                                 {{ profile_form.phone|as_crispy_field }}

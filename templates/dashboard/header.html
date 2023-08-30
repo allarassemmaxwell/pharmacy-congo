@@ -4,15 +4,15 @@
 <div class="header">
 
     <div class="header-left">
-        {% if request.user.role == 'Admin' or request.user.role == 'Docteur' %}
-            <a href="{% url 'dashboard' %}" class="logo">
+        {% if request.user.role == 'Patient' %}
+            <a href="{% url 'patient:home' %}" class="logo">
                 <img src="{% static 'assets/img/logsup.png' %}"  style="height: 100px; width:100px; object-fit: cover;" alt="Logo">
             </a>
             <a href="{% url 'dashboard' %}" class="logo logo-small">
                 <img src="{% static 'assets/img/logsupport_favicon.png' %}"  alt="Logo" width="40" height="40">
             </a>
-        {% elif request.user.role == 'Patient'  %}
-            <a href="{% url 'patient:home' %}" class="logo">
+        {% else %}
+            <a href="{% url 'dashboard' %}" class="logo">
                 <img src="{% static 'assets/img/logsup.png' %}" style="height: 100px; width:100px; object-fit: cover;" alt="Logo">
             </a>
             <a href="{% url 'patient:home' %}" class="logo logo-small">
@@ -105,11 +105,7 @@
                     </div>
                     <div class="user-text">
                         <h6>{{ user.first_name }} {{ user.last_name }}</h6>
-                        {% if user.role == "Patient" %}
-                            <p class="text-muted mb-0">Patient</p>
-                        {% else %}
-                            <p class="text-muted mb-0">Administrator</p>
-                        {% endif %}
+                        <p class="text-muted mb-0">{{ user.role }}</p>
                     </div>
                 </div>
                 {% if request.user.role == 'Patient'  %}

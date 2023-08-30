@@ -37,7 +37,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerEr
 import re
 import io
 from urllib.parse import quote
-
+from .decorators import *
 
 
 import pdfkit
@@ -110,7 +110,7 @@ def get_current_year():
 # DASHBOARD VIEW 
 @login_required
 def dashboard_view(request):
-    this_year = datetime.now().year
+    this_year  = datetime.now().year
     this_month = datetime.now().month
     if request.user.role == "Patient":
        return redirect('patient:home')
@@ -201,6 +201,11 @@ def profile_view(request):
 
 
 
+
+
+
+
+
 # BLOG VIEW 
 @login_required
 def blog_view(request):
@@ -208,6 +213,9 @@ def blog_view(request):
     context  = {'blogs': blogs}
     template = "dashboard/blog/blog.html"
     return render(request, template, context)
+
+
+
 
 
 
@@ -288,6 +296,10 @@ def blog_category_view(request):
     context    = {'categories': categories}
     template   = "dashboard/blog/category.html"
     return render(request, template, context)
+
+
+
+
 
 
 
@@ -592,11 +604,17 @@ def mail_newsletter_add_view(request):
 
 # BLOG PARTNER VIEW 
 @login_required
+
+# @admin_access_only()
 def partner_view(request):
     partners = Partner.objects.all()
     context  = {'partners': partners}
     template = "dashboard/partner/partner.html"
     return render(request, template, context)
+
+
+
+
 
 
 
@@ -664,6 +682,11 @@ def partner_delete_view(request, slug=None):
 
 
 
+
+
+
+
+
 # BLOG TESTIMONY VIEW 
 @login_required
 def testimony_view(request):
@@ -671,6 +694,9 @@ def testimony_view(request):
     context     = {'testimonies': testimonies}
     template    = "dashboard/testimony/testimony.html"
     return render(request, template, context)
+
+
+
 
 
 
@@ -780,6 +806,10 @@ def patient_add_view(request):
 
 
 
+
+
+
+
 # PATIENT UPDATE VIEW
 
 
@@ -831,6 +861,11 @@ def patient_delete_view(request, slug=None):
     patient.delete()
     messages.success(request, _("Centre de Santé supprimé avec succès."))
     return redirect('patient')
+
+
+
+
+
 
 
 
@@ -968,6 +1003,7 @@ def user_delete_view(request, id=None):
 
 # SERVICE VIEW 
 @login_required
+@admin_depart_gestion_access_only()
 def service_view(request):
     services = Service.objects.all()
     context  = {'services': services}
@@ -979,6 +1015,7 @@ def service_view(request):
 
 # SERVICE ADD VIEW 
 @login_required
+@admin_depart_gestion_access_only()
 def service_add_view(request):
     if request.method == 'POST':
         form = ServiceForm(request.POST, request.FILES)
@@ -1001,6 +1038,7 @@ def service_add_view(request):
 # SERVICE DELETE VIEW
 
 @login_required
+@admin_depart_gestion_access_only()
 def service_delete_view(request, slug=None):
     service = get_object_or_404(Service, slug=slug, active=True)
     service.delete()
@@ -1014,6 +1052,7 @@ def service_delete_view(request, slug=None):
 
 
 @login_required
+@admin_depart_gestion_access_only()
 def service_update_view(request, slug=None):
     obj  = get_object_or_404(Service, slug=slug)
     if request.method == 'POST':
@@ -1040,6 +1079,7 @@ def service_update_view(request, slug=None):
 
 # BLOG VIEW 
 @login_required
+@admin_depart_gestion_access_only()
 def service_category_view(request):
     categories    = ServiceCategory.objects.all()
     if request.method == 'POST':
@@ -1064,6 +1104,7 @@ def service_category_view(request):
 
 
 @login_required
+@admin_depart_gestion_access_only()
 def service_category_delete_view(request, slug=None):
     category = get_object_or_404(ServiceCategory, slug=slug, active=True)
     category.delete()
@@ -1076,6 +1117,7 @@ def service_category_delete_view(request, slug=None):
 
 
 @login_required
+@admin_depart_gestion_access_only()
 def service_category_update_view(request, slug=None):
     obj  = get_object_or_404(ServiceCategory, slug=slug)
     if request.method == 'POST':
@@ -1947,8 +1989,16 @@ def appointment_prescription_delete_view(request, id):
 # SALE VIEWS
 
 @login_required
+@admin_centre_access_only()
 def sale_view(request):
-    sales    = InvoiceSale.objects.all()
+    user_role = request.user.role
+    user_city = request.user.user_profile.city
+
+    if user_role == "Centre":
+        sales    = InvoiceSale.objects.filter(city=user_city)
+    else:
+        sales    = InvoiceSale.objects.all()
+
     context  = {'sales': sales}
     template = "dashboard/sale/sale.html"
     return render(request, template, context)
@@ -1960,6 +2010,7 @@ def sale_view(request):
 
 # SALE ADD VIEW
 @login_required
+@admin_centre_access_only()
 def sale_add_view(request):
     invoice = InvoiceSaleForm(request.POST)
     formset = SaleFormSet(request.POST)
@@ -1967,6 +2018,14 @@ def sale_add_view(request):
     if request.method == "POST":
         if invoice.is_valid() and formset.is_valid():
             obj_invoice  = invoice.save(commit=False)
+            user_country = request.user.user_profile.country
+            user_city    = request.user.user_profile.city
+
+            if not user_country or not user_city:
+                messages.error(request, _("Veuillez mettre à jour votre pays et la ville ou soit contacter l'administrateur."))
+                return redirect('sale')
+            obj_invoice.country = user_country
+            obj_invoice.city = user_city
             obj_invoice.reference = random_string(10)
             obj_invoice.seller    = request.user
             obj_invoice.save()
@@ -2003,6 +2062,7 @@ def sale_add_view(request):
 # SALE DELETE VIEW
 
 @login_required
+@admin_centre_access_only()
 def sale_delete_view(request, id=None):
     invoice = get_object_or_404(InvoiceSale, reference=id)
     sales = Sale.objects.filter(invoice=invoice)
@@ -2022,6 +2082,7 @@ def sale_delete_view(request, id=None):
 # SALE UPDATE VIEW
 
 @login_required
+@admin_centre_access_only()
 def sale_update_view(request, id):
     obj_invoice  = get_object_or_404(InvoiceSale, reference=id)
     invoice = InvoiceSaleForm(request.POST, instance=obj_invoice)
@@ -2404,6 +2465,7 @@ def notification_view(request):
 
 # FRIDGE VIEW 
 @login_required
+@admin_depart_gestion_centre_access_only()
 def fridge_view(request):
     fridges = Fridge.objects.all()
     context  = {'fridges': fridges}
@@ -2417,6 +2479,7 @@ def fridge_view(request):
 
 # FRIDGE ADD VIEW 
 @login_required
+@admin_depart_gestion_centre_access_only()
 def fridge_add_view(request):
     if request.method == 'POST':
         form = FridgeForm(request.POST, request.FILES)
@@ -2438,6 +2501,7 @@ def fridge_add_view(request):
 # FRIDGE DELETE VIEW
 
 @login_required
+@admin_depart_gestion_centre_access_only()
 def fridge_delete_view(request, id):
     marque = get_object_or_404(Fridge, id=id, active=True)
     marque.delete()
@@ -2456,6 +2520,7 @@ def fridge_delete_view(request, id):
 
 # FRIDGE UPDATE VIEW FUNCTION
 @login_required
+@admin_depart_gestion_centre_access_only()
 def fridge_update_view(request, id):
     obj  = get_object_or_404(Fridge, id=id)
     if request.method == 'POST':
@@ -2505,11 +2570,15 @@ def fridge_update_view(request, id):
 # Page Rapport quotidien
 
 @login_required
+@admin_depart_gestion_access_only()
 def rapport_quotidien_view(request):
-     # Get the date from the request parameters or use the current date
-    year = timezone.now().year
+    user_role = request.user.role
+    user_city = request.user.user_profile.city
+
+    # Get the date from the request parameters or use the current date
+    year  = timezone.now().year
     month = timezone.now().month
-    day = timezone.now().day
+    day   = timezone.now().day
     
     if 'day' in request.GET and request.GET['day']:
         selected_date = request.GET['day']
@@ -2517,26 +2586,24 @@ def rapport_quotidien_view(request):
             day, month, year = map(int, selected_date.split("-"))
         except ValueError:
             pass
+
+    if user_role == "Département" or user_role == "Gestionnaire":
+        sales = Sale.objects.filter(invoice__city=user_city, timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)  
+    elif user_role == "Admin":
+        sales = Sale.objects.filter(timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
         
-    # Get the selected role from the request parameters
-    user_role = request.GET.get('role')
+    # FILTER BY ROLE 
+    filter_by_role = request.GET.get('role')
+    if filter_by_role:
+        sales = Sale.objects.filter(invoice__seller__role=filter_by_role, timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
 
-    # Filter the sales for the selected day
-    sales = Sale.objects.filter(timestamp__year=year, timestamp__month=month, timestamp__day=day, active=True)
-
-    if user_role:
-        # Translate the role value to the actual label for filtering
-        users_with_role = User.objects.filter(role=user_role)
-        sales = sales.filter(invoice__seller__in=users_with_role)
-    
-    
     # Calculate the total amount and the sales for each product
-    total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
+    total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
     products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
 
     # Prepare the data for the chart
     chart_labels = [data['product__name'] for data in products_sales]
-    chart_data = [float(data['sales']) for data in products_sales]
+    chart_data   = [float(data['sales']) for data in products_sales]
 
     context = {
         'sales': sales,
@@ -2567,7 +2634,11 @@ def rapport_quotidien_view(request):
 # Page Rapport Hebdomadaire
 
 @login_required
+@admin_depart_gestion_access_only()
 def rapport_hebdomadaire_view(request):
+    user_role = request.user.role
+    user_city = request.user.user_profile.city
+
     # Get the week number from the request parameters or use the current week
     selected_date = request.GET.get('week', None)
     if selected_date:
@@ -2579,20 +2650,16 @@ def rapport_hebdomadaire_view(request):
     else:
         today = timezone.now()
         week_number = today.strftime('%V')
-    
-    # Get the selected role from the request parameters
-    user_role = request.GET.get('role')
 
-    # Filter the sales for the selected week
-    sales = Sale.objects.filter(
-        timestamp__week=week_number,
-        active=True
-    )
-    
-    if user_role:
-        # Translate the role value to the actual label for filtering
-        users_with_role = User.objects.filter(role=user_role)
-        sales = sales.filter(invoice__seller__in=users_with_role)
+    if user_role == "Département" or user_role == "Gestionnaire":
+        sales = Sale.objects.filter(invoice__city=user_city, timestamp__week=week_number, active=True)
+    elif user_role == "Admin":
+        sales = Sale.objects.filter(timestamp__week=week_number, active=True)
+
+    # FILTER BY ROLE 
+    filter_by_role = request.GET.get('role')
+    if filter_by_role:
+        sales = Sale.objects.filter(invoice__seller__role=filter_by_role, timestamp__week=week_number, active=True)
 
     # Calculate the total amount and the sales for each product
     total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
@@ -2632,7 +2699,11 @@ def rapport_hebdomadaire_view(request):
 # Page de Rapport Mensuel
 
 @login_required
+@admin_depart_gestion_access_only()
 def rapport_mensuel_view(request):
+    user_role = request.user.role
+    user_city = request.user.user_profile.city
+
     date_string = request.GET.get('month')
     if date_string and len(date_string) == 7:
         # If only month and year are provided, use 1st day of month
@@ -2655,16 +2726,16 @@ def rapport_mensuel_view(request):
         last_day = date(date_obj.year, date_obj.month, last_day)
         
     
-    # Get the selected role from the request parameters
-    user_role = request.GET.get('role')
+    if user_role == "Département" or user_role == "Gestionnaire":
+        sales = Sale.objects.filter(invoice__city=user_city, timestamp__range=[first_day, last_day], active=True)
+    elif user_role == "Admin":
+        sales = Sale.objects.filter(invoice__city=user_city, timestamp__range=[first_day, last_day], active=True)
 
-    # Filter the sales for the selected month
-    sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
-    
-    if user_role:
-        # Translate the role value to the actual label for filtering
-        users_with_role = User.objects.filter(role=user_role)
-        sales = sales.filter(invoice__seller__in=users_with_role)
+    # FILTER BY ROLE 
+    filter_by_role = request.GET.get('role')
+    if filter_by_role:
+        sales = Sale.objects.filter(invoice__seller__role=filter_by_role, timestamp__range=[first_day, last_day], active=True)
+
 
     # Calculate the total amount and the sales for each product
     total_amount   = sales.aggregate(Sum('total'))['total__sum'] or 0
@@ -2698,7 +2769,11 @@ def rapport_mensuel_view(request):
 # Page de Rapport annuel
 
 @login_required
+@admin_depart_gestion_access_only()
 def rapport_annuel_view(request):
+    user_role = request.user.role
+    user_city = request.user.user_profile.city
+
     year_str = request.GET.get('year', timezone.now().strftime('%d-%m-%Y'))
     try:
         year = datetime.strptime(year_str, '%d-%m-%Y').date().year
@@ -2708,22 +2783,20 @@ def rapport_annuel_view(request):
 
     # Get the first and last day of the year
     first_day = date(year, 1, 1)
-    last_day = date(year, 12, 31)
-    
-    # Get the selected role from the request parameters
-    user_role = request.GET.get('role')
+    last_day  = date(year, 12, 31)
+
+    if user_role == "Département" or user_role == "Gestionnaire":
+        sales = Sale.objects.filter(invoice__city=user_city, timestamp__range=[first_day, last_day], active=True)
+    elif user_role == "Admin":
+        sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
 
 
-    # Filter the sales for the selected year
-    sales = Sale.objects.filter(timestamp__range=[first_day, last_day], active=True)
-    
-    if user_role:
-        # Translate the role value to the actual label for filtering
-        users_with_role = User.objects.filter(role=user_role)
-        sales = sales.filter(invoice__seller__in=users_with_role)
-            
-           
+    # FILTER BY ROLE 
+    filter_by_role = request.GET.get('role')
+    if filter_by_role:
+        sales = Sale.objects.filter(invoice__seller__role=filter_by_role, timestamp__range=[first_day, last_day], active=True)
 
+        
     # Calculate the total amount and the sales for each product
     total_amount = sales.aggregate(Sum('total'))['total__sum'] or 0
     products_sales = sales.values('product__name').annotate(sales=Sum('total')).order_by('product__name')
@@ -2772,6 +2845,9 @@ def global_notification_view(request):
         if notification.contact and notification.contact.read == False or notification.appointment and notification.appointment.read == False:
             notifications.append(notification)
     return {'GLOBAL_NOTIFICATIONS': notifications}
+
+
+
 
 
 

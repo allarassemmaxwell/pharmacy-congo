@@ -62,7 +62,7 @@ class PatientProfileForm(forms.ModelForm):
             'phone':    forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'country':   forms.Select(attrs={'class': 'form-control'}),
-            'city':      forms.TextInput(attrs={'class': 'form-control'}),
+            'city':      forms.Select(attrs={'class': 'form-control'}),
             'address':   forms.TextInput(attrs={'class': 'form-control'}),
             'gender':    forms.Select(attrs={'class': 'form-control'}),
             'position':  forms.TextInput(attrs={'class': 'form-control'}),
