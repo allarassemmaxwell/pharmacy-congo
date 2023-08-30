@@ -8,6 +8,20 @@
                     <li class="">
                         <a href="{% url 'dashboard' %}"><i class="feather-home"></i> <span>Tableau de bord</span></a>
                     </li>
+
+                    <li class="menu-title">
+                        <span>Expression de Besoins</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
+                    </li>
+
                     
                     <li class="">
                         <a href="{% url 'fridge' %}"><i class="feather-flag"></i> <span>Gestion de Froid</span></a>
@@ -54,20 +68,6 @@
 
 
                 {% if request.user.role == 'Centre' %}
-
-                    <li class="menu-title">
-                        <span>Expression de Besoins</span>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
-                    </li>
-
                     <li class="menu-title">
                         <span>Consommations</span>
                     </li>
@@ -110,20 +110,6 @@
                     <li class="">
                         <a href="{% url 'patient' %}"><i class="feather-user-plus"></i> <span>District Sanitaire</span></a>
                     </li>
-
-                    <li class="menu-title">
-                        <span>Expression de Besoins</span>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_symptom' %}"><i class="feather-eye"></i> <span>Intrants</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment' %}"><i class="feather-calendar"></i> <span>Expression de Besoins</span></a>
-                    </li>
-                    <li class="">
-                        <a href="{% url 'appointment_prescription' %}"><i class="feather-edit"></i> <span>Bon de Commande</span></a>
-                    </li>
-                    
 
                     <li class="menu-title">
                         <span>Blog</span>
