@@ -11,12 +11,12 @@
                         class="feather-x-circle"></i></button>
             </div>
             <div class="modal-body">
+                {% for product in sale.sale_invoice.all %}
                 <div class="media d-flex align-items-center justify-content-between">
                     <div class="flex-shrink-0 d-flex align-items-center">
-            
                         <div class="doc-info">
                             <h6>Produit</h6>
-                            <p>{{ sale.product.name|title }}</p>
+                            <p>{{product.product.name|title}}</p>
                         </div>
                     </div>
                 </div>
@@ -25,20 +25,20 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="mem-info">
-                                <h6>Prix Unitaire</h6>
-                                <p>{{ sale.product.unity_price }}f cfa</p>
+                                <h6>Dose / Cible</h6>
+                                <p>{{product.product.unity_price}}</p>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="mem-info">
                                 <h6>Quantité</h6>
-                                <p><span>{{ sale.quantity }}</span></p>
+                                <p><span>{{product.quantity}}</span></p>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="mem-info">
-                                <h6>Total</h6>
-                                    <p>{{ sale.total }}f cfa</p>
+                                <h6>Total dose</h6>
+                                    <p>{{product.total}}</p>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -50,7 +50,7 @@
                        
                     </div>
                 </div>
-                
+                {% endfor %}
             </div>
         </div>
     </div>
